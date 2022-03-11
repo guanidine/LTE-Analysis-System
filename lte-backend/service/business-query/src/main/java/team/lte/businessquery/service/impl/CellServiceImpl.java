@@ -6,6 +6,8 @@ import team.lte.businessquery.service.CellService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CellServiceImpl extends ServiceImpl<CellMapper, Cell> implements CellService {
 
+    @Override
+    public List<String> getSectorName() {
+        return baseMapper.getSectorName();
+    }
 }

@@ -14,7 +14,6 @@ import team.lte.businessquery.entity.vo.CellQuery;
 import team.lte.businessquery.service.CellService;
 import team.lte.commonutils.result.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,15 +58,13 @@ public class CellController {
             @ApiParam(value = "每页记录数", required = true)
             @PathVariable long limit,
             @ApiParam(value = "查询条件")
-            @RequestBody(required = false) CellQuery cellQuery
-    ) {
+            @RequestBody(required = false) CellQuery cellQuery) {
 
         Page<Cell> pageParam = new Page<>(page, limit);
         QueryWrapper<Cell> wrapper = new QueryWrapper<>();
 
         String sectorName = cellQuery.getSectorName();
         String sectorId = cellQuery.getSectorId();
-        // TODO: 测试是否有注入风险
         if (StringUtils.isNotEmpty(sectorName)) {
             wrapper.like("sector_name", sectorName);
         }
@@ -86,11 +83,8 @@ public class CellController {
     @GetMapping("all")
     public R getSectorName() {
 
-        QueryWrapper<Cell> wrapper = new QueryWrapper<>();
-        wrapper.select("distinct sector_name")
-                .orderByAsc("sector_name");
+        List<String> list = cellService.getSectorName();
 
-        List<Cell> list = cellService.list(wrapper);
         return R.ok().data("list", list);
     }
 

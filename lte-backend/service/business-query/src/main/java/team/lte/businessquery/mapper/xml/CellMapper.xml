@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.lte.businessquery.mapper.CellMapper">
 
+    <select id="getSectorName" resultType="java.lang.String">
+        select distinct sector_name
+        from lte.tbcell
+        order by sector_name;
+    </select>
 </mapper>

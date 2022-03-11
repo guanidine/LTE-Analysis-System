@@ -7,20 +7,18 @@
       <el-form-item>
         <el-input v-model="cellQuery.sectorId" placeholder="小区ID"/>
       </el-form-item>
+      <!-- 下拉框至多渲染100条，其他小区名称需要通过输入过滤后才能选到 -->
       <el-form-item>
-        <el-input v-model="cellQuery.sectorName" placeholder="小区名称"/>
-      </el-form-item>
-      <!-- TODO: 筛选条件输入与下拉选择合并 -->
-      <el-form-item label="小区名称">
         <el-select
           v-model="cellQuery.sectorName"
-          placeholder="请选择"
+          filterable
+          :filter-method="filterMethod"
+          placeholder="小区名称"
         >
           <el-option
-            v-for="sector in nameList"
-            :key="sector.sectorName"
-            :label="sector.sectorName"
-            :value="sector.sectorName"
+            v-for="item in renderList"
+            :key="item"
+            :value="item"
           />
         </el-select>
       </el-form-item>
@@ -41,22 +39,22 @@
         width="70"
         align="center"
       >
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
 
-      <el-table-column prop="city" label="城市/地区名称" width="80"/>
-      <el-table-column prop="sectorId" label="小区ID" width="80"/>
-      <el-table-column prop="sectorName" label="小区名称" width="80"/>
+      <el-table-column prop="city" label="城市/地区名称" width="110"/>
+      <el-table-column prop="sectorId" label="小区ID" width="100"/>
+      <el-table-column prop="sectorName" label="小区名称" width="150"/>
       <el-table-column prop="enodebid" label="小区所属基站标识" width="80"/>
-      <el-table-column prop="enodebName" label="基站名称" width="80"/>
-      <el-table-column prop="earfcn" label="小区配置的频点编号" width="80"/>
+      <el-table-column prop="enodebName" label="基站名称" width="150"/>
+      <el-table-column prop="earfcn" label="小区配置的频点编号" width="100"/>
       <el-table-column prop="pci" label="物理小区标识" width="80"/>
       <el-table-column prop="pss" label="主同步信号标识" width="80"/>
       <el-table-column prop="sss" label="辅同步信号表示" width="80"/>
       <el-table-column prop="tac" label="跟踪区编码" width="80"/>
-      <el-table-column prop="vender" label="vender" width="80"/>
+      <el-table-column prop="vender" label="vender" width="70"/>
       <el-table-column prop="longitude" label="经度" width="80"/>
       <el-table-column prop="latitude" label="纬度" width="80"/>
       <el-table-column prop="style" label="style" width="80"/>
@@ -67,7 +65,7 @@
       <el-table-column prop="totletilt" label="总下倾角" width="80"/>
 
       <el-table-column label="操作" width="200" align="center">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <router-link :to="'/teacher/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
@@ -101,7 +99,8 @@ export default {
       limit: 20,
       total: 0,
       cellQuery: {},
-      nameList: []
+      nameList: [],
+      renderList: []
     }
   },
   created() {
@@ -125,7 +124,19 @@ export default {
       cellApi.getCellNameList()
         .then(response => {
           this.nameList = response.data.list
+          this.renderList = this.nameList.slice(0, 100)
         })
+    },
+    filterMethod(val) {
+      if (val) {
+        this.renderList = this.nameList.filter((item) => {
+          if (~item.toUpperCase().indexOf(val.toUpperCase())) {
+            return true
+          }
+        }).slice(0, 100)
+      } else {
+        this.renderList = this.nameList.slice(0, 100)
+      }
     }
   }
 }

@@ -3,6 +3,8 @@ package team.lte.businessquery.service;
 import team.lte.businessquery.entity.Cell;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-03-10
  */
 public interface CellService extends IService<Cell> {
+
+    List<String> getSectorName();
 
 }
