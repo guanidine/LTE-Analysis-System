@@ -13,6 +13,10 @@
       - [数据导出](#数据导出)
     - [业务查询](#业务查询)
     - [业务分析](#业务分析)
+  - [项目运行](#项目运行)
+    - [后端](#后端)
+    - [前端](#前端)
+  
 ## 介绍
 整体采用B/S架构，前端采用Vue来搭建网页，后端采用Java的SpringBoot架构进行数据处理和分析，数据层采用MySQL数据库进行数据管理，最终完成一个具有系统管理、用户管理、数据管理、数据查询、LTE业务分析功能的网页。
 ## 参考项目
@@ -148,3 +152,67 @@ tbCell，并存入数据库表 tbCell；
   - 点击分析后，根据使用说明书给出的公式和分析，根据当前的数据库数据给出当前的新表tbC2Inew，并于前端展示数据。
 - **重叠覆盖干扰小区三元组分析**
   - 根据表 tbC2Inew，找出所有的小区三元组\<a, b, c\>，其中 a、b、c 互为邻小区，并生成新表 tbC2I3，该表有三个属性，分别是三个小区的小区标识 ID，具体如实验说明书。
+
+
+
+## 项目运行
+
+### 后端
+
+`lte-backend`，SpringBoot项目，IntelliJ IDEA可用正常打开并识别出Maven，其他IDE不清楚。
+
+* 安装依赖（推荐是让IDE自己做，手动怎么装这么多 `pom.xml` 我也不造）
+
+* 启动服务
+  1. 在本地MySQL（版本请用MySQL8，MySQL5应该不适配）新建一个 `database`，命名为 `lte`，在其中执行 [`table.sql`](table.sql) 中的代码创建表格和触发器（暂时请手动导入数据，或者随便输入一点）
+  2. 修改配置文件 [`application-dev.yml`](lte-backend/service/business-query/src/main/resources/application-dev.yml) 中 `spring.database` 下的数据库配置（`url`，`username` 和 `password`）
+
+  注：为了避免不同人的配置不同造成冲突，或在 `git commit` 中产生无意义的修改记录，烦请各位提交之前将配置文件改回默认配置。
+  
+     ```yaml
+     datasource:
+         type: com.zaxxer.hikari.HikariDataSource
+         driver-class-name: com.mysql.cj.jdbc.Driver
+         url: jdbc:mysql://localhost:3306/lte?serverTimezone=GMT%2B8
+         username: root
+         password: root
+     ```
+
+  3. 启动服务主程序[`QueryApplication.java`](lte-backend/service/business-query/src/main/java/team/lte/businessquery/QueryApplication.java)
+
+  ![image-20220311145713230](images/run/back1.png)
+
+* 接口测试
+
+  项目整合了Swagger3.0用于测试Springboot中的各个接口，接口返回全部统一使用自定义类型 [`R`](lte-backend/common/common-utils/src/main/java/team/lte/commonutils/result/R.java)。目前项目中无修改数据库数据的接口，放心测试。
+
+  ![image-20220311151032576](images/run/back2.png)
+
+### 前端
+
+`lte-frontend`，Vue项目，可用VSCode，WebStorm等打开。
+
+* 安装依赖
+
+  ```shell
+  npm install
+  ```
+
+* 启动服务（目前仅有development环境可用，配置文件在 [`lte-frontend/.env.development`](lte-frontend/.env.development)）
+
+  ```shell
+  npm run dev
+  ```
+
+  ![image-20220311145345685](images/run/front1.png)
+
+* 网页访问
+
+  ```shell
+  http://localhost:9528
+  登录用户名：admin
+  登录密码：111111
+  目前登录完了并不能注销，想看登录界面可用开无痕浏览或清理缓存。
+  ```
+  
+  ![image-20220311151233793](images/run/front2.png)

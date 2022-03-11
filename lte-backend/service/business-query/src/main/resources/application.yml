@@ -1,0 +1,7 @@
+spring:
+  application:
+    # 服务名
+    name: business-query
+  profiles:
+    # 环境设置
+    active: dev
