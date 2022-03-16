@@ -12,7 +12,7 @@ public class CellQuery implements Serializable {
 
     public static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "小区ID，模糊查询")
+    @ApiModelProperty(value = "小区ID")
     private String sectorId;
 
     @ApiModelProperty(value = "小区名称")

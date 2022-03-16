@@ -25,8 +25,7 @@ public class InsertOrUpdateBatchMethod extends AbstractMethod {
      *          close=")">
      *     #{item.id}, #{item.name}, #{item.age}
      * &lt;/foreach>
-     * ON DUPLICATE KEY UPDATE
-     * ...
+     * on duplicate key update id=values(id), name=values(name), age=values(age)
      * </pre>
      */
     @Override

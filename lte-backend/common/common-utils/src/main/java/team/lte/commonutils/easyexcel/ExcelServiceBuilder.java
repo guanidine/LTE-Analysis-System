@@ -102,6 +102,8 @@ public class ExcelServiceBuilder {
     public <T> void uploadFile(HttpServletResponse response, MultipartFile file, Class<T> clazz,
                                BaseCheckService<T> service, BaseBatchMapper<T> mapper) {
 
+        ExcelListener<T> excelListener = null;
+        ExcelWriter excelWriter = null;
         try {
             String filename = URLEncoder.encode(String.valueOf(System.currentTimeMillis()), "UTF-8");
             response.setCharacterEncoding("UTF-8");
@@ -110,15 +112,20 @@ public class ExcelServiceBuilder {
             response.setHeader("FileName", filename + ".xlsx");
             response.setHeader("Access-Control-Expose-Headers", "FileName, Error");
 
-            ExcelWriter excelWriter = EasyExcelFactory.write(response.getOutputStream(), ErrorDTO.class).build();
+            excelWriter = EasyExcelFactory.write(response.getOutputStream(), ErrorDTO.class).build();
 
-            ExcelListener<T> excelListener =
-                    ExcelListener.build(service, mapper, clazz, excelWriter).groupNum(groupNum);
+            excelListener = ExcelListener.build(service, mapper, clazz, excelWriter).groupNum(groupNum);
             EasyExcelFactory.read(file.getInputStream(), clazz, excelListener).sheet().doRead();
             response.setHeader("Error", String.valueOf(excelListener.getError()));
             excelWriter.finish();
             log.info("EasyExcel----->[ Upload ] Finish!");
-        } catch (IOException e) {
+        } catch (Exception e) {
+            if (excelListener != null) {
+                response.setHeader("Error", String.valueOf(excelListener.getError()));
+            }
+            if (excelWriter != null) {
+                excelWriter.finish();
+            }
             e.printStackTrace();
         }
     }

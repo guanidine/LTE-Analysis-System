@@ -6,7 +6,6 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelAnalysisException;
-import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -124,10 +123,10 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
                 Set<Integer> keySet = indexNameMap.keySet();
                 for (Integer key : keySet) {
                     if (StringUtils.isEmpty(headMap.get(key))) {
-                        throw new ExcelAnalysisException("解析excel出错，请传入正确格式的Excel");
+                        throw new ExcelAnalysisException("解析Excel出错，请传入正确格式的Excel;");
                     }
                     if (!headMap.get(key).equals(indexNameMap.get(key))) {
-                        throw new ExcelAnalysisException("解析excel出错，请传入正确格式的Excel");
+                        throw new ExcelAnalysisException("解析Excel出错，请传入正确格式的Excel;");
                     }
                 }
             } catch (NoSuchFieldException e) {
@@ -159,13 +158,9 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
 
 
     @Override
-    public void onException(Exception exception, AnalysisContext context) {
-        log.error("[ 解析出错 ] :{}", exception.getMessage());
-
-        if (exception instanceof ExcelDataConvertException) {
-            ExcelDataConvertException convertException = (ExcelDataConvertException) exception;
-            log.error("[ 解析出错 ] : 行{}，列{}", convertException.getRowIndex(), convertException.getColumnIndex());
-        }
+    public void onException(Exception exception, AnalysisContext context) throws Exception {
+        error = -1;
+        throw exception;
     }
 
 }

@@ -102,6 +102,11 @@ export default {
           type: 'success',
           message: '数据上传成功'
         })
+      } else if (error === '-1') {
+        this.$message({
+          type: 'error',
+          message: '解析Excel出错，请传入正确格式的Excel'
+        })
       } else {
         this.$message({
           type: 'success',
@@ -143,7 +148,8 @@ export default {
       axios.post(url, formData, {
         responseType: 'arraybuffer'
       }).then(response => {
-        if (response.headers['error'] !== '0') {
+        console.log(response)
+        if (response.headers['error'] !== '0' && response.headers['error'] !== '-1') {
           dataApi.download(response, `${this.tableName}-error`)
         }
         this.fileUploadSuccess(response.headers['error'])
