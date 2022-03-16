@@ -1,16 +1,17 @@
 package team.lte.businessquery.service.impl;
 
-import team.lte.businessquery.entity.Cell;
-import team.lte.businessquery.mapper.CellMapper;
-import team.lte.businessquery.service.CellService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import team.lte.businessquery.entity.Cell;
+import team.lte.businessquery.entity.vo.CellEnodeb;
+import team.lte.businessquery.mapper.CellMapper;
+import team.lte.businessquery.service.CellService;
 
 import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author lte
@@ -20,7 +21,22 @@ import java.util.List;
 public class CellServiceImpl extends ServiceImpl<CellMapper, Cell> implements CellService {
 
     @Override
-    public List<String> getSectorName() {
-        return baseMapper.getSectorName();
+    public List<String> getSectors() {
+        return this.getBaseMapper().getSectors();
     }
+
+    @Override
+    public List<CellEnodeb> getEnodebs() {
+        return this.getBaseMapper().getEnodebs();
+    }
+
+    @Override
+    public String requirementCheck(Cell object) {
+        StringBuilder errMsg = new StringBuilder();
+        if (object.getTotletilt() == null && (object.getElecttilt() == null || object.getMechtilt() == null)) {
+            errMsg.append("总下倾角不能为空;");
+        }
+        return errMsg.toString();
+    }
+
 }

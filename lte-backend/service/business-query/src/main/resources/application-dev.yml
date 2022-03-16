@@ -8,7 +8,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lte?serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/lte?serverTimezone=GMT%2B8&rewriteBatchedStatements=true
     username: root
     password: root
   # 返回json的全局时间格式
@@ -23,3 +23,7 @@ springfox:
   documentation:
     # 生产环境应改为false，关闭Swagger
     enabled: true
+
+logging:
+  level:
+    root: info

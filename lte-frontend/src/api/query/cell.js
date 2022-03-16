@@ -10,9 +10,16 @@ export default {
     })
   },
 
-  getCellNameList() {
+  getCellSectors() {
     return request({
-      url: '/business-query/cell/all',
+      url: '/business-query/cell/all-sector',
+      method: 'get'
+    })
+  },
+
+  getCellEnodebs() {
+    return request({
+      url: '/business-query/cell/all-enodeb',
       method: 'get'
     })
   }

@@ -1,7 +1,8 @@
 package team.lte.businessquery.mapper;
 
 import team.lte.businessquery.entity.Cell;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import team.lte.businessquery.entity.vo.CellEnodeb;
+import team.lte.commonutils.easyexcel.mapper.BaseBatchMapper;
 
 import java.util.List;
 
@@ -13,8 +14,10 @@ import java.util.List;
  * @author lte
  * @since 2022-03-10
  */
-public interface CellMapper extends BaseMapper<Cell> {
+public interface CellMapper extends BaseBatchMapper<Cell> {
 
-    List<String> getSectorName();
+    List<String> getSectors();
+
+    List<CellEnodeb> getEnodebs();
 
 }

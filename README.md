@@ -173,7 +173,7 @@ tbCell，并存入数据库表 tbCell；
      datasource:
          type: com.zaxxer.hikari.HikariDataSource
          driver-class-name: com.mysql.cj.jdbc.Driver
-         url: jdbc:mysql://localhost:3306/lte?serverTimezone=GMT%2B8
+         url: jdbc:mysql://localhost:3306/lte?serverTimezone=GMT%2B8&rewriteBatchedStatements=true
          username: root
          password: root
      ```

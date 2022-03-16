@@ -15,7 +15,13 @@ public class CellQuery implements Serializable {
     @ApiModelProperty(value = "小区ID，模糊查询")
     private String sectorId;
 
-    @ApiModelProperty(value = "小区名称，模糊查询")
+    @ApiModelProperty(value = "小区名称")
     private String sectorName;
+
+    @ApiModelProperty("小区所属基站标识")
+    private Integer enodebid;
+
+    @ApiModelProperty("基站名称")
+    private String enodebName;
 
 }

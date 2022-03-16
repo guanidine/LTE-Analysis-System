@@ -46,8 +46,8 @@ public class CodeGenerator {
                             .enableRestStyle() //配置restful风格
                             .enableHyphenStyle() //url中驼峰转连字符
                             .entityBuilder() //开启实体类配置
-                            .enableLombok() //开启lombok
-                            .enableChainModel(); //开启lombok链式操作
+                            .enableLombok(); //开启lombok
+                    // .enableChainModel(); //开启lombok链式操作：请关闭Accessors注解，和EasyExcel的Web导入存在冲突
 
                 })
                 //模板配置

@@ -31,8 +31,6 @@
         <swagger.version>3.0.0</swagger.version>
         <!-- Joda日期时间工具 -->
         <jodatime.version>2.10.13</jodatime.version>
-        <!-- Excel POI -->
-        <poi.version>5.0.0</poi.version>
         <!-- EasyExcel -->
         <easyexcel.version>3.0.5</easyexcel.version>
         <!-- 文件处理 -->
@@ -47,8 +45,10 @@
         <!-- Fastjson -->
         <fastjson.version>1.2.79</fastjson.version>
         <json.version>20211205</json.version>
-        <!-- Common DbUtils -->
+        <!-- Commons DbUtils -->
         <commons-dbutils.version>1.7</commons-dbutils.version>
+        <!-- Commons Lang3 -->
+        <commons-lang3.version>3.1</commons-lang3.version>
     </properties>
 
     <dependencyManagement>
@@ -101,20 +101,6 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>${jodatime.version}</version>
-            </dependency>
-
-            <!-- Excel操作工具POI -->
-            <!-- xls -->
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>${poi.version}</version>
-            </dependency>
-            <!-- xlsx -->
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml</artifactId>
-                <version>${poi.version}</version>
             </dependency>
 
             <!-- Easy Excel -->
@@ -171,11 +157,18 @@
                 <version>${json.version}</version>
             </dependency>
 
-            <!-- Common DBUtils -->
+            <!-- Commons DBUtils -->
             <dependency>
                 <groupId>commons-dbutils</groupId>
                 <artifactId>commons-dbutils</artifactId>
                 <version>${commons-dbutils.version}</version>
+            </dependency>
+
+            <!-- Commons Lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
 
         </dependencies>
