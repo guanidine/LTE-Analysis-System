@@ -15,6 +15,7 @@ public class InsertOrUpdateBatchMethod extends AbstractMethod {
      * sql注入器代替手动修改xml。
      * <p>
      * insert into user(id, name, age) values (1, "a", 17), (2, "b", 18) ON DUPLICATE KEY UPDATE ...;
+     * 
      * <pre>
      * insert into user(id, name, age) values
      * &lt;foreach collection="list"
@@ -38,15 +39,17 @@ public class InsertOrUpdateBatchMethod extends AbstractMethod {
         log.debug("sqlResult----->{}", sqlResult);
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, sqlResult, modelClass);
         return this.addInsertMappedStatement(mapperClass, modelClass, "insertOrUpdateBatch", sqlSource,
-                new NoKeyGenerator(), null, null);
+            new NoKeyGenerator(), null, null);
     }
 
     private String prepareDuplicateKeySql(TableInfo tableInfo) {
         StringBuilder duplicateKeySql = new StringBuilder();
         if (StringUtils.isNotEmpty(tableInfo.getKeyColumn())) {
-            duplicateKeySql.append(tableInfo.getKeyColumn()).append("=values(").append(tableInfo.getKeyColumn()).append("),");
+            duplicateKeySql.append(tableInfo.getKeyColumn()).append("=values(").append(tableInfo.getKeyColumn())
+                .append("),");
         }
-        tableInfo.getFieldList().forEach(x -> duplicateKeySql.append(x.getColumn()).append("=values(").append(x.getColumn()).append("),"));
+        tableInfo.getFieldList()
+            .forEach(x -> duplicateKeySql.append(x.getColumn()).append("=values(").append(x.getColumn()).append("),"));
         duplicateKeySql.delete(duplicateKeySql.length() - 1, duplicateKeySql.length());
         return duplicateKeySql.toString();
     }
@@ -64,8 +67,7 @@ public class InsertOrUpdateBatchMethod extends AbstractMethod {
     private String prepareValuesSql(TableInfo tableInfo) {
         StringBuilder valuesSql = new StringBuilder();
         valuesSql.append(
-                "<foreach collection=\"list\" item=\"item\" index=\"index\" open=\"(\" separator=\"),(\" close=\")\">"
-        );
+            "<foreach collection=\"list\" item=\"item\" index=\"index\" open=\"(\" separator=\"),(\" close=\")\">");
         if (StringUtils.isNotEmpty(tableInfo.getKeyProperty())) {
             valuesSql.append("#{item.").append(tableInfo.getKeyProperty()).append("},");
         }

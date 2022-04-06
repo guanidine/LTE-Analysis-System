@@ -14,6 +14,7 @@ public class InsertBatchMethod extends AbstractMethod {
      * sql注入器代替手动修改xml。
      * <p>
      * insert into user(id, name, age) values (1, "a", 17), (2, "b", 18);
+     * 
      * <pre>
      * insert into user(id, name, age) values
      * &lt;foreach collection="list"
@@ -35,7 +36,7 @@ public class InsertBatchMethod extends AbstractMethod {
         log.debug("sqlResult----->{}", sqlResult);
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, sqlResult, modelClass);
         return this.addInsertMappedStatement(mapperClass, modelClass, "insertBatch", sqlSource, new NoKeyGenerator(),
-                null, null);
+            null, null);
     }
 
     private String prepareFieldSql(TableInfo tableInfo) {
@@ -51,8 +52,7 @@ public class InsertBatchMethod extends AbstractMethod {
     private String prepareValuesSql(TableInfo tableInfo) {
         StringBuilder valuesSql = new StringBuilder();
         valuesSql.append(
-                "<foreach collection=\"list\" item=\"item\" index=\"index\" open=\"(\" separator=\"),(\" close=\")\">"
-        );
+            "<foreach collection=\"list\" item=\"item\" index=\"index\" open=\"(\" separator=\"),(\" close=\")\">");
         valuesSql.append("#{item.").append(tableInfo.getKeyProperty()).append("},");
         tableInfo.getFieldList().forEach(x -> valuesSql.append("#{item.").append(x.getProperty()).append("},"));
         valuesSql.delete(valuesSql.length() - 1, valuesSql.length());

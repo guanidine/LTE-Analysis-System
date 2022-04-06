@@ -14,8 +14,7 @@ import java.util.Set;
  */
 public class PropertyCheckService {
 
-    private PropertyCheckService() {
-    }
+    private PropertyCheckService() {}
 
     private static final class ValidatorHolder {
         private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();

@@ -24,9 +24,9 @@ public class R {
     @ApiModelProperty(value = "返回数据，使用Map<String, Object>返回key-value键值对")
     private Map<String, Object> data = new HashMap<>();
 
-    private R(){}
+    private R() {}
 
-    public static R ok(){
+    public static R ok() {
         R r = new R();
         r.setSuccess(true);
         r.setCode(ResultCode.SUCCESS);
@@ -34,7 +34,7 @@ public class R {
         return r;
     }
 
-    public static R error(){
+    public static R error() {
         R r = new R();
         r.setSuccess(false);
         r.setCode(ResultCode.ERROR);
@@ -42,27 +42,27 @@ public class R {
         return r;
     }
 
-    public R success(Boolean success){
+    public R success(Boolean success) {
         this.setSuccess(success);
         return this;
     }
 
-    public R message(String message){
+    public R message(String message) {
         this.setMessage(message);
         return this;
     }
 
-    public R code(Integer code){
+    public R code(Integer code) {
         this.setCode(code);
         return this;
     }
 
-    public R data(String key, Object value){
+    public R data(String key, Object value) {
         this.data.put(key, value);
         return this;
     }
 
-    public R data(Map<String, Object> map){
+    public R data(Map<String, Object> map) {
         this.setData(map);
         return this;
     }

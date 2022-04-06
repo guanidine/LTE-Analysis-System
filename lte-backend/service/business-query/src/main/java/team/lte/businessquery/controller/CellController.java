@@ -1,6 +1,5 @@
 package team.lte.businessquery.controller;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -43,11 +42,8 @@ public class CellController {
 
     @Operation(summary = "小区配置信息查询")
     @GetMapping("{page}/{limit}")
-    public R listCells(
-            @ApiParam(value = "当前页码", required = true)
-            @PathVariable long page,
-            @ApiParam(value = "每页记录数", required = true)
-            @PathVariable long limit) {
+    public R listCells(@ApiParam(value = "当前页码", required = true) @PathVariable long page,
+        @ApiParam(value = "每页记录数", required = true) @PathVariable long limit) {
 
         Page<Cell> pageParam = new Page<>(page, limit);
 
@@ -60,13 +56,9 @@ public class CellController {
 
     @Operation(summary = "小区配置信息条件查询")
     @PostMapping("condition/{page}/{limit}")
-    public R listConditionCells(
-            @ApiParam(value = "当前页码", required = true)
-            @PathVariable long page,
-            @ApiParam(value = "每页记录数", required = true)
-            @PathVariable long limit,
-            @ApiParam(value = "查询条件")
-            @RequestBody(required = false) CellQuery cellQuery) {
+    public R listConditionCells(@ApiParam(value = "当前页码", required = true) @PathVariable long page,
+        @ApiParam(value = "每页记录数", required = true) @PathVariable long limit,
+        @ApiParam(value = "查询条件") @RequestBody(required = false) CellQuery cellQuery) {
 
         Page<Cell> pageParam = new Page<>(page, limit);
         LambdaQueryWrapper<Cell> wrapper = new LambdaQueryWrapper<>();
@@ -123,9 +115,7 @@ public class CellController {
     @PostMapping(value = "upload", headers = "content-type=multipart/form-data")
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
-                            @ApiParam(value = "上传文件", required = true)
-                            @RequestPart("file") MultipartFile file) {
+        @ApiParam(value = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
         ExcelServiceBuilder.build().uploadFile(response, file, Cell.class, cellService, cellMapper);
     }
 }
-

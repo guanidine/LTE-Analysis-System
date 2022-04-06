@@ -29,9 +29,7 @@ public class TableController {
 
     @Operation(summary = "获取目标数据表的结构")
     @GetMapping("{table}")
-    public R listTableColumns(
-            @ApiParam(value = "待查数据表名", required = true)
-            @PathVariable String table) {
+    public R listTableColumns(@ApiParam(value = "待查数据表名", required = true) @PathVariable String table) {
 
         List<Map<String, String>> list = tableMapper.listTableColumns(table);
         return R.ok().data("list", list);

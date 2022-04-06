@@ -51,7 +51,7 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
     private int error = 0;
 
     private ExcelListener(BaseCheckService<T> baseCheckService, BaseBatchMapper<T> baseBatchMapper, Class<T> clazz,
-                          ExcelWriter excelWriter) {
+        ExcelWriter excelWriter) {
         this.baseCheckService = baseCheckService;
         this.baseBatchMapper = baseBatchMapper;
         this.clazz = clazz;
@@ -60,7 +60,7 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
     }
 
     public static <T> ExcelListener<T> build(BaseCheckService<T> baseCheckService, BaseBatchMapper<T> baseBatchMapper,
-                                             Class<T> clazz, ExcelWriter excelWriter) {
+        Class<T> clazz, ExcelWriter excelWriter) {
         return new ExcelListener<>(baseCheckService, baseBatchMapper, clazz, excelWriter);
     }
 
@@ -149,7 +149,6 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
         }
         return result;
     }
-
 
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {

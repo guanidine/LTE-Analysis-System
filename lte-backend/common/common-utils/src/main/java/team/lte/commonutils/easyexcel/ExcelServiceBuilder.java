@@ -31,8 +31,7 @@ public class ExcelServiceBuilder {
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
     private int groupNum = 1000;
 
-    private ExcelServiceBuilder() {
-    }
+    private ExcelServiceBuilder() {}
 
     public static ExcelServiceBuilder build() {
         return new ExcelServiceBuilder();
@@ -71,10 +70,7 @@ public class ExcelServiceBuilder {
             long count = service.count();
 
             if (count <= noPagingLimit) {
-                EasyExcelFactory
-                        .write(response.getOutputStream(), clazz)
-                        .sheet()
-                        .doWrite(service.list());
+                EasyExcelFactory.write(response.getOutputStream(), clazz).sheet().doWrite(service.list());
             } else {
                 excelWriter = EasyExcelFactory.write(response.getOutputStream(), clazz).build();
                 WriteSheet writeSheet = EasyExcelFactory.writerSheet("tbCell").build();
@@ -100,7 +96,7 @@ public class ExcelServiceBuilder {
     }
 
     public <T> void uploadFile(HttpServletResponse response, MultipartFile file, Class<T> clazz,
-                               BaseCheckService<T> service, BaseBatchMapper<T> mapper) {
+        BaseCheckService<T> service, BaseBatchMapper<T> mapper) {
 
         ExcelListener<T> excelListener = null;
         ExcelWriter excelWriter = null;

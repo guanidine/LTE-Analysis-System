@@ -23,25 +23,18 @@ public class SwaggerConfig implements WebMvcConfigurer {
     @Bean
     public Docket createRestApi() {
 
-        return new Docket(DocumentationType.OAS_30)
-                .enable(isEnabled)
-                .apiInfo(webApiInfo())
-                .select()
-                // 请不要用@ApiOperation，并不扫描它
-                .apis(RequestHandlerSelectors.withMethodAnnotation(Operation.class))
-                // .apis(RequestHandlerSelectors.basePackage("team.lte"))
-                .build();
+        return new Docket(DocumentationType.OAS_30).enable(isEnabled).apiInfo(webApiInfo()).select()
+            // 请不要用@ApiOperation，并不扫描它
+            .apis(RequestHandlerSelectors.withMethodAnnotation(Operation.class))
+            // .apis(RequestHandlerSelectors.basePackage("team.lte"))
+            .build();
 
     }
 
     private ApiInfo webApiInfo() {
 
-        return new ApiInfoBuilder()
-                .title("网站-LTE 网络干扰分析系统API文档")
-                .description("本文档描述了LTE 网络干扰分析系统微服务接口定义")
-                .contact(new Contact("彭笑凯，刘嘉伟，张乐天", "https://www.bupt.edu.cn/", ""))
-                .version("1.0")
-                .build();
+        return new ApiInfoBuilder().title("网站-LTE 网络干扰分析系统API文档").description("本文档描述了LTE 网络干扰分析系统微服务接口定义")
+            .contact(new Contact("彭笑凯，刘嘉伟，张乐天", "https://www.bupt.edu.cn/", "")).version("1.0").build();
     }
 
 }
