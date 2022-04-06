@@ -35,6 +35,7 @@
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <div slot="tip" class="el-upload__tip">只能上传xlsx格式文件</div>
     </el-upload>
+    <!-- TODO: 上传一个附件后，重新上传应当可以覆盖原来预备上传的附件 -->
 
     <div slot="footer" class="dialog-footer">
       <el-link :href="tableName+'模板.xlsx'" :disabled="downloadBtnDisabled">
@@ -86,7 +87,7 @@ export default {
     }
   },
   created() {
-    this.getTables()
+    this.listTables()
   },
   methods: {
     // ============================================= 上传 =============================================
@@ -170,8 +171,8 @@ export default {
       })
     },
     // ============================================= 选择操作数据表 =============================================
-    getTables() {
-      dataApi.getTables()
+    listTables() {
+      dataApi.listTables()
         .then(response => {
           this.tableList = response.data.list
         })

@@ -21,13 +21,13 @@ import java.util.List;
 public class CellServiceImpl extends ServiceImpl<CellMapper, Cell> implements CellService {
 
     @Override
-    public List<String> getSectors() {
-        return this.getBaseMapper().getSectors();
+    public List<String> listSectors() {
+        return this.getBaseMapper().listSectors();
     }
 
     @Override
-    public List<CellEnodeb> getEnodebs() {
-        return this.getBaseMapper().getEnodebs();
+    public List<CellEnodeb> listEnodebs() {
+        return this.getBaseMapper().listEnodebs();
     }
 
     @Override

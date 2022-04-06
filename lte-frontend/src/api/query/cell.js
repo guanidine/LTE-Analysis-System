@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export default {
 
-  getCellList(page, limit, cellQuery) {
+  listCells(page, limit, cellQuery) {
     return request({
       url: `/business-query/cell/condition/${page}/${limit}`,
       method: 'post',
@@ -10,14 +10,14 @@ export default {
     })
   },
 
-  getCellSectors() {
+  listSectors() {
     return request({
       url: '/business-query/cell/all-sector',
       method: 'get'
     })
   },
 
-  getCellEnodebs() {
+  listEnodebs() {
     return request({
       url: '/business-query/cell/all-enodeb',
       method: 'get'

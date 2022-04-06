@@ -16,8 +16,8 @@ import java.util.List;
  */
 public interface CellService extends BaseCheckService<Cell> {
 
-    List<String> getSectors();
+    List<String> listSectors();
 
-    List<CellEnodeb> getEnodebs();
+    List<CellEnodeb> listEnodebs();
 
 }

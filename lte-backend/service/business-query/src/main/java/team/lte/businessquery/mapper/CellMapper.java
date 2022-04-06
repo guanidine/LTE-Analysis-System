@@ -16,8 +16,8 @@ import java.util.List;
  */
 public interface CellMapper extends BaseBatchMapper<Cell> {
 
-    List<String> getSectors();
+    List<String> listSectors();
 
-    List<CellEnodeb> getEnodebs();
+    List<CellEnodeb> listEnodebs();
 
 }

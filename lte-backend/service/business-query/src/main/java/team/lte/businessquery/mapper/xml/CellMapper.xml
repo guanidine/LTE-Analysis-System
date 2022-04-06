@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.lte.businessquery.mapper.CellMapper">
 
-    <select id="getSectors" resultType="java.lang.String">
+    <select id="listSectors" resultType="java.lang.String">
         select distinct sector_name
         from tbcell
         order by sector_name;
     </select>
 
-    <select id="getEnodebs" resultType="team.lte.businessquery.entity.vo.CellEnodeb">
+    <select id="listEnodebs" resultType="team.lte.businessquery.entity.vo.CellEnodeb">
         select distinct enodebid, enodeb_name
         from tbcell
         order by enodebid;

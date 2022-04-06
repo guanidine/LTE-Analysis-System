@@ -62,7 +62,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-button type="primary" icon="el-icon-search" @click="getList()">查询</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="listCells()">查询</el-button>
       <el-button type="default" @click="resetData()">清空</el-button>
     </el-form>
 
@@ -123,7 +123,7 @@
       :total="total"
       style="padding: 30px 0; text-align: center;"
       layout="total, prev, pager, next, jumper"
-      @current-change="getList"
+      @current-change="listCells"
     />
 
   </div>
@@ -158,15 +158,15 @@ export default {
     }
   },
   created() {
-    this.getList()
-    this.getCellSectorList()
-    this.getCellEnodebList()
+    this.listCells()
+    this.listSectors()
+    this.listEnodebs()
   },
   // TODO: 修bug的代码实在是太丑了，有待改进
   methods: {
-    getList(page = 1) {
+    listCells(page = 1) {
       this.page = page
-      cellApi.getCellList(this.page, this.limit, this.cellQuery)
+      cellApi.listCells(this.page, this.limit, this.cellQuery)
         .then(response => {
           this.list = response.data.list
           this.total = response.data.total
@@ -174,25 +174,25 @@ export default {
     },
     resetData() {
       this.cellQuery = {}
-      this.getList()
-      this.getCellSectorList()
-      this.getCellEnodebList()
+      this.listCells()
+      this.listSectors()
+      this.listEnodebs()
     },
-    getCellSectorList() {
-      cellApi.getCellSectors()
+    listSectors() {
+      cellApi.listSectors()
         .then(response => {
           this.sectorList = response.data.list
           this.renderSectorList = this.sectorList.slice(0, 100)
         })
     },
-    getCellEnodebList() {
-      cellApi.getCellEnodebs()
+    listEnodebs() {
+      cellApi.listEnodebs()
         .then(response => {
           this.enodebList = response.data.list
           this.renderEnodebList = this.enodebList.slice(0, 100)
         })
     },
-    // FIXME: '-'无法匹配
+    // FIXME: '-'无法匹配（似乎觉得没这个bug了，待观察）
     filterMethod(val, object = 'sectorName') {
       if (object === 'sectorName') {
         this.renderSectorList = this.sectorList.filter((item) => {

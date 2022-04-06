@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public interface TableMapper {
 
-    List<Map<String,String>> getTables();
+    List<Map<String,String>> listTables();
 
-    List<Map<String,String >> getTableColumns(String tableName);
+    List<Map<String,String >> listTableColumns(String tableName);
 
 }

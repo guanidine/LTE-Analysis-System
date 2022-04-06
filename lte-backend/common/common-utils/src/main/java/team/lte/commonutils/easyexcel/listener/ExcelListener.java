@@ -120,14 +120,8 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
         if (clazz != null) {
             try {
                 Map<Integer, String> indexNameMap = getIndexNameMap(clazz);
-                Set<Integer> keySet = indexNameMap.keySet();
-                for (Integer key : keySet) {
-                    if (StringUtils.isEmpty(headMap.get(key))) {
-                        throw new ExcelAnalysisException("解析Excel出错，请传入正确格式的Excel;");
-                    }
-                    if (!headMap.get(key).equals(indexNameMap.get(key))) {
-                        throw new ExcelAnalysisException("解析Excel出错，请传入正确格式的Excel;");
-                    }
+                if (!headMap.equals(indexNameMap)) {
+                    throw new ExcelAnalysisException("解析Excel出错，请传入正确格式的Excel;");
                 }
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();

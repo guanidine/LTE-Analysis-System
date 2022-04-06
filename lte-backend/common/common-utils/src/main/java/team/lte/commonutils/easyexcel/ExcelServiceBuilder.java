@@ -117,7 +117,9 @@ public class ExcelServiceBuilder {
             excelListener = ExcelListener.build(service, mapper, clazz, excelWriter).groupNum(groupNum);
             EasyExcelFactory.read(file.getInputStream(), clazz, excelListener).sheet().doRead();
             response.setHeader("Error", String.valueOf(excelListener.getError()));
-            excelWriter.finish();
+            if (excelWriter != null) {
+                excelWriter.finish();
+            }
             log.info("EasyExcel----->[ Upload ] Finish!");
         } catch (Exception e) {
             if (excelListener != null) {
@@ -126,6 +128,7 @@ public class ExcelServiceBuilder {
             if (excelWriter != null) {
                 excelWriter.finish();
             }
+            log.info("EasyExcel----->[ Upload ] Finish with error!");
             e.printStackTrace();
         }
     }

@@ -87,7 +87,7 @@ export const constantRoutes = [
       {
         path: 'import',
         name: '数据管理',
-        component: () => import('@/views/manage/import'),
+        component: () => import('@/views/manage'),
         meta: { title: '数据管理', icon: 'table' }
       }
     ]

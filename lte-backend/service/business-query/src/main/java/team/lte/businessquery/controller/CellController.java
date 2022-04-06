@@ -43,7 +43,7 @@ public class CellController {
 
     @Operation(summary = "小区配置信息查询")
     @GetMapping("{page}/{limit}")
-    public R getPageList(
+    public R listCells(
             @ApiParam(value = "当前页码", required = true)
             @PathVariable long page,
             @ApiParam(value = "每页记录数", required = true)
@@ -60,7 +60,7 @@ public class CellController {
 
     @Operation(summary = "小区配置信息条件查询")
     @PostMapping("condition/{page}/{limit}")
-    public R getPageListConditioned(
+    public R listConditionCells(
             @ApiParam(value = "当前页码", required = true)
             @PathVariable long page,
             @ApiParam(value = "每页记录数", required = true)
@@ -97,18 +97,18 @@ public class CellController {
 
     @Operation(summary = "所有小区列表")
     @GetMapping("all-sector")
-    public R getSectors() {
+    public R listSectors() {
 
-        List<String> list = cellService.getSectors();
+        List<String> list = cellService.listSectors();
 
         return R.ok().data("list", list);
     }
 
     @Operation(summary = "所有基站列表")
     @GetMapping("all-enodeb")
-    public R getEnodebs() {
+    public R listEnodebs() {
 
-        List<CellEnodeb> list = cellService.getEnodebs();
+        List<CellEnodeb> list = cellService.listEnodebs();
 
         return R.ok().data("list", list);
     }

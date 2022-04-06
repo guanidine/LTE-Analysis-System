@@ -22,18 +22,18 @@ public class TableController {
 
     @Operation(summary = "获取所有数据表的表名")
     @GetMapping("")
-    public R getTables() {
-        List<Map<String, String>> list = tableMapper.getTables();
+    public R listTables() {
+        List<Map<String, String>> list = tableMapper.listTables();
         return R.ok().data("list", list);
     }
 
     @Operation(summary = "获取目标数据表的结构")
     @GetMapping("{table}")
-    public R getTableColumns(
+    public R listTableColumns(
             @ApiParam(value = "待查数据表名", required = true)
             @PathVariable String table) {
 
-        List<Map<String, String>> list = tableMapper.getTableColumns(table);
+        List<Map<String, String>> list = tableMapper.listTableColumns(table);
         return R.ok().data("list", list);
     }
 

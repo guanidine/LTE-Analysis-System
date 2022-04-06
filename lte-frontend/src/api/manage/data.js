@@ -13,7 +13,7 @@ export default {
     link.click()
   },
 
-  getTables() {
+  listTables() {
     return request({
       url: '/database/info',
       method: 'get'
