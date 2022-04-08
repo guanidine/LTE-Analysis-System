@@ -57,6 +57,7 @@ public class ExcelServiceBuilder {
 
     public <T> void downloadFile(HttpServletResponse response, Class<T> clazz, IService<T> service) {
 
+        // FIXME: 内存泄漏
         ExcelWriter excelWriter = null;
         try {
             String filename = URLEncoder.encode(String.valueOf(System.currentTimeMillis()), "UTF-8");
@@ -77,7 +78,7 @@ public class ExcelServiceBuilder {
 
                 long num = (count / pageNum) + 1;
                 for (long i = 1; i <= num; i++) {
-                    Page<T> page = new Page<>(i, pageNum);
+                    Page<T> page = new Page<>(i, pageNum, false);
                     IPage<T> iPage = service.page(page);
                     List<T> list = iPage.getRecords();
                     if (!list.isEmpty()) {

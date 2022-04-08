@@ -1,6 +1,6 @@
 package team.lte.businessquery.service;
 
-import team.lte.businessquery.entity.Cell;
+import team.lte.businessquery.entity.po.Cell;
 import team.lte.businessquery.entity.vo.CellEnodeb;
 import team.lte.commonutils.easyexcel.service.BaseCheckService;
 

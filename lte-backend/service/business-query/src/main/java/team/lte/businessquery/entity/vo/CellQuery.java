@@ -1,27 +1,26 @@
 package team.lte.businessquery.entity.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
 
-@ApiModel(value = "Cell查询对象", description = "小区配置信息查询条件")
 @Data
+@Schema(description = "小区配置信息查询条件")
 public class CellQuery implements Serializable {
 
     public static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "小区ID")
+    @Schema(description = "小区ID")
     private String sectorId;
 
-    @ApiModelProperty(value = "小区名称")
+    @Schema(description = "小区名称")
     private String sectorName;
 
-    @ApiModelProperty("小区所属基站标识")
+    @Schema(description = "小区所属基站标识")
     private Integer enodebid;
 
-    @ApiModelProperty("基站名称")
+    @Schema(description = "基站名称")
     private String enodebName;
 
 }

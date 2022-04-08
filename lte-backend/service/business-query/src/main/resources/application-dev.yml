@@ -19,11 +19,6 @@ spring:
 mybatis-plus:
   mapper-locations: team/lte/businessquery/mapper/xml/*.xml
 
-springfox:
-  documentation:
-    # 生产环境应改为false，关闭Swagger
-    enabled: true
-
 logging:
   level:
     root: info

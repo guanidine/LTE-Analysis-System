@@ -2,13 +2,13 @@ package team.lte.businessquery.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import team.lte.businessquery.entity.Cell;
+import team.lte.businessquery.entity.po.Cell;
 import team.lte.businessquery.entity.vo.CellEnodeb;
 import team.lte.businessquery.entity.vo.CellQuery;
 import team.lte.businessquery.mapper.CellMapper;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author lte
  * @since 2022-03-10
  */
-@Api(tags = "小区配置信息管理")
+@Tag(name = "小区配置信息管理")
 @CrossOrigin
 @RestController
 @RequestMapping("/business-query/cell")
@@ -42,8 +42,8 @@ public class CellController {
 
     @Operation(summary = "小区配置信息查询")
     @GetMapping("{page}/{limit}")
-    public R listCells(@ApiParam(value = "当前页码", required = true) @PathVariable long page,
-        @ApiParam(value = "每页记录数", required = true) @PathVariable long limit) {
+    public R listCells(@Parameter(description = "当前页码", required = true) @PathVariable long page,
+        @Parameter(description = "每页记录数", required = true) @PathVariable long limit) {
 
         Page<Cell> pageParam = new Page<>(page, limit);
 
@@ -56,9 +56,9 @@ public class CellController {
 
     @Operation(summary = "小区配置信息条件查询")
     @PostMapping("condition/{page}/{limit}")
-    public R listConditionCells(@ApiParam(value = "当前页码", required = true) @PathVariable long page,
-        @ApiParam(value = "每页记录数", required = true) @PathVariable long limit,
-        @ApiParam(value = "查询条件") @RequestBody(required = false) CellQuery cellQuery) {
+    public R listConditionCells(@Parameter(description = "当前页码", required = true) @PathVariable long page,
+        @Parameter(description = "每页记录数", required = true) @PathVariable long limit,
+        @Parameter(description = "查询条件") @RequestBody(required = false) CellQuery cellQuery) {
 
         Page<Cell> pageParam = new Page<>(page, limit);
         LambdaQueryWrapper<Cell> wrapper = new LambdaQueryWrapper<>();
@@ -115,7 +115,7 @@ public class CellController {
     @PostMapping(value = "upload", headers = "content-type=multipart/form-data")
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
-        @ApiParam(value = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
+        @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
         ExcelServiceBuilder.build().uploadFile(response, file, Cell.class, cellService, cellMapper);
     }
 }

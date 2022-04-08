@@ -2,7 +2,7 @@ package team.lte.businessquery.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import team.lte.businessquery.entity.Cell;
+import team.lte.businessquery.entity.po.Cell;
 import team.lte.businessquery.entity.vo.CellEnodeb;
 import team.lte.businessquery.mapper.CellMapper;
 import team.lte.businessquery.service.CellService;

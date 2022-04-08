@@ -1,11 +1,11 @@
 package team.lte.businessquery.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import team.lte.commonutils.result.R;
 
-@Api(tags = "用户登录")
+@Tag(name = "用户登录")
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
@@ -23,5 +23,4 @@ public class LoginController {
         return R.ok().data("roles", "[admin]").data("name", "admin").data("avatar",
             "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
     }
-
 }

@@ -1,27 +1,28 @@
 package team.lte.commonutils.result;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * 统一返回结果。
  */
 @Data
+@Schema(description = "统一返回结果")
 public class R {
 
-    @ApiModelProperty(value = "标识码，true表示成功，false表示失败")
+    @Schema(description = "标识码，true表示成功，false表示失败")
     private Boolean success;
 
-    @ApiModelProperty(value = "返回码，20000表示成功，20001表示失败")
+    @Schema(description = "返回码，20000表示成功，20001表示失败")
     private Integer code;
 
-    @ApiModelProperty(value = "提示信息，供报错时使用")
+    @Schema(description = "提示信息，供报错时使用")
     private String message;
 
-    @ApiModelProperty(value = "返回数据，使用Map<String, Object>返回key-value键值对")
+    @Schema(description = "返回数据，使用Map<String, Object>返回key-value键值对")
     private Map<String, Object> data = new HashMap<>();
 
     private R() {}
