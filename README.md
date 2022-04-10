@@ -187,6 +187,13 @@ tbCell，并存入数据库表 tbCell；
   项目整合了Swagger3.0用于测试Springboot中的各个接口，接口返回全部统一使用自定义类型 [`R`](lte-backend/common/common-utils/src/main/java/team/lte/commonutils/result/R.java)。目前项目中无修改数据库数据的接口，放心测试。
 
   ![image-20220311151032576](images/run/back2.png)
+  
+* 性能调优
+
+  // TODO: 数据导入导出性能调优（TBPRB表）
+
+  ![image-20220410093631946](images/run/performance.png)
+
 
 ### 前端
 

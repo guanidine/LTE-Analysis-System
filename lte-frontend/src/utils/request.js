@@ -49,7 +49,7 @@ service.interceptors.response.use(
     if (res.code !== 20000) {
       Message({
         message: res.message || 'Error',
-        type: 'error',
+        target: 'error',
         duration: 5 * 1000
       })
 
@@ -59,7 +59,7 @@ service.interceptors.response.use(
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
           cancelButtonText: 'Cancel',
-          type: 'warning'
+          target: 'warning'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {
             location.reload()
@@ -75,7 +75,7 @@ service.interceptors.response.use(
     console.log('err' + error) // for debug
     Message({
       message: error.message,
-      type: 'error',
+      target: 'error',
       duration: 5 * 1000
     })
     return Promise.reject(error)

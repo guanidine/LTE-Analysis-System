@@ -73,6 +73,18 @@ export const constantRoutes = [
         name: '小区配置信息',
         component: () => import('@/views/query/cell'),
         meta: { title: '小区配置信息', icon: 'table' }
+      },
+      {
+        path: 'kpi',
+        name: 'KPI指标信息查询',
+        component: () => import('@/views/query/kpi'),
+        meta: { title: 'KPI指标信息查询', icon: 'dashboard' }
+      },
+      {
+        path: 'prb',
+        name: 'PRB干扰数据查询',
+        component: () => import('@/views/query/prb'),
+        meta: { title: 'PRB干扰数据查询', icon: 'dashboard' }
       }
     ]
   },

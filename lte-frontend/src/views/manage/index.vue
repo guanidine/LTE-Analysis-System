@@ -100,17 +100,17 @@ export default {
     fileUploadSuccess(error) {
       if (error === '0') {
         this.$message({
-          type: 'success',
+          target: 'success',
           message: '数据上传成功'
         })
       } else if (error === '-1') {
         this.$message({
-          type: 'error',
+          target: 'error',
           message: '解析Excel出错，请传入正确格式的Excel'
         })
       } else {
         this.$message({
-          type: 'success',
+          target: 'success',
           message: `${error}行数据导入出错，下载错误日志查看原因！`
         })
       }
@@ -120,7 +120,7 @@ export default {
     },
     fileUploadError() {
       this.$message({
-        type: 'error',
+        target: 'error',
         message: '数据上传失败'
       })
     },
@@ -149,7 +149,6 @@ export default {
       axios.post(url, formData, {
         responseType: 'arraybuffer'
       }).then(response => {
-        console.log(response)
         if (response.headers['error'] !== '0' && response.headers['error'] !== '-1') {
           dataApi.download(response, `${this.tableName}-error`)
         }
