@@ -21,11 +21,12 @@ import java.util.*;
 /**
  * EasyExcel数据导入监听器。
  *
- * @param <T> 数据表对应POJO类
+ * @param <P> 数据表对应PO类
+ * @param <D> 传入数据对应DTO类
  */
 @Slf4j
 @Getter
-public class ExcelListener<T> extends AnalysisEventListener<T> {
+public class ExcelListener<P, D> extends AnalysisEventListener<D> {
 
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
     private int groupNum = 1000;
@@ -33,62 +34,65 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
     /** 错误数据集 */
     private final List<ErrorDTO> errList = new ArrayList<>();
 
-    /** 等待校验的数据集 */
-    private final List<T> successList = new ArrayList<>();
+    /** 正确数据集 */
+    private final List<P> successList = new ArrayList<>();
 
     /** Service类 */
-    private final BaseCheckService<T> baseCheckService;
+    private final BaseCheckService<P> baseCheckService;
 
     /** Mapper类 */
-    private final BaseBatchMapper<T> baseBatchMapper;
+    private final BaseBatchMapper<P> baseBatchMapper;
 
-    /** 数据表对应POJO类的反射 */
-    private final Class<T> clazz;
+    /** PO类和DTO类 */
+    private final Class<P> pClass;
+    private final Class<D> dClass;
 
     private final ExcelWriter excelWriter;
     private final WriteSheet writeSheet;
     /** 出错的数据行数 */
     private int error = 0;
 
-    private ExcelListener(BaseCheckService<T> baseCheckService, BaseBatchMapper<T> baseBatchMapper, Class<T> clazz,
-        ExcelWriter excelWriter) {
+    private ExcelListener(BaseCheckService<P> baseCheckService, BaseBatchMapper<P> baseBatchMapper, Class<P> pClass,
+        Class<D> dClass, ExcelWriter excelWriter) {
         this.baseCheckService = baseCheckService;
         this.baseBatchMapper = baseBatchMapper;
-        this.clazz = clazz;
+        this.pClass = pClass;
+        this.dClass = dClass;
         this.excelWriter = excelWriter;
         writeSheet = EasyExcelFactory.writerSheet().build();
     }
 
-    public static <T> ExcelListener<T> build(BaseCheckService<T> baseCheckService, BaseBatchMapper<T> baseBatchMapper,
-        Class<T> clazz, ExcelWriter excelWriter) {
-        return new ExcelListener<>(baseCheckService, baseBatchMapper, clazz, excelWriter);
+    public static <T, E> ExcelListener<T, E> build(BaseCheckService<T> baseCheckService,
+        BaseBatchMapper<T> baseBatchMapper, Class<T> tClass, Class<E> eClass, ExcelWriter excelWriter) {
+        return new ExcelListener<>(baseCheckService, baseBatchMapper, tClass, eClass, excelWriter);
     }
 
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
-    public ExcelListener<T> groupNum(int groupNum) {
+    public ExcelListener<P, D> groupNum(int groupNum) {
         this.groupNum = groupNum;
         return this;
     }
 
     @Override
-    public void invoke(T t, AnalysisContext analysisContext) {
+    public void invoke(D d, AnalysisContext analysisContext) {
         String errMsg;
         try {
-            errMsg = PropertyCheckService.check(t);
-        } catch (NoSuchFieldException e) {
+            errMsg = PropertyCheckService.check(d);
+        } catch (NoSuchFieldException exception) {
             errMsg = "解析数据出错";
-            e.printStackTrace();
+            exception.printStackTrace();
         }
         if (StringUtils.isNotEmpty(errMsg)) {
             // 属性校验出错
             errList.add(new ErrorDTO(analysisContext.readRowHolder().getRowIndex(), errMsg));
         } else {
-            errMsg = baseCheckService.requirementCheck(t);
+            P p = baseCheckService.transfer(d, pClass, dClass);
+            errMsg = baseCheckService.requirementCheck(p);
             if (StringUtils.isNotEmpty(errMsg)) {
                 // 业务校验出错
                 errList.add(new ErrorDTO(analysisContext.readRowHolder().getRowIndex(), errMsg));
             } else {
-                successList.add(t);
+                successList.add(p);
             }
         }
 
@@ -117,9 +121,9 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         super.invokeHeadMap(headMap, context);
-        if (clazz != null) {
+        if (dClass != null) {
             try {
-                Map<Integer, String> indexNameMap = getIndexNameMap(clazz);
+                Map<Integer, String> indexNameMap = getIndexNameMap(dClass);
                 if (!headMap.equals(indexNameMap)) {
                     throw new ExcelAnalysisException("解析Excel出错，请传入正确格式的Excel;");
                 }
@@ -129,12 +133,12 @@ public class ExcelListener<T> extends AnalysisEventListener<T> {
         }
     }
 
-    public Map<Integer, String> getIndexNameMap(Class<T> clazz) throws NoSuchFieldException {
+    public Map<Integer, String> getIndexNameMap(Class<D> dClass) throws NoSuchFieldException {
         Map<Integer, String> result = new HashMap<>();
         Field field;
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = dClass.getDeclaredFields();
         for (Field item : fields) {
-            field = clazz.getDeclaredField(item.getName());
+            field = dClass.getDeclaredField(item.getName());
             field.setAccessible(true);
             ExcelProperty excelProperty = field.getAnnotation(ExcelProperty.class);
             if (excelProperty != null) {

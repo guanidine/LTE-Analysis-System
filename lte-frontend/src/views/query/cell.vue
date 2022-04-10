@@ -15,6 +15,7 @@
           filterable
           clearable
           placeholder="小区名称"
+          :filter-method="filterMethod"
           @change="onChange($event,'sectorName')"
           @blur="onBlur($event,'sectorName')"
           @clear="onClear('sectorName')"
@@ -130,6 +131,30 @@
 </template>
 
 <script>
+
+/**
+ * _ooOoo_
+ * o8888888o
+ * 88" . "88
+ * (| -_- |)
+ *  O\ = /O
+ * ___/`---'\____
+ * .   ' \\| |// `.
+ * / \\||| : |||// \
+ * / _||||| -:- |||||- \
+ * | | \\\ - /// | |
+ * | \_| ''\---/'' | |
+ * \ .-\__ `-` ___/-. /
+ * ___`. .' /--.--\ `. . __
+ * ."" '< `.___\_<|>_/___.' >'"".
+ * | | : `- \`.;`\ _ /`;.`/ - ` : | |
+ * \ \ `-. \_ __\ /__ _/ .-` / /
+ * ======`-.____`-.___\_____/___.-`____.-'======
+ * `=---='
+ * .............................................
+ *            佛曰：bug泛滥，我已瘫痪！
+ */
+
 import cellApi from '@/api/query/cell'
 
 export default {
@@ -162,7 +187,6 @@ export default {
     this.listSectors()
     this.listEnodebs()
   },
-  // TODO: 修bug的代码实在是太丑了，有待改进
   methods: {
     listCells(page = 1) {
       this.page = page
@@ -192,7 +216,6 @@ export default {
           this.renderEnodebList = this.enodebList.slice(0, 100)
         })
     },
-    // FIXME: '-'无法匹配（似乎觉得没这个bug了，待观察）
     filterMethod(val, object = 'sectorName') {
       if (object === 'sectorName') {
         this.renderSectorList = this.sectorList.filter((item) => {
@@ -220,6 +243,7 @@ export default {
       if (val.target !== '') {
         if (object === 'sectorName') {
           this.cellQuery.sectorName = val.target.value
+          this.filterMethod(val.target.value, 'sectorName')
         } else if (object === 'enodebName') {
           this.cellQuery.enodebName = val.target.value
         } else if (object === 'enodebid') {
@@ -230,6 +254,7 @@ export default {
     onClear(object = 'sectorName') {
       if (object === 'sectorName') {
         this.cellQuery.sectorName = ''
+        this.filterMethod('', 'sectorName')
       } else if (object === 'enodebName') {
         this.cellQuery.enodebName = ''
         this.cellQuery.enodebid = ''

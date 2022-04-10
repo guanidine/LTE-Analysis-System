@@ -22,7 +22,7 @@ public class QueryUtils {
      *
      * @param field 查询属性名
      * @param clazz 实体类class
-     * @param <T>   查询实体类
+     * @param <T> 查询实体类
      * @return 符合蛇形命名法的数据表字段名
      * @throws NoSuchFieldException 反射出错，实体类内可能无 {@code description} 为 {@code field} 的成员变量
      */

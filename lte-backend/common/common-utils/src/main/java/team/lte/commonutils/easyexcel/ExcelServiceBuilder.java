@@ -16,7 +16,9 @@ import team.lte.commonutils.easyexcel.service.BaseCheckService;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Excel数据导入导出操作。
@@ -30,6 +32,8 @@ public class ExcelServiceBuilder {
     private int pageNum = 500;
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
     private int groupNum = 1000;
+    /** 不需要导出的字段 */
+    private Set<String> excludeColumnFiledNames = new HashSet<>();
 
     private ExcelServiceBuilder() {}
 
@@ -55,9 +59,23 @@ public class ExcelServiceBuilder {
         return this;
     }
 
-    public <T> void downloadFile(HttpServletResponse response, Class<T> clazz, IService<T> service) {
+    /** 不需要导出的字段 */
+    public ExcelServiceBuilder excelServiceBuilder(Set<String> excludeColumnFiledNames) {
+        this.excludeColumnFiledNames = excludeColumnFiledNames;
+        return this;
+    }
 
-        // FIXME: 内存泄漏
+    /**
+     * 将数据表中的数据下载到Excel表中
+     *
+     * @param response HTTP Response
+     * @param dClass 数据表导出时参照的类
+     * @param service 数据表对应Service类
+     * @param <P> 数据表对应PO类
+     * @param <D> 数据表导出时参照的DTO类，决定了导出时的表头、列顺序等
+     */
+    public <P, D> void downloadFile(HttpServletResponse response, Class<D> dClass, IService<P> service) {
+
         ExcelWriter excelWriter = null;
         try {
             String filename = URLEncoder.encode(String.valueOf(System.currentTimeMillis()), "UTF-8");
@@ -71,16 +89,18 @@ public class ExcelServiceBuilder {
             long count = service.count();
 
             if (count <= noPagingLimit) {
-                EasyExcelFactory.write(response.getOutputStream(), clazz).sheet().doWrite(service.list());
+                EasyExcelFactory.write(response.getOutputStream(), dClass)
+                    .excludeColumnFiledNames(excludeColumnFiledNames).sheet("sheet1").doWrite(service.list());
             } else {
-                excelWriter = EasyExcelFactory.write(response.getOutputStream(), clazz).build();
-                WriteSheet writeSheet = EasyExcelFactory.writerSheet("tbCell").build();
+                excelWriter = EasyExcelFactory.write(response.getOutputStream(), dClass)
+                    .excludeColumnFiledNames(excludeColumnFiledNames).build();
+                WriteSheet writeSheet = EasyExcelFactory.writerSheet("sheet1").build();
 
                 long num = (count / pageNum) + 1;
                 for (long i = 1; i <= num; i++) {
-                    Page<T> page = new Page<>(i, pageNum, false);
-                    IPage<T> iPage = service.page(page);
-                    List<T> list = iPage.getRecords();
+                    Page<P> page = new Page<>(i, pageNum, false);
+                    IPage<P> iPage = service.page(page);
+                    List<P> list = iPage.getRecords();
                     if (!list.isEmpty()) {
                         excelWriter.write(list, writeSheet);
                     }
@@ -96,10 +116,22 @@ public class ExcelServiceBuilder {
         }
     }
 
-    public <T> void uploadFile(HttpServletResponse response, MultipartFile file, Class<T> clazz,
-        BaseCheckService<T> service, BaseBatchMapper<T> mapper) {
+    /**
+     * 将Excel中的数据导入到数据表中
+     *
+     * @param response HTTP Response
+     * @param file 传入的Excel文件
+     * @param pClass 数据表对应PO类
+     * @param dClass Excel表对应的DTO类
+     * @param service 数据表对应的Service类
+     * @param mapper 数据表对应的Mapper类
+     * @param <P> 数据表对应PO类
+     * @param <D> Excel导入时参照的的DTO类，Excel包括哪些字段，字段是否有校验均由该DTO类设置
+     */
+    public <P, D> void uploadFile(HttpServletResponse response, MultipartFile file, Class<P> pClass, Class<D> dClass,
+        BaseCheckService<P> service, BaseBatchMapper<P> mapper) {
 
-        ExcelListener<T> excelListener = null;
+        ExcelListener<P, D> excelListener = null;
         ExcelWriter excelWriter = null;
         try {
             String filename = URLEncoder.encode(String.valueOf(System.currentTimeMillis()), "UTF-8");
@@ -111,22 +143,24 @@ public class ExcelServiceBuilder {
 
             excelWriter = EasyExcelFactory.write(response.getOutputStream(), ErrorDTO.class).build();
 
-            excelListener = ExcelListener.build(service, mapper, clazz, excelWriter).groupNum(groupNum);
-            EasyExcelFactory.read(file.getInputStream(), clazz, excelListener).sheet().doRead();
+            excelListener = ExcelListener.build(service, mapper, pClass, dClass, excelWriter).groupNum(groupNum);
+            EasyExcelFactory.read(file.getInputStream(), dClass, excelListener).sheet().doRead();
             response.setHeader("Error", String.valueOf(excelListener.getError()));
-            if (excelWriter != null) {
-                excelWriter.finish();
-            }
             log.info("EasyExcel----->[ Upload ] Finish!");
         } catch (Exception e) {
             if (excelListener != null) {
-                response.setHeader("Error", String.valueOf(excelListener.getError()));
-            }
-            if (excelWriter != null) {
-                excelWriter.finish();
+                if (excelListener.getError() == 0) {
+                    response.setHeader("Error", "-2");
+                } else {
+                    response.setHeader("Error", String.valueOf(excelListener.getError()));
+                }
             }
             log.info("EasyExcel----->[ Upload ] Finish with error!");
             e.printStackTrace();
+        } finally {
+            if (excelWriter != null) {
+                excelWriter.finish();
+            }
         }
     }
 

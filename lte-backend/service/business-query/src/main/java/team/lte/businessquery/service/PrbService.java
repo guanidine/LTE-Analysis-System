@@ -18,7 +18,8 @@ public interface PrbService extends BaseCheckService<Prb> {
 
     Map<String, Object> listData(String enodebName, String begin, String end, String field) throws NoSuchFieldException;
 
-    Map<String, Object> listHourData(String enodebName, String begin, String end, String field) throws NoSuchFieldException;
+    Map<String, Object> listHourData(String enodebName, String begin, String end, String field)
+        throws NoSuchFieldException;
 
     List<String> listEnodebs();
 

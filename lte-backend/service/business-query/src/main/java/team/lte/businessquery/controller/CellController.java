@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.lte.businessquery.entity.po.Cell;
@@ -112,10 +113,10 @@ public class CellController {
     }
 
     @Operation(summary = "将Excel表中数据导入到Cell")
-    @PostMapping(value = "upload", headers = "content-type=multipart/form-data")
+    @PostMapping(value = "upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build().uploadFile(response, file, Cell.class, cellService, cellMapper);
+        ExcelServiceBuilder.build().uploadFile(response, file, Cell.class, Cell.class, cellService, cellMapper);
     }
 }

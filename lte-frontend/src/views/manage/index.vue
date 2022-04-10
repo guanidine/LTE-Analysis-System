@@ -23,11 +23,10 @@
     <el-upload
       ref="upload"
       :auto-upload="false"
-      :limit="1"
       action="#"
       drag
       :http-request="uploadHttpRequest"
-      :on-change="()=>changeFileStatus(true)"
+      :on-change="onFileChange"
       :on-remove="()=>changeFileStatus(false)"
       type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     >
@@ -35,7 +34,6 @@
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <div slot="tip" class="el-upload__tip">只能上传xlsx格式文件</div>
     </el-upload>
-    <!-- TODO: 上传一个附件后，重新上传应当可以覆盖原来预备上传的附件 -->
 
     <div slot="footer" class="dialog-footer">
       <el-link :href="tableName+'模板.xlsx'" :disabled="downloadBtnDisabled">
@@ -108,13 +106,19 @@ export default {
           target: 'error',
           message: '解析Excel出错，请传入正确格式的Excel'
         })
-      } else {
+      } else if (error > 0) {
         this.$message({
           target: 'success',
           message: `${error}行数据导入出错，下载错误日志查看原因！`
         })
+      } else {
+        this.$message({
+          target: 'error',
+          message: '呐，出错了...'
+        })
       }
       this.processLength = 100
+      this.uploadBtnDisabled = false
       this.fileUploadBtnText = '上传至服务器'
       // this.$router.push({ path: '/query/dashboard' })
     },
@@ -149,7 +153,7 @@ export default {
       axios.post(url, formData, {
         responseType: 'arraybuffer'
       }).then(response => {
-        if (response.headers['error'] !== '0' && response.headers['error'] !== '-1') {
+        if (response.headers['error'] > '0') {
           dataApi.download(response, `${this.tableName}-error`)
         }
         this.fileUploadSuccess(response.headers['error'])
@@ -179,6 +183,12 @@ export default {
     onChange() {
       this.uploadBtnDisabled = !this.hasFile || this.tableName === ''
       this.downloadBtnDisabled = this.tableName === ''
+    },
+    onFileChange(file, fileList) {
+      this.changeFileStatus(true)
+      if (fileList.length > 1) {
+        fileList.splice(0, 1)
+      }
     }
   }
 }

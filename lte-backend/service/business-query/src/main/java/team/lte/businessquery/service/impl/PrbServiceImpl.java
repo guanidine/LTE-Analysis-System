@@ -1,6 +1,7 @@
 package team.lte.businessquery.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import team.lte.businessquery.entity.po.Prb;
 import team.lte.businessquery.entity.vo.TimeObject;
@@ -24,17 +25,19 @@ import java.util.Map;
 public class PrbServiceImpl extends ServiceImpl<PrbMapper, Prb> implements PrbService {
 
     @Override
-    public Map<String, Object> listData(String enodebName, String begin, String end, String field) throws NoSuchFieldException {
+    public Map<String, Object> listData(String enodebName, String begin, String end, String field)
+        throws NoSuchFieldException {
         List<TimeObject> data =
-                getBaseMapper().listData(enodebName, begin, end, QueryUtils.getFieldName(field, Prb.class));
+            getBaseMapper().listData(enodebName, begin, end, QueryUtils.getFieldName(field, Prb.class));
 
         return QueryUtils.extractData(data);
     }
 
     @Override
-    public Map<String, Object> listHourData(String enodebName, String begin, String end, String field) throws NoSuchFieldException {
+    public Map<String, Object> listHourData(String enodebName, String begin, String end, String field)
+        throws NoSuchFieldException {
         List<TimeObject> data =
-                getBaseMapper().listHourData(enodebName, begin, end, QueryUtils.getFieldName(field, Prb.class));
+            getBaseMapper().listHourData(enodebName, begin, end, QueryUtils.getFieldName(field, Prb.class));
 
         return QueryUtils.extractData(data);
     }
@@ -46,7 +49,14 @@ public class PrbServiceImpl extends ServiceImpl<PrbMapper, Prb> implements PrbSe
 
     @Override
     public String requirementCheck(Prb object) {
-        object.setId(MD5.encode(object.getStartTime() + object.getSectorName()));
         return null;
+    }
+
+    @Override
+    public <D> Prb transfer(D objectDTO, Class<Prb> prbClass, Class<D> dClass) {
+        Prb prb = new Prb();
+        BeanUtils.copyProperties(objectDTO, prb);
+        prb.setId(MD5.encode(prb.getStartTime() + prb.getSectorName()));
+        return prb;
     }
 }
