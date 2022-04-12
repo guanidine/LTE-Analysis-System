@@ -16,6 +16,7 @@
   - [项目运行](#项目运行)
     - [后端](#后端)
     - [前端](#前端)
+    - [服务器](#服务器)
   
 ## 介绍
 整体采用B/S架构，前端采用Vue来搭建网页，后端采用Java的SpringBoot架构进行数据处理和分析，数据层采用MySQL数据库进行数据管理，最终完成一个具有系统管理、用户管理、数据管理、数据查询、LTE业务分析功能的网页。
@@ -184,7 +185,7 @@ tbCell，并存入数据库表 tbCell；
 
 * 接口测试
 
-  项目整合了Swagger3.0用于测试Springboot中的各个接口，接口返回全部统一使用自定义类型 [`R`](lte-backend/common/common-utils/src/main/java/team/lte/commonutils/result/R.java)。目前项目中无修改数据库数据的接口，放心测试。
+  项目整合了Swagger3.0用于测试Springboot中的各个接口，接口返回全部统一使用自定义类型 [`R`](lte-backend/common/common-utils/src/main/java/team/lte/commonutils/result/R.java)。
 
   ![image-20220311151032576](images/run/back2.png)
   
@@ -192,7 +193,18 @@ tbCell，并存入数据库表 tbCell；
 
   // TODO: 数据导入导出性能调优（TBPRB表）
 
-  ![image-20220410093631946](images/run/performance.png)
+  附开放远程监控的命令：
+  
+  ```shell
+  nohup java -Xms600m -Xmx600m -XX:MetaspaceSize=256m -XX:+UseSerialGC \
+  -Dcom.sun.management.jmxremote.port=9999 \
+  -Dcom.sun.management.jmxremote.ssl=false \
+  -Dcom.sun.management.jmxremote.authenticate=false \
+  -Djava.rmi.server.hostname=120.48.19.4 \
+  -jar business-query.jar --spring.profiles.active=prod >output 2>&1 &
+  ```
+  
+  ![image-20220412160726835](D:\JetBrainsProjects\lte-analysis-system\images\run\performance.png)
 
 
 ### 前端
@@ -205,7 +217,7 @@ tbCell，并存入数据库表 tbCell；
   npm install
   ```
 
-* 启动服务（目前仅有development环境可用，配置文件在 [`lte-frontend/.env.development`](lte-frontend/.env.development)）
+* 启动服务
 
   ```shell
   npm run dev
@@ -223,3 +235,19 @@ tbCell，并存入数据库表 tbCell；
   ```
   
   ![image-20220311151233793](images/run/front2.png)
+
+### 服务器
+
+* 项目已部署至服务器120.48.19.4，远程连接用户名 `root`，密码 `Q6^pw0*lb$@Ezv#7`（服务器密码居然不能包含 `&` 字符）。1核2G垃圾服务器，项目跑起来后剩不下多少内存了，折腾的时候得悠着点 :thinking: 。
+
+* 前端通过 `80` 端口转发，可以直接通过 [http://120.48.19.4] 访问。
+
+* Swagger依旧通过 `8001` 端口访问： [http://120.48.19.4:8001/swagger-ui/index.html] 。
+
+* 数据库使用 `120.48.19.4` 的 `3306` 端口，远程连接用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`。本地不需要再配置数据库了（白嫖使人快乐 :stuck_out_tongue_winking_eye: 。
+
+* Jenkins使用 `120.48.19.4` 的 `8080` 端口，可以通过 [http://120.48.19.4:8080] 可访问，登录用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`。
+
+* 前后端代码分为两个环境：dev为本地调试环境，prod为线上环境。为了方便线上运行，项目默认使用prod环境，使用dev环境在本地运行需要加参数：
+  * 后端使用dev环境进行本地开发：[IntelliJ IDEA 配置SpringBoot项目 启动环境](https://blog.csdn.net/jx520/article/details/109711189) 。本地运行时依旧提供 [http://localhost:8001] 的相关接口，如通过 [http://localhost:8001/swagger-ui/index.html] 访问dev环境的Swagger。
+  * 前端不需要特别的设置， `npm run dev` 依旧使用dev环境，`npm run build:prod` 打包项目时使用prod环境（本地点开 `index.html` 似乎没啥反应）。本地运行端口依旧是9528，即访问 [http://localhost:9528]。

@@ -1,4 +1,4 @@
-package team.lte;
+package team.lte.businessquery;
 
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;

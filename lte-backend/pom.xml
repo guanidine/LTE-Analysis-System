@@ -20,10 +20,13 @@
     <description>lte-backend</description>
 
     <properties>
+        <spring-boot.version>2.6.6</spring-boot.version>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
-        <java.version>15</java.version>
+        <java.version>11</java.version>
         <lte.version>0.0.1-SNAPSHOT</lte.version>
+        <!-- Druid -->
+        <druid.version>1.2.8</druid.version>
         <!-- MyBatis Plus -->
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <velocity.version>2.3</velocity.version>
@@ -58,6 +61,13 @@
                 <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- Druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
             </dependency>
 
             <!-- MyBatis Plus持久层 -->
@@ -121,6 +131,14 @@
                 <version>${jodatime.version}</version>
             </dependency>
 
+            <!-- SpringBoot Test -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>test</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -131,7 +149,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <release>15</release>
+                    <release>11</release>
                     <encoding>UTF-8</encoding>
                     <skip>true</skip>
                 </configuration>
