@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    超简朴的数据导入
+    超简朴的数据导入：上传/下载请勿同时进行，OOM警告。。。
 
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>

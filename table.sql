@@ -1,3 +1,4 @@
+create database if not exists lte;
 use lte;
 
 create table if not exists tbcell
