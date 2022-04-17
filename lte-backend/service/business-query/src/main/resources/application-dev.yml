@@ -5,24 +5,8 @@ server:
 spring:
   # MySQL数据库连接
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://120.48.19.4:3306/lte?serverTimezone=GMT%2B8&rewriteBatchedStatements=true
-    username: root
-    password: Q6^pw0*lb$@Ezv#&
-  # 返回json的全局时间格式
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
-  # 上传文件大小限制
-  servlet:
-    multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
-
-mybatis-plus:
-  mapper-locations: team/lte/businessquery/mapper/xml/*.xml
 
 logging:
   level:
-    root: debug
+    root: info

@@ -2,6 +2,54 @@ spring:
   application:
     # 服务名
     name: business-query
+
   profiles:
     # 环境设置
     active: prod
+
+  datasource:
+    # MySQL数据库连接
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      username: root
+      password: Q6^pw0*lb$@Ezv#&
+      filters: config, stat, wall, log4j2
+      initial-size: 1
+      min-idle: 1
+      max-active: 5
+      validation-query: select 1;
+      validation-query-timeout: 5
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      max-evictable-idle-time-millis: 180000
+      phy-timeout-millis: 15000
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      aop-patterns: "team.lte.*"
+      # Druid Monitor
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: /druid/*,*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico
+        session-stat-enable: true
+        profile-enable: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+
+  jackson:
+    # 返回json的全局时间格式
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  servlet:
+    # 上传文件大小限制
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+mybatis-plus:
+  mapper-locations: team/lte/businessquery/mapper/xml/*.xml

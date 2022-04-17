@@ -216,8 +216,9 @@ tbCell，并存入数据库表 tbCell；
 
 * 数据库使用 `120.48.19.4` 的 `3306` 端口，远程连接用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`。本地不需要再配置数据库了（白嫖使人快乐 :stuck_out_tongue_winking_eye: 。
 
-* Jenkins使用 `120.48.19.4` 的 `8080` 端口，可以通过 [http://120.48.19.4:8080](http://120.48.19.4:8080) 可访问，登录用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`。
+* Jenkins使用 `120.48.19.4` 的 `8080` 端口，可以通过 [http://120.48.19.4:8080](http://120.48.19.4:8080) 访问，登录用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`。
 
 * 前后端代码分为两个环境：dev为本地调试环境，prod为线上环境。为了方便线上运行，项目默认使用prod环境，使用dev环境在本地运行需要加参数：
   * 后端使用dev环境进行本地开发：[IntelliJ IDEA 配置SpringBoot项目 启动环境](https://blog.csdn.net/jx520/article/details/109711189) 。本地运行时依旧提供 [http://localhost:8001](http://localhost:8001) 的相关接口，如通过 [http://localhost:8001/swagger-ui/index.html](http://localhost:8001/swagger-ui/index.html) 访问dev环境的Swagger。
+  
   * 前端不需要特别的设置， `npm run dev` 依旧使用dev环境，`npm run build:prod` 打包项目时使用prod环境（本地点开 `index.html` 似乎没啥反应）。本地运行端口依旧是9528，即访问 [http://localhost:9528](http://localhost:9528)。

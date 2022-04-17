@@ -1,10 +1,10 @@
 package team.lte.businessquery;
 
+import org.junit.Test;
+
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Value;
 
 public class CodeGenerator {
 
