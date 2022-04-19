@@ -13,8 +13,8 @@
         >
           <el-option
             v-for="item in tableList"
-            :key="item.TABLE_NAME"
-            :value="item.TABLE_NAME"
+            :key="item.tablename"
+            :value="item.tablename"
           />
         </el-select>
       </el-form-item>
@@ -78,7 +78,7 @@ export default {
       uploadBtnDisabled: true,
 
       tableList: {
-        TABLE_NAME: ''
+        tablename: ''
       },
       tableName: '',
       downloadBtnDisabled: true

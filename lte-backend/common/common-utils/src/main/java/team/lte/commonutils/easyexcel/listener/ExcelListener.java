@@ -29,7 +29,7 @@ import java.util.*;
 public class ExcelListener<P, D> extends AnalysisEventListener<D> {
 
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
-    private int groupNum = 1000;
+    private int groupNum = 500;
 
     /** 错误数据集 */
     private final List<ErrorDTO> errList = new ArrayList<>();

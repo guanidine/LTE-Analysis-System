@@ -14,7 +14,7 @@ public class InsertOrUpdateBatchMethod extends AbstractMethod {
     /**
      * sql注入器代替手动修改xml。
      * <p>
-     * insert into user(id, name, age) values (1, "a", 17), (2, "b", 18) ON DUPLICATE KEY UPDATE ...;
+     * insert into user(id, name, age) values (1, "a", 17), (2, "b", 18) on conflict (id) do update set ...;
      * 
      * <pre>
      * insert into user(id, name, age) values
@@ -26,16 +26,19 @@ public class InsertOrUpdateBatchMethod extends AbstractMethod {
      *          close=")">
      *     #{item.id}, #{item.name}, #{item.age}
      * &lt;/foreach>
-     * on duplicate key update id=values(id), name=values(name), age=values(age)
+     * on conflict (id) update
+     * id=excluded.id, name=excluded.name, age=excluded.age
      * </pre>
+     *
      */
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        String sql = "<script>insert into %s %s values %s ON DUPLICATE KEY UPDATE %s</script>";
+        String sql = "<script>insert into %s %s values %s on conflict (%s) do update set %s</script>";
         String fieldSql = prepareFieldSql(tableInfo);
         String valuesSql = prepareValuesSql(tableInfo);
+        String keySql = prepareKeySql(tableInfo);
         String duplicateKeySql = prepareDuplicateKeySql(tableInfo);
-        String sqlResult = String.format(sql, tableInfo.getTableName(), fieldSql, valuesSql, duplicateKeySql);
+        String sqlResult = String.format(sql, tableInfo.getTableName(), fieldSql, valuesSql, keySql, duplicateKeySql);
         log.debug("sqlResult----->{}", sqlResult);
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, sqlResult, modelClass);
         return this.addInsertMappedStatement(mapperClass, modelClass, "insertOrUpdateBatch", sqlSource,
@@ -45,13 +48,17 @@ public class InsertOrUpdateBatchMethod extends AbstractMethod {
     private String prepareDuplicateKeySql(TableInfo tableInfo) {
         StringBuilder duplicateKeySql = new StringBuilder();
         if (StringUtils.isNotEmpty(tableInfo.getKeyColumn())) {
-            duplicateKeySql.append(tableInfo.getKeyColumn()).append("=values(").append(tableInfo.getKeyColumn())
-                .append("),");
+            duplicateKeySql.append(tableInfo.getKeyColumn()).append("=excluded.").append(tableInfo.getKeyColumn())
+                .append(",");
         }
         tableInfo.getFieldList()
-            .forEach(x -> duplicateKeySql.append(x.getColumn()).append("=values(").append(x.getColumn()).append("),"));
+            .forEach(x -> duplicateKeySql.append(x.getColumn()).append("=excluded.").append(x.getColumn()).append(","));
         duplicateKeySql.delete(duplicateKeySql.length() - 1, duplicateKeySql.length());
         return duplicateKeySql.toString();
+    }
+
+    private String prepareKeySql(TableInfo tableInfo) {
+        return tableInfo.getKeyColumn();
     }
 
     private String prepareFieldSql(TableInfo tableInfo) {

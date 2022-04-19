@@ -80,7 +80,7 @@ public class PrbController {
     @Operation(summary = "将PRB导出到Excel表")
     @GetMapping("download")
     public void downloadExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build().pageNum(10000).excelServiceBuilder(ImmutableSet.<String>builder().add("id").build())
+        ExcelServiceBuilder.build().excelServiceBuilder(ImmutableSet.<String>builder().add("id").build())
             .downloadFile(response, PrbDTO.class, prbService);
     }
 
@@ -89,6 +89,7 @@ public class PrbController {
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build().uploadFile(response, file, Prb.class, PrbDTO.class, prbService, prbMapper);
+        ExcelServiceBuilder.build().groupNum(300).uploadFile(response, file, Prb.class, PrbDTO.class, prbService,
+            prbMapper);
     }
 }

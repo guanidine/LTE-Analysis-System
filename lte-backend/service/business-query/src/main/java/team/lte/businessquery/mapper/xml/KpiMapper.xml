@@ -6,7 +6,7 @@
         select start_time, ${field} as result
         from tbkpi
         where sector_name = #{sectorName}
-          and str_to_date(start_time, '%m/%d/%Y %H:%i:%S') between #{begin} and #{end};
+          and start_time between #{begin} and #{end};
     </select>
     <select id="listSectors" resultType="java.lang.String">
         select distinct sector_name

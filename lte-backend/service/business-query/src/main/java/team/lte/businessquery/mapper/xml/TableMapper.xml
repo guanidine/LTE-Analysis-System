@@ -3,16 +3,22 @@
 <mapper namespace="team.lte.businessquery.mapper.TableMapper">
 
     <select id="listTables" resultType="java.util.Map">
-        select *
-        from information_schema.TABLES
-        where TABLE_SCHEMA = (select database())
+        select tablename
+        from pg_tables
+        where schemaname = 'lte'
+        order by tablename;
     </select>
 
     <select id="listTableColumns" resultType="java.util.Map">
-        select *
-        from information_schema.COLUMNS
-        where TABLE_SCHEMA = (select database())
-          and TABLE_NAME = #{tableName}
+        select col_description(a.attrelid, a.attnum) as comment,
+               format_type(a.atttypid, a.atttypmod)  as type,
+               a.attname                             as name,
+               a.attnotnull                          as notnull
+        from pg_class as c,
+             pg_attribute as a
+        where c.relname = #{tableName}
+          and a.attrelid = c.oid
+          and a.attnum > 0
     </select>
 
 </mapper>

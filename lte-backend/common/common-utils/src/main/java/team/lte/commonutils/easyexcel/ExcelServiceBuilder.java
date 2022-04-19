@@ -27,11 +27,11 @@ import java.util.Set;
 public class ExcelServiceBuilder {
 
     /** 不采用分页，一次性读取的行数上限 */
-    private int noPagingLimit = 10000;
+    private int noPagingLimit = 1000;
     /** 分页读取时，一页数据行数上限 */
-    private int pageNum = 500;
+    private int pageNum = 1000;
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
-    private int groupNum = 1000;
+    private int groupNum = 500;
     /** 不需要导出的字段 */
     private Set<String> excludeColumnFiledNames = new HashSet<>();
 

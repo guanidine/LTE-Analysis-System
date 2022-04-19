@@ -75,7 +75,7 @@ public class CellController {
             wrapper.like(Cell::getSectorId, sectorId);
         }
         if (enodebid != null) {
-            wrapper.like(Cell::getEnodebid, enodebid);
+            wrapper.eq(Cell::getEnodebid, enodebid);
         }
         if (StringUtils.isNotEmpty(enodebName)) {
             wrapper.like(Cell::getEnodebName, enodebName);

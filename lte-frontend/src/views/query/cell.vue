@@ -105,16 +105,6 @@
       <el-table-column prop="electtilt" label="小区天线电下倾角" width="80"/>
       <el-table-column prop="mechtilt" label="小区天线机械下倾角" width="80"/>
       <el-table-column prop="totletilt" label="总下倾角" width="80"/>
-
-      <el-table-column label="操作" width="200" align="center">
-        <template v-slot="scope">
-          <router-link :to="'/teacher/edit/'+scope.row.id">
-            <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
-          </router-link>
-          <el-button type="danger" size="mini" icon="el-icon-delete">删除
-          </el-button>
-        </template>
-      </el-table-column>
     </el-table>
 
     <!-- 分页 -->
