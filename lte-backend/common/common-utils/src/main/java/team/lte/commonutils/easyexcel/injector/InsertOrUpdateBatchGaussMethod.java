@@ -1,20 +1,22 @@
 package team.lte.commonutils.easyexcel.injector;
 
-import com.baomidou.mybatisplus.core.injector.AbstractMethod;
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 
+import com.baomidou.mybatisplus.core.injector.AbstractMethod;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
-public class InsertOrUpdateBatchMethod extends AbstractMethod {
+public class InsertOrUpdateBatchGaussMethod extends AbstractMethod {
 
     /**
      * sql注入器代替手动修改xml。
      * <p>
-     * insert into user(id, name, age) values (1, "a", 17), (2, "b", 18) on conflict (id) do update set ...;
+     * insert into user(id, name, age) values (1, "a", 17), (2, "b", 18) on duplicate key update ...;
      * 
      * <pre>
      * insert into user(id, name, age) values
@@ -26,39 +28,30 @@ public class InsertOrUpdateBatchMethod extends AbstractMethod {
      *          close=")">
      *     #{item.id}, #{item.name}, #{item.age}
      * &lt;/foreach>
-     * on conflict (id) update
-     * id=excluded.id, name=excluded.name, age=excluded.age
+     * on duplicate key update
+     * id=values(id), name=values(name), age=values(age)
      * </pre>
      *
      */
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        String sql = "<script>insert into %s %s values %s on conflict (%s) do update set %s</script>";
+        String sql = "<script>insert into %s %s values %s on duplicate key update %s</script>";
         String fieldSql = prepareFieldSql(tableInfo);
         String valuesSql = prepareValuesSql(tableInfo);
-        String keySql = prepareKeySql(tableInfo);
         String duplicateKeySql = prepareDuplicateKeySql(tableInfo);
-        String sqlResult = String.format(sql, tableInfo.getTableName(), fieldSql, valuesSql, keySql, duplicateKeySql);
+        String sqlResult = String.format(sql, tableInfo.getTableName(), fieldSql, valuesSql, duplicateKeySql);
         log.debug("sqlResult----->{}", sqlResult);
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, sqlResult, modelClass);
-        return this.addInsertMappedStatement(mapperClass, modelClass, "insertOrUpdateBatch", sqlSource,
+        return this.addInsertMappedStatement(mapperClass, modelClass, "insertOrUpdateBatchGauss", sqlSource,
             new NoKeyGenerator(), null, null);
     }
 
     private String prepareDuplicateKeySql(TableInfo tableInfo) {
         StringBuilder duplicateKeySql = new StringBuilder();
-        if (StringUtils.isNotEmpty(tableInfo.getKeyColumn())) {
-            duplicateKeySql.append(tableInfo.getKeyColumn()).append("=excluded.").append(tableInfo.getKeyColumn())
-                .append(",");
-        }
         tableInfo.getFieldList()
-            .forEach(x -> duplicateKeySql.append(x.getColumn()).append("=excluded.").append(x.getColumn()).append(","));
+            .forEach(x -> duplicateKeySql.append(x.getColumn()).append("=values(").append(x.getColumn()).append("),"));
         duplicateKeySql.delete(duplicateKeySql.length() - 1, duplicateKeySql.length());
         return duplicateKeySql.toString();
-    }
-
-    private String prepareKeySql(TableInfo tableInfo) {
-        return tableInfo.getKeyColumn();
     }
 
     private String prepareFieldSql(TableInfo tableInfo) {

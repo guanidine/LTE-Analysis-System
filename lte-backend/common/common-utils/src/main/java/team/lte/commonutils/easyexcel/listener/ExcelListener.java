@@ -10,6 +10,7 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import team.lte.commonutils.easyexcel.annotation.DbType;
 import team.lte.commonutils.easyexcel.entity.ErrorDTO;
 import team.lte.commonutils.easyexcel.mapper.BaseBatchMapper;
 import team.lte.commonutils.easyexcel.service.BaseCheckService;
@@ -17,6 +18,7 @@ import team.lte.commonutils.easyexcel.service.PropertyCheckService;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * EasyExcel数据导入监听器。
@@ -27,6 +29,9 @@ import java.util.*;
 @Slf4j
 @Getter
 public class ExcelListener<P, D> extends AnalysisEventListener<D> {
+
+    /** 数据库方言 */
+    private Consumer<List<P>> insertConsumer;
 
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
     private int groupNum = 500;
@@ -53,18 +58,23 @@ public class ExcelListener<P, D> extends AnalysisEventListener<D> {
     private int error = 0;
 
     private ExcelListener(BaseCheckService<P> baseCheckService, BaseBatchMapper<P> baseBatchMapper, Class<P> pClass,
-        Class<D> dClass, ExcelWriter excelWriter) {
+        Class<D> dClass, ExcelWriter excelWriter, DbType dbType) {
         this.baseCheckService = baseCheckService;
         this.baseBatchMapper = baseBatchMapper;
         this.pClass = pClass;
         this.dClass = dClass;
         this.excelWriter = excelWriter;
         writeSheet = EasyExcelFactory.writerSheet().build();
+        this.insertConsumer = switch (dbType) {
+            case POSTGRE_SQL -> baseBatchMapper::insertOrUpdateBatchPostgres;
+            case GAUSS -> baseBatchMapper::insertOrUpdateBatchGauss;
+            case OTHER -> baseBatchMapper::insertBatch;
+        };
     }
 
     public static <T, E> ExcelListener<T, E> build(BaseCheckService<T> baseCheckService,
-        BaseBatchMapper<T> baseBatchMapper, Class<T> tClass, Class<E> eClass, ExcelWriter excelWriter) {
-        return new ExcelListener<>(baseCheckService, baseBatchMapper, tClass, eClass, excelWriter);
+        BaseBatchMapper<T> baseBatchMapper, Class<T> tClass, Class<E> eClass, ExcelWriter excelWriter, DbType dbType) {
+        return new ExcelListener<>(baseCheckService, baseBatchMapper, tClass, eClass, excelWriter, dbType);
     }
 
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
@@ -97,7 +107,7 @@ public class ExcelListener<P, D> extends AnalysisEventListener<D> {
         }
 
         if (successList.size() >= groupNum) {
-            baseBatchMapper.insertOrUpdateBatch(successList);
+            insertConsumer.accept(successList);
             successList.clear();
         }
         if (errList.size() >= groupNum) {
@@ -110,7 +120,7 @@ public class ExcelListener<P, D> extends AnalysisEventListener<D> {
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         if (!successList.isEmpty()) {
-            baseBatchMapper.insertOrUpdateBatch(successList);
+            insertConsumer.accept(successList);
         }
         if (!errList.isEmpty()) {
             error += errList.size();

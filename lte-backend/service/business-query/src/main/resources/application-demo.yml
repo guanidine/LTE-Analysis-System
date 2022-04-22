@@ -1,0 +1,15 @@
+server:
+  # 服务端口
+  port: 8001
+
+spring:
+  # 数据库连接
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://120.46.189.231:8000/finance?currentSchema=user11&stringtype=unspecified&TimeZone=Asia/Shanghai&reWriteBatchedInserts=true
+    username: user11
+    password: user11@bupt
+
+logging:
+  level:
+    root: info

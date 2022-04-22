@@ -1,24 +1,29 @@
 package team.lte.businessquery.controller;
 
-import com.google.common.collect.ImmutableSet;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.google.common.collect.ImmutableSet;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import team.lte.businessquery.entity.dto.KpiDTO;
 import team.lte.businessquery.entity.po.Kpi;
 import team.lte.businessquery.entity.vo.KpiQuery;
 import team.lte.businessquery.mapper.KpiMapper;
 import team.lte.businessquery.service.KpiService;
+import team.lte.businessquery.util.QueryUtils;
 import team.lte.commonutils.easyexcel.ExcelServiceBuilder;
 import team.lte.commonutils.result.R;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -39,6 +44,9 @@ public class KpiController {
 
     @Resource
     private KpiMapper kpiMapper;
+
+    @Value("${spring.profiles.active}")
+    private String env;
 
     @Operation(summary = "查询KPI指标中某一特定属性的变化")
     @PostMapping("")
@@ -66,7 +74,7 @@ public class KpiController {
     @Operation(summary = "将Kpi导出到Excel表")
     @GetMapping("download")
     public void downloadExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build().excelServiceBuilder(ImmutableSet.<String>builder().add("id").build())
+        ExcelServiceBuilder.build(QueryUtils.getDbType(env)).exclude(ImmutableSet.<String>builder().add("id").build())
             .downloadFile(response, KpiDTO.class, kpiService);
     }
 
@@ -75,6 +83,7 @@ public class KpiController {
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build().uploadFile(response, file, Kpi.class, KpiDTO.class, kpiService, kpiMapper);
+        ExcelServiceBuilder.build(QueryUtils.getDbType(env)).uploadFile(response, file, Kpi.class, KpiDTO.class,
+            kpiService, kpiMapper);
     }
 }

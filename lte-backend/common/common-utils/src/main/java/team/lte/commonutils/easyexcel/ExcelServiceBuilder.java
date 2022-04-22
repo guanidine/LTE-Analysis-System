@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
+import team.lte.commonutils.easyexcel.annotation.DbType;
 import team.lte.commonutils.easyexcel.entity.ErrorDTO;
 import team.lte.commonutils.easyexcel.listener.ExcelListener;
 import team.lte.commonutils.easyexcel.mapper.BaseBatchMapper;
@@ -26,6 +27,8 @@ import java.util.Set;
 @Slf4j
 public class ExcelServiceBuilder {
 
+    /** 数据库方言 */
+    private DbType dbType;
     /** 不采用分页，一次性读取的行数上限 */
     private int noPagingLimit = 1000;
     /** 分页读取时，一页数据行数上限 */
@@ -35,32 +38,34 @@ public class ExcelServiceBuilder {
     /** 不需要导出的字段 */
     private Set<String> excludeColumnFiledNames = new HashSet<>();
 
-    private ExcelServiceBuilder() {}
+    private ExcelServiceBuilder(DbType dbType) {
+        this.dbType = dbType;
+    }
 
-    public static ExcelServiceBuilder build() {
-        return new ExcelServiceBuilder();
+    public static ExcelServiceBuilder build(DbType dbType) {
+        return new ExcelServiceBuilder(dbType);
     }
 
     /** 不采用分页，一次性读取的行数上限 */
-    public ExcelServiceBuilder noPagingLimit(int noPagingLimit) {
+    public ExcelServiceBuilder noPaging(int noPagingLimit) {
         this.noPagingLimit = noPagingLimit;
         return this;
     }
 
     /** 分页读取时，一页数据行数上限 */
-    public ExcelServiceBuilder pageNum(int pageNum) {
+    public ExcelServiceBuilder page(int pageNum) {
         this.pageNum = pageNum;
         return this;
     }
 
     /** 数据写入数据库/错误数据写入Excel时，一组数据行数上限 */
-    public ExcelServiceBuilder groupNum(int groupNum) {
+    public ExcelServiceBuilder group(int groupNum) {
         this.groupNum = groupNum;
         return this;
     }
 
     /** 不需要导出的字段 */
-    public ExcelServiceBuilder excelServiceBuilder(Set<String> excludeColumnFiledNames) {
+    public ExcelServiceBuilder exclude(Set<String> excludeColumnFiledNames) {
         this.excludeColumnFiledNames = excludeColumnFiledNames;
         return this;
     }
@@ -143,7 +148,8 @@ public class ExcelServiceBuilder {
 
             excelWriter = EasyExcelFactory.write(response.getOutputStream(), ErrorDTO.class).build();
 
-            excelListener = ExcelListener.build(service, mapper, pClass, dClass, excelWriter).groupNum(groupNum);
+            excelListener =
+                ExcelListener.build(service, mapper, pClass, dClass, excelWriter, dbType).groupNum(groupNum);
             EasyExcelFactory.read(file.getInputStream(), dClass, excelListener).sheet().doRead();
             response.setHeader("Error", String.valueOf(excelListener.getError()));
             log.info("EasyExcel----->[ Upload ] Finish!");

@@ -5,7 +5,7 @@
     <select id="listTables" resultType="java.util.Map">
         select tablename
         from pg_tables
-        where schemaname = 'lte'
+        where schemaname = #{schemaName}
         order by tablename;
     </select>
 

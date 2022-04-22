@@ -64,18 +64,6 @@
             <artifactId>velocity-engine-core</artifactId>
         </dependency>
 
-        <!-- MySql -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-        <!-- PostgreSQL -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-        </dependency>
-
         <!-- Swagger -->
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -112,5 +100,36 @@
         </dependency>
 
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>demo</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.huaweicloud.dws</groupId>
+                    <artifactId>huaweicloud-dws-jdbc</artifactId>
+                    <version>8.1.0</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,10 +23,18 @@ public class TableController {
     @Resource
     TableMapper tableMapper;
 
+    @Value("${spring.profiles.active}")
+    private String env;
+
     @Operation(summary = "获取所有数据表的表名")
     @GetMapping("")
     public R listTables() {
-        List<Map<String, String>> list = tableMapper.listTables();
+        List<Map<String, String>> list = null;
+        if ("dev".equals(env) || "prod".equals(env)) {
+            list = tableMapper.listTables("lte");
+        } else if ("demo".equals(env)) {
+            list = tableMapper.listTables("user11");
+        }
         return R.ok().data("list", list);
     }
 

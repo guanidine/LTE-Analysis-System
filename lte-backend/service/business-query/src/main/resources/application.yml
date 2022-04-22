@@ -11,7 +11,7 @@ spring:
     # 数据库连接
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      filters: config, stat, wall, log4j2
+      filters: config, stat, log4j2
       initial-size: 1
       min-idle: 1
       max-active: 5

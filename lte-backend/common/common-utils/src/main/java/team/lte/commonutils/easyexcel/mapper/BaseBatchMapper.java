@@ -24,6 +24,8 @@ public interface BaseBatchMapper<T> extends BaseMapper<T> {
      *
      * @param list 待插入数据
      */
-    void insertOrUpdateBatch(@Param("list") List<T> list);
+    void insertOrUpdateBatchGauss(@Param("list") List<T> list);
+
+    void insertOrUpdateBatchPostgres(@Param("list") List<T> list);
 
 }

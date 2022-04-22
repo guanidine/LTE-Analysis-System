@@ -1,24 +1,29 @@
 package team.lte.businessquery.controller;
 
-import com.google.common.collect.ImmutableSet;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.google.common.collect.ImmutableSet;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import team.lte.businessquery.entity.dto.PrbDTO;
 import team.lte.businessquery.entity.po.Prb;
 import team.lte.businessquery.entity.vo.PrbQuery;
 import team.lte.businessquery.mapper.PrbMapper;
 import team.lte.businessquery.service.PrbService;
+import team.lte.businessquery.util.QueryUtils;
 import team.lte.commonutils.easyexcel.ExcelServiceBuilder;
 import team.lte.commonutils.result.R;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -39,6 +44,9 @@ public class PrbController {
 
     @Resource
     private PrbMapper prbMapper;
+
+    @Value("${spring.profiles.active}")
+    private String env;
 
     @Operation(summary = "查询某项PRB干扰数据每15分钟的变化情况")
     @PostMapping("")
@@ -80,7 +88,7 @@ public class PrbController {
     @Operation(summary = "将PRB导出到Excel表")
     @GetMapping("download")
     public void downloadExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build().excelServiceBuilder(ImmutableSet.<String>builder().add("id").build())
+        ExcelServiceBuilder.build(QueryUtils.getDbType(env)).exclude(ImmutableSet.<String>builder().add("id").build())
             .downloadFile(response, PrbDTO.class, prbService);
     }
 
@@ -89,7 +97,7 @@ public class PrbController {
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build().groupNum(300).uploadFile(response, file, Prb.class, PrbDTO.class, prbService,
-            prbMapper);
+        ExcelServiceBuilder.build(QueryUtils.getDbType(env)).group(300).uploadFile(response, file, Prb.class,
+            PrbDTO.class, prbService, prbMapper);
     }
 }

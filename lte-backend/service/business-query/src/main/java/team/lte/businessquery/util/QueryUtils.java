@@ -3,6 +3,7 @@ package team.lte.businessquery.util;
 import com.google.common.collect.ImmutableMap;
 import io.swagger.v3.oas.annotations.media.Schema;
 import team.lte.businessquery.entity.vo.TimeObject;
+import team.lte.commonutils.easyexcel.annotation.DbType;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -56,6 +57,21 @@ public class QueryUtils {
         }
 
         return ImmutableMap.<String, Object>builder().put("list", list).put("date", date).build();
+    }
+
+    /**
+     * 获取当前环境下使用的数据库方言。
+     * 
+     * @param env 环境profile
+     * @return 数据库方言
+     * @see DbType
+     */
+    public static DbType getDbType(String env) {
+        return switch (env) {
+            case "demo" -> DbType.GAUSS;
+            case "dev", "prod" -> DbType.POSTGRE_SQL;
+            default -> DbType.OTHER;
+        };
     }
 
     private static String toSnake(String key) {

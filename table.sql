@@ -66,6 +66,7 @@ $$;
 create trigger tbcell_pss
     before insert
     on tbcell
+    for each row
 execute procedure tbcell_pss_fun();
 
 create function tbcell_sss_fun() returns trigger
@@ -82,6 +83,7 @@ $$;
 create trigger tbcell_sss
     before insert
     on tbcell
+    for each row
 execute procedure tbcell_sss_fun();
 
 create function tbcell_totletilt_fun() returns trigger
@@ -98,6 +100,7 @@ $$;
 create trigger tbcell_totletilt
     before insert
     on tbcell
+    for each row
 execute procedure tbcell_totletilt_fun();
 
 create table if not exists tbkpi
