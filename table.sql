@@ -45,63 +45,58 @@ comment on column tbcell.electtilt is '小区天线电下倾角';
 comment on column tbcell.mechtilt is '小区天线机械下倾角';
 comment on column tbcell.totletilt is '总下倾角';
 
-drop trigger if exists tbcell_pss on tbcell;
-drop trigger if exists tbcell_sss on tbcell;
-drop trigger if exists tbcell_totletilt on tbcell;
-drop function if exists tbcell_pss_fun;
-drop function if exists tbcell_sss_fun;
+drop trigger if exists tbcell_pci_insert on tbcell;
+drop trigger if exists tbcell_pci_update on tbcell;
+drop trigger if exists tbcell_totletilt_insert on tbcell;
+drop trigger if exists tbcell_totletilt_update on tbcell;
+drop function if exists tbcell_pci_fun;
 drop function if exists tbcell_totletilt_fun;
 
-create function tbcell_pss_fun() returns trigger
+create function tbcell_pci_fun() returns trigger
     language plpgsql
 as
 $$
 begin
-    update tbcell
-    set pss = (select mod(pci, 3) from tbcell where sector_id = new.sector_id)
-    where sector_id = new.sector_id;
-    return new;
+    new.pss = mod(new.pci,3);
+    new.sss = div(new.pci,3);
+return new;
 end;
 $$;
-create trigger tbcell_pss
+create trigger tbcell_pci_insert
     before insert
     on tbcell
     for each row
-execute procedure tbcell_pss_fun();
+    execute procedure tbcell_pci_fun();
 
-create function tbcell_sss_fun() returns trigger
-    language plpgsql
-as
-$$
-begin
-    update tbcell
-    set sss = (select div(pci, 3) from tbcell where sector_id = new.sector_id)
-    where sector_id = new.sector_id;
-    return new;
-end;
-$$;
-create trigger tbcell_sss
-    before insert
+create trigger tbcell_pci_update
+    before update
     on tbcell
     for each row
-execute procedure tbcell_sss_fun();
+    when (new.pci <> old.pci)
+    execute procedure tbcell_pci_fun();
 
 create function tbcell_totletilt_fun() returns trigger
     language plpgsql
 as
 $$
 begin
-    update tbcell
-    set totletilt = (select electtilt + mechtilt from tbcell where sector_id = new.sector_id)
-    where sector_id = new.sector_id;
-    return new;
+    new.totletilt = new.electtilt + new.mechtilt;
+return new;
 end;
 $$;
-create trigger tbcell_totletilt
+
+create trigger tbcell_totletilt_insert
     before insert
     on tbcell
     for each row
-execute procedure tbcell_totletilt_fun();
+    execute procedure tbcell_totletilt_fun();
+
+create trigger tbcell_totletilt_update
+    before update
+    on tbcell
+    for each row
+    when (new.electtilt <> old.electtilt or new.mechtilt <> old.electtilt)
+    execute procedure tbcell_totletilt_fun();
 
 create table if not exists tbkpi
 (
