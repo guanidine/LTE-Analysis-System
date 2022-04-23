@@ -57,23 +57,23 @@ create function tbcell_pci_fun() returns trigger
 as
 $$
 begin
-    new.pss = mod(new.pci,3);
-    new.sss = div(new.pci,3);
-return new;
+    new.pss = mod(new.pci, 3);
+    new.sss = div(new.pci, 3);
+    return new;
 end;
 $$;
 create trigger tbcell_pci_insert
     before insert
     on tbcell
     for each row
-    execute procedure tbcell_pci_fun();
+execute procedure tbcell_pci_fun();
 
 create trigger tbcell_pci_update
     before update
     on tbcell
     for each row
     when (new.pci <> old.pci)
-    execute procedure tbcell_pci_fun();
+execute procedure tbcell_pci_fun();
 
 create function tbcell_totletilt_fun() returns trigger
     language plpgsql
@@ -81,7 +81,7 @@ as
 $$
 begin
     new.totletilt = new.electtilt + new.mechtilt;
-return new;
+    return new;
 end;
 $$;
 
@@ -89,14 +89,14 @@ create trigger tbcell_totletilt_insert
     before insert
     on tbcell
     for each row
-    execute procedure tbcell_totletilt_fun();
+execute procedure tbcell_totletilt_fun();
 
 create trigger tbcell_totletilt_update
     before update
     on tbcell
     for each row
     when (new.electtilt <> old.electtilt or new.mechtilt <> old.electtilt)
-    execute procedure tbcell_totletilt_fun();
+execute procedure tbcell_totletilt_fun();
 
 create table if not exists tbkpi
 (
@@ -403,3 +403,27 @@ comment on column tbprb.noise96 is '第96个PRB上检测到的干扰噪声的平
 comment on column tbprb.noise97 is '第97个PRB上检测到的干扰噪声的平均值 (毫瓦分贝)';
 comment on column tbprb.noise98 is '第98个PRB上检测到的干扰噪声的平均值 (毫瓦分贝)';
 comment on column tbprb.noise99 is '第99个PRB上检测到的干扰噪声的平均值 (毫瓦分贝)';
+
+create table ucenter_member
+(
+    id           bigserial primary key,
+    mobile       varchar(11)  default '',
+    passwd       varchar(255) default null,
+    nickname     varchar(50)  default null,
+    avatar       varchar(255) default null,
+    is_disabled  boolean      default false not null,
+    is_deleted   boolean      default false not null,
+    gmt_create   timestamp                  not null,
+    gmt_modified timestamp                  not null
+);
+
+comment on table ucenter_member is '用户表';
+comment on column ucenter_member.id is '用户id';
+comment on column ucenter_member.mobile is '手机号';
+comment on column ucenter_member.passwd is '密码';
+comment on column ucenter_member.nickname is '昵称';
+comment on column ucenter_member.avatar is '用户头像';
+comment on column ucenter_member.is_disabled is '是否禁用 1（true）已禁用，  0（false）未禁用';
+comment on column ucenter_member.is_deleted is '逻辑删除 1（true）已删除， 0（false）未删除';
+comment on column ucenter_member.gmt_create is '创建时间';
+comment on column ucenter_member.gmt_modified is '更新时间';
