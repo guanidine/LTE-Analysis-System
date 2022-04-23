@@ -4,7 +4,7 @@ export default {
 
   listData(prbQuery) {
     return request({
-      url: '/business-query/prb/',
+      url: '/biz/prb/',
       method: 'post',
       data: {
         'enodebName': prbQuery.enodebName,
@@ -17,7 +17,7 @@ export default {
 
   listHourData(prbQuery) {
     return request({
-      url: '/business-query/prb/hour',
+      url: '/biz/prb/hour',
       method: 'post',
       data: {
         'enodebName': prbQuery.enodebName,
@@ -30,7 +30,7 @@ export default {
 
   listEnodebs() {
     return request({
-      url: '/business-query/prb/all-enodeb',
+      url: '/biz/prb/all-enodeb',
       method: 'get'
     })
   }

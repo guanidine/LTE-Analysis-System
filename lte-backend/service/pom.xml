@@ -12,7 +12,8 @@
     <artifactId>service</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>business-query</module>
+        <module>service-biz</module>
+        <module>service-ucenter</module>
     </modules>
 
     <properties>

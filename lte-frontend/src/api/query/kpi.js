@@ -4,7 +4,7 @@ export default {
 
   listData(kpiQuery) {
     return request({
-      url: '/business-query/kpi/',
+      url: '/biz/kpi/',
       method: 'post',
       data: {
         'sectorName': kpiQuery.sectorName,
@@ -17,7 +17,7 @@ export default {
 
   listSectors() {
     return request({
-      url: '/business-query/kpi/all-sector',
+      url: '/biz/kpi/all-sector',
       method: 'get'
     })
   }

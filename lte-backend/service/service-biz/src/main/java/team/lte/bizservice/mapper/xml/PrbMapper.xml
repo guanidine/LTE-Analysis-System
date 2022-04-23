@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.lte.bizservice.mapper.PrbMapper">
+
+    <select id="listData" resultType="team.lte.bizservice.entity.vo.TimeObject">
+        select start_time, sum(${field}) as result
+        from tbprb
+        where enodeb_name = #{enodebName}
+          and start_time between #{begin} and #{end}
+        group by start_time;
+    </select>
+
+    <select id="listHourData" resultType="team.lte.bizservice.entity.vo.TimeObject">
+        select a.hourtime as start_time, sum(a.${field}) as result
+        from (select date_trunc('hour', start_time) as hourtime,
+                     ${field}
+              from tbprb
+              where enodeb_name = #{enodebName}
+                and start_time between #{begin} and #{end}
+             ) a
+        group by a.hourtime;
+    </select>
+
+    <select id="listEnodebs" resultType="java.lang.String">
+        select distinct enodeb_name
+        from tbprb;
+    </select>
+</mapper>

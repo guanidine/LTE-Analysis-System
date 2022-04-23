@@ -4,7 +4,7 @@ export default {
 
   listCells(page, limit, cellQuery) {
     return request({
-      url: `/business-query/cell/condition/${page}/${limit}`,
+      url: `/biz/cell/condition/${page}/${limit}`,
       method: 'post',
       data: cellQuery
     })
@@ -12,14 +12,14 @@ export default {
 
   listSectors() {
     return request({
-      url: '/business-query/cell/all-sector',
+      url: '/biz/cell/all-sector',
       method: 'get'
     })
   },
 
   listEnodebs() {
     return request({
-      url: '/business-query/cell/all-enodeb',
+      url: '/biz/cell/all-enodeb',
       method: 'get'
     })
   }

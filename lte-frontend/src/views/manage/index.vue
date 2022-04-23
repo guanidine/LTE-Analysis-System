@@ -149,7 +149,7 @@ export default {
       const formData = new FormData()
       formData.append('file', param.file)
       const table = this.tableName.substring(2).toLowerCase()
-      const url = `${this.BASE_API}/business-query/${table}/upload`
+      const url = `${this.BASE_API}/biz/${table}/upload`
       axios.post(url, formData, {
         responseType: 'arraybuffer'
       }).then(response => {
@@ -166,7 +166,7 @@ export default {
     // ============================================= 下载 =============================================
     downloadHttpRequest() {
       const table = this.tableName.substring(2).toLowerCase()
-      const url = `${this.BASE_API}/business-query/${table}/download`
+      const url = `${this.BASE_API}/biz/${table}/download`
       axios.get(url, {
         responseType: 'arraybuffer'
       }).then(response => {
