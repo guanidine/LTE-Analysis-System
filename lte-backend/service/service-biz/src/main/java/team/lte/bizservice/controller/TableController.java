@@ -17,7 +17,7 @@ import team.lte.commonutils.result.R;
 @Tag(name = "数据库全表信息")
 @CrossOrigin
 @RestController
-@RequestMapping("/database/info")
+@RequestMapping("/biz/database")
 public class TableController {
 
     @Resource

@@ -44,7 +44,7 @@ public class JwtUtils {
 
     /** 根据token获取用户id */
     public static String getIdByToken(HttpServletRequest request) {
-        String jwtToken = request.getHeader("token");
+        String jwtToken = request.getHeader("X-Token");
         if (StringUtils.isEmpty(jwtToken)) {
             return "";
         }

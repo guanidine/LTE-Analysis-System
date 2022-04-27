@@ -1,6 +1,6 @@
-package team.lte.ucenterservice.entity;
+package team.lte.ucenterservice.entity.po;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +25,7 @@ public class Member implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "用户id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @Schema(description = "手机号")
@@ -46,9 +47,11 @@ public class Member implements Serializable {
     private Boolean isDeleted;
 
     @Schema(description = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
     @Schema(description = "更新时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
 }

@@ -15,7 +15,7 @@ export default {
 
   listTables() {
     return request({
-      url: '/database/info',
+      url: '/biz/database',
       method: 'get'
     })
   }

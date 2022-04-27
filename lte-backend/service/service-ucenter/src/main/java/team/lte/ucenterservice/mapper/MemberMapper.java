@@ -1,6 +1,6 @@
 package team.lte.ucenterservice.mapper;
 
-import team.lte.ucenterservice.entity.Member;
+import team.lte.ucenterservice.entity.po.Member;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
