@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>service-biz</module>
-        <module>service-ucenter</module>
+        <module>service-acl</module>
     </modules>
 
     <properties>
@@ -37,6 +37,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <!-- JSR303 -->
@@ -83,9 +93,16 @@
             <artifactId>guava</artifactId>
         </dependency>
 
+        <!-- Joda -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+        </dependency>
+
+        <!-- FastJSON -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
         </dependency>
 
         <!-- SpringBoot Test -->

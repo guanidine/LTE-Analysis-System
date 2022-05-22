@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export default {
   registerMember(formItem) {
     return request({
-      url: `/ucenter/member/register`,
+      url: `/acl/index/register`,
       method: 'post',
       data: formItem
     })

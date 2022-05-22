@@ -1,5 +1,6 @@
 package team.lte.bizservice.entity.po;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import javax.validation.constraints.DecimalMax;
@@ -30,6 +31,7 @@ import lombok.Setter;
 @Schema(description = "小区配置信息")
 public class Cell implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "城市/地区名称")

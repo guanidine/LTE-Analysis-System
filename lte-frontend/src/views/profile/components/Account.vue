@@ -1,10 +1,10 @@
 <template>
   <el-form ref="updateForm" :model="updateForm" :rules="updateRules">
-    <el-form-item label="新昵称" prop="nickname">
-      <el-input v-model="updateForm.nickname" type="text"/>
+    <el-form-item label="新昵称" prop="name">
+      <el-input v-model="updateForm.name" type="text"/>
     </el-form-item>
-    <el-form-item label="新密码" prop="passwd">
-      <el-input v-model="updateForm.passwd" type="password"/>
+    <el-form-item label="新密码" prop="password">
+      <el-input v-model="updateForm.password" type="password"/>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">Update</el-button>
@@ -21,9 +21,9 @@ export default {
       type: Object,
       default: () => {
         return {
+          originName: '',
           name: '',
-          avatar: '',
-          mobile: ''
+          avatar: ''
         }
       }
     }
@@ -45,13 +45,13 @@ export default {
     }
     return {
       updateForm: {
-        nickname: this.user.name,
-        passwd: '',
-        mobile: this.user.mobile
+        originName: this.user.name,
+        name: this.user.name,
+        password: ''
       },
       updateRules: {
-        nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
-        passwd: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        name: [{ required: true, trigger: 'blur', validator: validateNickname }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       }
     }
   },

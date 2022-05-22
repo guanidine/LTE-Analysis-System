@@ -14,6 +14,7 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import { hasBtnPermission } from './utils/permission' // button permission
 
 /**
  * If you don't want to use mock-server
@@ -34,6 +35,7 @@ import '@/permission' // permission control
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+Vue.prototype.hasPerm = hasBtnPermission
 
 new Vue({
   el: '#app',

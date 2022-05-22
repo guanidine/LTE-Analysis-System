@@ -6,6 +6,7 @@
         select tablename
         from pg_tables
         where schemaname = #{schemaName}
+          and tablename like 'tb%'
         order by tablename;
     </select>
 

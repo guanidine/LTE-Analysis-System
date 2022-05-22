@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div v-if="hasPerm('prb.list')" class="app-container">
     PRB干扰数据查询
 
     <!--表单-->
@@ -74,6 +74,7 @@
 <script>
 import echarts from 'echarts'
 import prbApi from '@/api/query/prb'
+import Vue from 'vue'
 
 export default {
   data() {
@@ -327,10 +328,12 @@ export default {
     },
 
     listEnodebs() {
-      prbApi.listEnodebs()
-        .then(response => {
-          this.enodebList = response.data.list
-        })
+      if (Vue.prototype.hasPerm('prb.list')) {
+        prbApi.listEnodebs()
+          .then(response => {
+            this.enodebList = response.data.list
+          })
+      }
     }
 
     // TODO: 四个selector未全部选择的时候查询按钮应为disabled，懒着做了

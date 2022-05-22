@@ -53,38 +53,34 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
-  },
+  }
+]
 
+export const asyncRoutes = [
   {
     path: '/query',
     component: Layout,
     redirect: '/query/dashboard',
     name: '业务查询',
-    meta: { title: '业务查询', icon: 'el-icon-s-help' },
+    meta: { title: '业务查询', icon: 'el-icon-s-help', roles: [] },
     children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: 'Dashboard', icon: 'dashboard' }
-      },
       {
         path: 'cell',
         name: '小区配置信息',
         component: () => import('@/views/query/cell'),
-        meta: { title: '小区配置信息', icon: 'table' }
+        meta: { title: '小区配置信息', icon: 'table', roles: [] }
       },
       {
         path: 'kpi',
         name: 'KPI指标信息查询',
         component: () => import('@/views/query/kpi'),
-        meta: { title: 'KPI指标信息查询', icon: 'dashboard' }
+        meta: { title: 'KPI指标信息查询', icon: 'dashboard', roles: [] }
       },
       {
         path: 'prb',
         name: 'PRB干扰数据查询',
         component: () => import('@/views/query/prb'),
-        meta: { title: 'PRB干扰数据查询', icon: 'dashboard' }
+        meta: { title: 'PRB干扰数据查询', icon: 'dashboard', roles: [] }
       }
     ]
   },
@@ -94,13 +90,83 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/manage/dashboard',
     name: '管理面板',
-    meta: { title: '管理面板', icon: 'el-icon-s-help' },
+    meta: { title: '管理面板', icon: 'el-icon-s-help', roles: [] },
     children: [
       {
-        path: 'import',
+        path: 'data',
         name: '数据管理',
-        component: () => import('@/views/manage'),
-        meta: { title: '数据管理', icon: 'table' }
+        component: () => import('@/views/manage/data'),
+        meta: { title: '数据管理', icon: 'table', roles: [] }
+      }
+    ]
+  },
+
+  {
+    path: '/acl',
+    component: Layout,
+    redirect: '/acl/user/list',
+    name: '访问权限',
+    meta: { title: '访问权限', icon: 'el-icon-s-help', roles: [] },
+    children: [
+      {
+        path: 'user/list',
+        name: '用户管理',
+        component: () => import('@/views/acl/user/list'),
+        meta: { title: '用户管理', icon: 'table', roles: [] }
+      },
+      {
+        path: 'user/add',
+        name: '用户添加',
+        component: () => import('@/views/acl/user/form'),
+        meta: { title: '用户添加', roles: [] },
+        hidden: true
+      },
+      {
+        path: 'user/update/:id',
+        name: '用户修改',
+        component: () => import('@/views/acl/user/form'),
+        meta: { title: '用户修改', roles: [] },
+        hidden: true
+      },
+      {
+        path: 'user/role/:id',
+        name: '用户职务',
+        component: () => import('@/views/acl/user/roleForm'),
+        meta: { title: '用户职务', roles: [] },
+        hidden: true
+      },
+      {
+        path: 'role/list',
+        name: '职务管理',
+        component: () => import('@/views/acl/role/list'),
+        meta: { title: '职务管理', icon: 'table', roles: [] }
+      },
+      {
+        path: 'role/add',
+        name: '职务添加',
+        component: () => import('@/views/acl/role/form'),
+        meta: { title: '职务添加', roles: [] },
+        hidden: true
+      },
+      {
+        path: 'role/update/:id',
+        name: '职务修改',
+        component: () => import('@/views/acl/role/form'),
+        meta: { title: '职务修改', roles: [] },
+        hidden: true
+      },
+      {
+        path: 'role/distribution/:id',
+        name: '职务权限',
+        component: () => import('@/views/acl/role/roleForm'),
+        meta: { title: '职务权限', roles: [] },
+        hidden: true
+      },
+      {
+        path: 'permission/list',
+        name: '权限管理',
+        component: () => import('@/views/acl/permission/list'),
+        meta: { title: '权限管理', icon: 'table', roles: [] }
       }
     ]
   },

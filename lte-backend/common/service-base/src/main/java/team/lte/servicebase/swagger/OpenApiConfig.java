@@ -11,11 +11,12 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import team.lte.commonutils.Constants;
 
 @Configuration
 public class OpenApiConfig {
 
-    private static final String HEADER_NAME = "Authorization";
+    private static final String HEADER_NAME = Constants.TOKEN_HEADER;
     private static final String BASE_PACKAGE = "team.lte";
 
     @Bean

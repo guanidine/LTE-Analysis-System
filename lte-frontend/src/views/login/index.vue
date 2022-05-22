@@ -20,7 +20,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="手机号"
+          placeholder="用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -62,7 +62,7 @@
 
       <div style="position:relative">
         <div class="tips">
-          <span>手机号 : 11100001111</span>
+          <span>用户名 : admin</span>
         </div>
         <div class="tips">
           <span style="margin-right:18px;">密码 : 111111</span>
@@ -77,32 +77,25 @@
         <div class="register-container">
           <el-form ref="registerForm" :model="registerForm" :rules="registerRules">
 
-            <el-form-item class="input-prepend restyle no-radius" prop="nickname">
+            <el-form-item class="input-prepend restyle no-radius" prop="name">
               <span class="svg-container">
-                <i class="el-icon-user-solid" />
+                <i class="el-icon-user-solid"/>
               </span>
-              <el-input v-model="registerForm.nickname" type="text" placeholder="用户名"/>
+              <el-input v-model="registerForm.name" type="text" placeholder="用户名"/>
             </el-form-item>
 
-            <el-form-item class="input-prepend restyle no-radius" prop="mobile">
+            <el-form-item class="input-prepend  restyle no-radius" prop="password">
               <span class="svg-container">
-                <i class="el-icon-phone" />
+                <svg-icon icon-class="password"/>
               </span>
-              <el-input v-model="registerForm.mobile" type="text" placeholder="手机号"/>
+              <el-input v-model="registerForm.password" type="password" placeholder="密码"/>
             </el-form-item>
 
-            <el-form-item class="input-prepend  restyle no-radius" prop="passwd">
+            <el-form-item class="input-prepend" prop="passwordValidator">
               <span class="svg-container">
-                <svg-icon icon-class="password" />
+                <svg-icon icon-class="password"/>
               </span>
-              <el-input v-model="registerForm.passwd" type="password" placeholder="密码"/>
-            </el-form-item>
-
-            <el-form-item class="input-prepend" prop="passwdValidator">
-              <span class="svg-container">
-                <svg-icon icon-class="password" />
-              </span>
-              <el-input v-model="registerForm.passwdValidator" type="password" placeholder="请再输一遍"/>
+              <el-input v-model="registerForm.passwordValidator" type="password" placeholder="请再输一遍"/>
             </el-form-item>
 
             <div class="btn">
@@ -122,12 +115,13 @@ import registerApi from '@/api/login/register'
 export default {
   name: 'Login',
   data() {
-    const validateMobile = (rule, value, callback) => {
-      if (!(/^1\d{10}$/.test(value))) {
-        callback(new Error('手机号格式不正确'))
-      } else {
-        callback()
-      }
+    const validateUsername = (rule, value, callback) => {
+      // if (!validUsername(value)) {
+      //   callback(new Error('请输入正确的用户名'))
+      // } else {
+      //   callback()
+      // }
+      callback()
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
@@ -144,7 +138,7 @@ export default {
       }
     }
     const checkPasswd = (rule, value, callback) => {
-      if (this.registerForm.passwd !== this.registerForm.passwdValidator) {
+      if (this.registerForm.password !== this.registerForm.passwordValidator) {
         callback(new Error('两次输入的密码不一致'))
       } else {
         callback()
@@ -156,20 +150,18 @@ export default {
         password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateMobile }],
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       registerForm: {
-        mobile: '',
-        nickname: '',
-        passwd: '',
-        passwdValidator: ''
+        name: '',
+        password: '',
+        passwordValidator: ''
       },
       registerRules: {
-        mobile: [{ required: true, trigger: 'blur', validator: validateMobile }],
-        nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
-        passwd: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        passwdValidator: [{ required: true, trigger: 'blur', validator: checkPasswd }]
+        name: [{ required: true, trigger: 'blur', validator: validateNickname }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        passwordValidator: [{ required: true, trigger: 'blur', validator: checkPasswd }]
       },
       loading: false,
       passwordType: 'password',
@@ -230,17 +222,15 @@ export default {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
           registerApi.registerMember({
-            mobile: this.registerForm.mobile,
-            nickname: this.registerForm.nickname,
-            passwd: this.registerForm.passwd
-          })
-            .then(response => {
-              this.$message({
-                type: 'success',
-                message: '注册成功，请等待管理员为您激活账号'
-              })
-              this.showDialog = false
+            name: this.registerForm.name,
+            password: this.registerForm.password
+          }).then(response => {
+            this.$message({
+              type: 'success',
+              message: '注册成功，请等待管理员为您激活账号'
             })
+            this.showDialog = false
+          })
         }
       })
     }

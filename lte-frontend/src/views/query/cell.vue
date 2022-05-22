@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div v-if="hasPerm('cell.list')" class="app-container">
     小区配置信息查询
 
     <!-- 查询表单 -->
@@ -146,6 +146,7 @@
  */
 
 import cellApi from '@/api/query/cell'
+import Vue from 'vue'
 
 export default {
   data() {
@@ -179,12 +180,14 @@ export default {
   },
   methods: {
     listCells(page = 1) {
-      this.page = page
-      cellApi.listCells(this.page, this.limit, this.cellQuery)
-        .then(response => {
-          this.list = response.data.list
-          this.total = response.data.total
-        })
+      if (Vue.prototype.hasPerm('cell.list')) {
+        this.page = page
+        cellApi.listCells(this.page, this.limit, this.cellQuery)
+          .then(response => {
+            this.list = response.data.list
+            this.total = response.data.total
+          })
+      }
     },
     resetData() {
       this.cellQuery = {}
@@ -193,18 +196,22 @@ export default {
       this.listEnodebs()
     },
     listSectors() {
-      cellApi.listSectors()
-        .then(response => {
-          this.sectorList = response.data.list
-          this.renderSectorList = this.sectorList.slice(0, 100)
-        })
+      if (Vue.prototype.hasPerm('cell.list')) {
+        cellApi.listSectors()
+          .then(response => {
+            this.sectorList = response.data.list
+            this.renderSectorList = this.sectorList.slice(0, 100)
+          })
+      }
     },
     listEnodebs() {
-      cellApi.listEnodebs()
-        .then(response => {
-          this.enodebList = response.data.list
-          this.renderEnodebList = this.enodebList.slice(0, 100)
-        })
+      if (Vue.prototype.hasPerm('cell.list')) {
+        cellApi.listEnodebs()
+          .then(response => {
+            this.enodebList = response.data.list
+            this.renderEnodebList = this.enodebList.slice(0, 100)
+          })
+      }
     },
     filterMethod(val, object = 'sectorName') {
       if (object === 'sectorName') {

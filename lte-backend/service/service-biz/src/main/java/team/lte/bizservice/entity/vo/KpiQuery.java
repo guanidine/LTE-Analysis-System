@@ -1,5 +1,6 @@
 package team.lte.bizservice.entity.vo;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +10,8 @@ import lombok.Data;
 @Schema(description = "KPI指标统计数据查询条件")
 public class KpiQuery implements Serializable {
 
-    public static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Schema(description = "小区名称")
     private String sectorName;

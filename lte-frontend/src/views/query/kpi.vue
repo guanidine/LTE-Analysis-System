@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div v-if="hasPerm('kpi.list')" class="app-container">
     KPI指标信息查询
 
     <!--表单-->
@@ -98,6 +98,7 @@
 <script>
 import echarts from 'echarts'
 import kpiApi from '@/api/query/kpi'
+import Vue from 'vue'
 
 export default {
   data() {
@@ -340,10 +341,12 @@ export default {
     },
 
     listSectors() {
-      kpiApi.listSectors()
-        .then(response => {
-          this.sectorList = response.data.list
-        })
+      if (Vue.prototype.hasPerm('kpi.list')) {
+        kpiApi.listSectors()
+          .then(response => {
+            this.sectorList = response.data.list
+          })
+      }
     }
 
     // TODO: 四个selector未全部选择的时候查询按钮应为disabled，懒着做了

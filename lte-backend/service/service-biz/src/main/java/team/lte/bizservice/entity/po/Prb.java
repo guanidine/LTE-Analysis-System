@@ -1,11 +1,15 @@
 package team.lte.bizservice.entity.po;
 
+import java.io.Serial;
+import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 /**
  * <p>
@@ -21,9 +25,11 @@ import java.io.Serializable;
 @Schema(description = "PRB干扰数据")
 public class Prb implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "ID")
+    @TableId(value = "id", type = IdType.AUTO)
     private String id;
 
     @Schema(description = "起始时间")

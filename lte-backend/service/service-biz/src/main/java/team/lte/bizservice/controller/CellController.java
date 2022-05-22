@@ -32,7 +32,6 @@ import java.util.List;
  * @since 2022-03-10
  */
 @Tag(name = "小区配置信息管理")
-@CrossOrigin
 @RestController
 @RequestMapping("/biz/cell")
 public class CellController {

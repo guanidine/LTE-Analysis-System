@@ -1,0 +1,25 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: api-gateway
+
+  profiles:
+    # 环境设置
+    active: prod
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: service-acl
+          uri: lb://service-acl
+          predicates:
+            - Path=/acl/**
+        - id: service-biz
+          uri: lb://service-biz
+          predicates:
+            - Path=/biz/**

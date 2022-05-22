@@ -39,8 +39,7 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      'avatar',
-      'mobile'
+      'avatar'
     ])
   },
   created() {

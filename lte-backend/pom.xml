@@ -11,6 +11,7 @@
     <modules>
         <module>service</module>
         <module>common</module>
+        <module>infrastructure</module>
     </modules>
     <groupId>team.lte</groupId>
     <artifactId>lte-backend</artifactId>
@@ -42,6 +43,8 @@
         <jwt.version>0.9.1</jwt.version>
         <!-- Joda日期时间工具 -->
         <jodatime.version>2.10.13</jodatime.version>
+        <!-- FastJSON -->
+        <fastjson.version>1.2.80</fastjson.version>
     </properties>
 
     <dependencyManagement>
@@ -129,6 +132,13 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>${jodatime.version}</version>
+            </dependency>
+
+            <!-- FastJSON -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
 
             <!-- SpringBoot Test -->

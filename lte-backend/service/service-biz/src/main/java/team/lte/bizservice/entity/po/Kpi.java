@@ -1,10 +1,13 @@
 package team.lte.bizservice.entity.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -21,9 +24,11 @@ import java.io.Serializable;
 @Schema(description = "KPI指标统计数据")
 public class Kpi implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "ID")
+    @TableId(value = "id", type = IdType.AUTO)
     private String id;
 
     @Schema(description = "起始时间")

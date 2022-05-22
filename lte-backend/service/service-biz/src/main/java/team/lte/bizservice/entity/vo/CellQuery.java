@@ -3,13 +3,15 @@ package team.lte.bizservice.entity.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Data
 @Schema(description = "小区配置信息查询条件")
 public class CellQuery implements Serializable {
 
-    public static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Schema(description = "小区ID")
     private String sectorId;

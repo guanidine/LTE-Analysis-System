@@ -34,7 +34,6 @@ import team.lte.commonutils.result.R;
  * @since 2022-04-07
  */
 @Tag(name = "PRB干扰数据管理")
-@CrossOrigin
 @RestController
 @RequestMapping("/biz/prb")
 public class PrbController {

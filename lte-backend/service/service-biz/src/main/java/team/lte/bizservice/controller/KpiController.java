@@ -34,7 +34,6 @@ import team.lte.commonutils.result.R;
  * @since 2022-04-07
  */
 @Tag(name = "KPI指标统计数据管理")
-@CrossOrigin
 @RestController
 @RequestMapping("/biz/kpi")
 public class KpiController {

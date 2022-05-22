@@ -15,7 +15,6 @@ import team.lte.commonutils.SpringContextHolder;
 import team.lte.commonutils.result.R;
 
 @Tag(name = "数据库配置管理")
-@CrossOrigin
 @RestController
 @RequestMapping("/biz/druid")
 public class DruidController {

@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -7,7 +7,8 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    mobile: ''
+    buttons: [],
+    roles: []
   }
 }
 
@@ -26,8 +27,11 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_MOBILE: (state, mobile) => {
-    state.mobile = mobile
+  SET_BUTTONS: (state, buttons) => {
+    state.buttons = buttons
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -36,7 +40,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ mobile: username.trim(), passwd: password }).then(response => {
+      login(username.trim(), password).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
@@ -53,15 +57,20 @@ const actions = {
       getInfo(state.token).then(response => {
         const { data } = response
 
-        if (!data) {
+        if (data) {
+          commit('SET_ROLES', data.roles)
+        } else {
           return reject('Verification failed, please Login again.')
         }
 
-        const { item } = data
+        const buttonAuthList = []
+        data.permissionValueList.forEach(button => {
+          buttonAuthList.push(button)
+        })
 
-        commit('SET_NAME', item.nickname)
-        commit('SET_AVATAR', item.avatar)
-        commit('SET_MOBILE', item.mobile)
+        commit('SET_NAME', data.name)
+        commit('SET_AVATAR', data.avatar)
+        commit('SET_BUTTONS', buttonAuthList)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -76,6 +85,8 @@ const actions = {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
+        commit('SET_ROLES', [])
+        commit('SET_BUTTONS', [])
         resolve()
       }).catch(error => {
         reject(error)
