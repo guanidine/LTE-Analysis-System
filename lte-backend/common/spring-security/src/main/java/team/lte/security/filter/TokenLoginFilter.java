@@ -3,6 +3,7 @@ package team.lte.security.filter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import team.lte.commonutils.IPUtils;
 import team.lte.commonutils.jwt.JwtUtils;
 import team.lte.commonutils.result.R;
 import team.lte.commonutils.result.ResponseUtils;
@@ -34,7 +36,8 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final RedisTemplate<String, List<String>> redisTemplate;
 
-    public TokenLoginFilter(AuthenticationManager authenticationManager, RedisTemplate<String, List<String>> redisTemplate) {
+    public TokenLoginFilter(AuthenticationManager authenticationManager,
+        RedisTemplate<String, List<String>> redisTemplate) {
         this.authenticationManager = authenticationManager;
         this.redisTemplate = redisTemplate;
         this.setPostOnly(false);
@@ -61,7 +64,8 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         Authentication auth) {
         SecurityUser user = (SecurityUser)auth.getPrincipal();
         String token = JwtUtils.getJwtToken(user.getCurrentUserInfo().getName());
-        redisTemplate.opsForValue().set(user.getCurrentUserInfo().getName(), user.getPermissionValueList());
+        redisTemplate.opsForValue().set(user.getCurrentUserInfo().getName() + IPUtils.getIpAddr(req),
+            user.getPermissionValueList(), 7, TimeUnit.DAYS);
 
         ResponseUtils.out(res, R.ok().data("token", token));
     }

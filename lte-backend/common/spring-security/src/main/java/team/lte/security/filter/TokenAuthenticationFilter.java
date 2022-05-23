@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import lombok.extern.slf4j.Slf4j;
 import team.lte.commonutils.Constants;
+import team.lte.commonutils.IPUtils;
 import team.lte.commonutils.jwt.JwtUtils;
 import team.lte.commonutils.result.R;
 import team.lte.commonutils.result.ResponseUtils;
@@ -66,7 +67,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
         if (token != null && !"".equals(token.trim())) {
             String userName = JwtUtils.getIdByToken(token);
 
-            List<String> permissionValueList = redisTemplate.opsForValue().get(userName);
+            List<String> permissionValueList = redisTemplate.opsForValue().get(userName + IPUtils.getIpAddr(request));
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             if (permissionValueList == null) {
                 return null;

@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import team.lte.commonutils.Constants;
+import team.lte.commonutils.IPUtils;
 import team.lte.commonutils.jwt.JwtUtils;
 import team.lte.commonutils.result.R;
 import team.lte.commonutils.result.ResponseUtils;
@@ -33,7 +34,7 @@ public class TokenLogoutHandler implements LogoutHandler {
         if (token != null) {
             // 清空当前用户缓存中的权限数据
             String userName = JwtUtils.getIdByToken(token);
-            redisTemplate.delete(userName);
+            redisTemplate.delete(userName + IPUtils.getIpAddr(request));
         }
         ResponseUtils.out(response, R.ok());
     }
