@@ -55,7 +55,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
         if (authentication != null) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } else {
-            ResponseUtils.out(res, R.error());
+            ResponseUtils.out(res, R.error().message("登录过期，请重新登录"));
         }
 
         chain.doFilter(req, res);

@@ -6,6 +6,7 @@ spring:
 
   redis:
     host: 192.168.0.4
+    password: Q6^pw0*lb$@Ezv#&
 
   # 数据库连接
   datasource:

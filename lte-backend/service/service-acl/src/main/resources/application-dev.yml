@@ -5,7 +5,7 @@ spring:
         server-addr: 127.0.0.1:8848
 
   redis:
-    host: 120.48.19.4
+    host: 127.0.0.1
 
   # 数据库连接
   datasource:
