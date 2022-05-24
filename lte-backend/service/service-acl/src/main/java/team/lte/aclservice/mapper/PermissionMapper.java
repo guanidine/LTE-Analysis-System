@@ -21,4 +21,6 @@ public interface PermissionMapper extends BaseMapper<Permission> {
 
     List<Permission> listPermissionsByUserId(Long userId);
 
+    Permission getRootPermission();
+
 }

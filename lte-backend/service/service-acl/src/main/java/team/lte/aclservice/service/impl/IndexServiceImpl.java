@@ -55,7 +55,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<JSONObject> getMenu(String username) {
+    public List<JSONObject> getAsyncRoutes(String username) {
         User user = userService.selectByName(username);
 
         return permissionService.listPermissionsByUserId(user.getId());

@@ -9,12 +9,12 @@
       default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="name" label="名称"/>
-      <el-table-column prop="path" label="访问路径"/>
-      <el-table-column prop="component" label="组件路径"/>
-      <el-table-column prop="permissionValue" label="权限值"/>
+      <el-table-column prop="name" label="名称" min-width="20%"/>
+      <el-table-column prop="path" label="访问路径" min-width="15%"/>
+      <el-table-column prop="component" label="组件路径" min-width="15%"/>
+      <el-table-column prop="permissionValue" label="权限值" min-width="15%"/>
       <!-- 所以只能为二级菜单 -->
-      <el-table-column label="操作">
+      <el-table-column label="操作" min-width="30%">
         <template slot-scope="scope">
           <el-button
             v-if="(scope.row.level === 1 || scope.row.level === 2) && hasPerm('permission.add')"

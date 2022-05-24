@@ -10,7 +10,7 @@ public interface IndexService {
 
     Map<String, Object> getUserInfo(String username);
 
-    List<JSONObject> getMenu(String username);
+    List<JSONObject> getAsyncRoutes(String username);
 
     void register(UserVO userVO);
 

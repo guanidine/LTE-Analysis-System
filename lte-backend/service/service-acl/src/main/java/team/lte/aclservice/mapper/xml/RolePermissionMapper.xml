@@ -2,4 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.lte.aclservice.mapper.RolePermissionMapper">
 
+    <select id="listAvailableRoles" resultType="java.lang.String">
+        select r.name
+        from acl_role as r
+                 inner join acl_role_permission as rp on r.id = rp.role_id
+        where rp.permission_id = #{id}
+          and rp.is_deleted = 0
+          and r.is_deleted = 0
+    </select>
+
 </mapper>

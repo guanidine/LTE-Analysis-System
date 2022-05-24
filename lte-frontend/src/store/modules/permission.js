@@ -24,14 +24,16 @@ function hasPermission(roles, route) {
 function makePermissionRouters(serverRouter, clientAsyncRoutes) {
   clientAsyncRoutes.map(ele => {
     if (!ele.name || (!ele.meta && !ele.meta.roles)) return
-    let roles_obj
+    let roles_obj = null
     for (let i = 0; i < serverRouter.length; i++) {
       const element = serverRouter[i]
       if (ele.name === element.name) {
         roles_obj = element
       }
     }
-    ele.meta.roles = roles_obj.meta.roles
+    if (roles_obj !== null) {
+      ele.meta.roles = roles_obj.meta.roles
+    }
 
     if (ele.children) {
       makePermissionRouters(serverRouter, ele.children)
@@ -75,16 +77,11 @@ const mutations = {
 
 const actions = {
   async generateRoutes({ commit }, roles) {
-    console.log(getAsyncRoutes())
-    const permissionRouters = makePermissionRouters(getAsyncRoutes(), clientRoutes)
-    // let permissionRouters = await getAsyncRoutes().then(res => {
-    //   const data = res.data
-    //   console.log(res.data)
-    //   permissionRouters = makePermissionRouters(data, clientRoutes)
-    //   return permissionRouters
-    // })
-    console.log('PermissionRouters')
-    console.log(permissionRouters)
+    let permissionRouters = await getAsyncRoutes().then(res => {
+      const data = res.data.list
+      permissionRouters = makePermissionRouters(data, clientRoutes)
+      return permissionRouters
+    })
     return new Promise(resolve => {
       let accessedRoutes
       if (roles.includes('admin')) {
@@ -92,8 +89,6 @@ const actions = {
       } else {
         accessedRoutes = filterAsyncRoutes(permissionRouters, roles)
       }
-      console.log('accessedRoutes')
-      console.log(accessedRoutes)
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
     })

@@ -116,23 +116,23 @@ export const asyncRoutes = [
       },
       {
         path: 'user/add',
-        name: '用户添加',
+        name: '添加用户',
         component: () => import('@/views/acl/user/form'),
-        meta: { title: '用户添加', roles: [] },
+        meta: { title: '添加用户', roles: [] },
         hidden: true
       },
       {
         path: 'user/update/:id',
-        name: '用户修改',
+        name: '修改用户',
         component: () => import('@/views/acl/user/form'),
-        meta: { title: '用户修改', roles: [] },
+        meta: { title: '修改用户', roles: [] },
         hidden: true
       },
       {
         path: 'user/role/:id',
-        name: '用户职务',
+        name: '分配职务',
         component: () => import('@/views/acl/user/roleForm'),
-        meta: { title: '用户职务', roles: [] },
+        meta: { title: '分配职务', roles: [] },
         hidden: true
       },
       {
@@ -143,16 +143,16 @@ export const asyncRoutes = [
       },
       {
         path: 'role/add',
-        name: '职务添加',
+        name: '添加职务',
         component: () => import('@/views/acl/role/form'),
-        meta: { title: '职务添加', roles: [] },
+        meta: { title: '添加职务', roles: [] },
         hidden: true
       },
       {
         path: 'role/update/:id',
-        name: '职务修改',
+        name: '修改职务',
         component: () => import('@/views/acl/role/form'),
-        meta: { title: '职务修改', roles: [] },
+        meta: { title: '修改职务', roles: [] },
         hidden: true
       },
       {

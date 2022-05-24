@@ -34,10 +34,10 @@
                  inner join acl_role_permission rp on rp.role_id = ur.role_id
                  inner join acl_permission p on p.id = rp.permission_id
         where ur.user_id = #{userId}
-          and ur.is_deleted = false
-          and rp.is_deleted = false
-          and p.is_disabled = false
-          and p.is_deleted = false
+          and ur.is_deleted = 0
+          and rp.is_deleted = 0
+          and p.is_disabled = 0
+          and p.is_deleted = 0
     </select>
 
     <select id="listPermissionValuesByUserId" resultType="String">
@@ -57,6 +57,14 @@
         select permission_value
         from acl_permission
         where type = 2
+          and is_disabled = 0
+          and is_deleted = 0
+    </select>
+
+    <select id="getRootPermission" resultType="team.lte.aclservice.entity.po.Permission">
+        select *
+        from acl_permission
+        where pid = 0
           and is_disabled = 0
           and is_deleted = 0
     </select>

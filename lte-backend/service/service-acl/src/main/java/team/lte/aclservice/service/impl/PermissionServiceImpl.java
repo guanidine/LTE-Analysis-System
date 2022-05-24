@@ -13,12 +13,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import team.lte.aclservice.entity.po.Permission;
 import team.lte.aclservice.entity.po.RolePermission;
-import team.lte.aclservice.entity.po.User;
 import team.lte.aclservice.mapper.PermissionMapper;
 import team.lte.aclservice.service.PermissionService;
 import team.lte.aclservice.service.RolePermissionService;
-import team.lte.aclservice.service.UserService;
-import team.lte.aclservice.util.PermissionUtils;
 
 /**
  * <p>
@@ -34,16 +31,13 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     @Resource
     private RolePermissionService rolePermissionService;
 
-    @Resource
-    private UserService userService;
-
     @Override
     public List<Permission> listPermissions() {
         LambdaQueryWrapper<Permission> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByDesc(Permission::getId);
         List<Permission> permissionList = getBaseMapper().selectList(wrapper);
 
-        return PermissionUtils.listPermissionsReverse(permissionList);
+        return listPermissionsReverse(getBaseMapper().getRootPermission(), permissionList);
     }
 
     @Override
@@ -61,7 +55,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             }
         }
 
-        return PermissionUtils.listPermissionsReverse(allPermissionList);
+        return listPermissionsReverse(getBaseMapper().getRootPermission(), allPermissionList);
     }
 
     @Override
@@ -103,32 +97,16 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     @Override
     public List<String> listPermissionValuesByUserId(Long userId) {
-        if (this.isAdmin(userId)) {
-            return getBaseMapper().listPermissionValues();
-        } else {
-            return getBaseMapper().listPermissionValuesByUserId(userId);
-        }
+        return getBaseMapper().listPermissionValuesByUserId(userId);
     }
 
     @Override
     public List<JSONObject> listPermissionsByUserId(Long userId) {
         List<Permission> selectPermissionList;
-        if (this.isAdmin(userId)) {
-            selectPermissionList = getBaseMapper().selectList(null);
-        } else {
-            selectPermissionList = getBaseMapper().listPermissionsByUserId(userId);
-        }
+        selectPermissionList = getBaseMapper().listPermissionsByUserId(userId);
 
-        List<Permission> permissionList = PermissionUtils.listPermissionsReverse(selectPermissionList);
-        return PermissionUtils.buildRouterPermissions(permissionList);
-    }
-
-    /** 判断是否为管理员 */
-    private boolean isAdmin(Long userId) {
-        // TODO: 其实更合适的做法是roleService中判断role是否为admin
-        User user = userService.getById(userId);
-
-        return user != null && "admin".equalsIgnoreCase(user.getName());
+        List<Permission> permissionList = listPermissionsReverse(getBaseMapper().getRootPermission(), selectPermissionList);
+        return buildRouterPermissions(permissionList);
     }
 
     /** 递归获取子节点 */
@@ -141,5 +119,58 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             idList.addAll(this.listChildrenReverse(item.getId()));
         });
         return idList;
+    }
+
+    /** 递归构建权限树形结构 */
+    public List<Permission> listPermissionsReverse(Permission root, List<Permission> nodes) {
+        List<Permission> trees = new ArrayList<>();
+        root.setLevel(1);
+        trees.add(listChildPermissions(root, nodes));
+        return trees;
+    }
+
+    /** 构建前端router中的权限结构JSON */
+    public List<JSONObject> buildRouterPermissions(List<Permission> nodes) {
+        List<JSONObject> menus = new ArrayList<>();
+        if (nodes.size() == 1) {
+            Permission topNode = nodes.get(0);
+
+            List<Permission> oneMenuList = topNode.getChildren();
+            for (Permission one : oneMenuList) {
+                buildRouter(menus, one);
+                List<Permission> twoMenuList = one.getChildren();
+                for (Permission two : twoMenuList) {
+                    buildRouter(menus, two);
+                    List<Permission> threeMenuList = two.getChildren();
+                    for (Permission three : threeMenuList) {
+                        buildRouter(menus, three);
+                    }
+                }
+            }
+        }
+        return menus;
+    }
+
+    private void buildRouter(List<JSONObject> menus, Permission permission) {
+        JSONObject menu = new JSONObject();
+        menu.put("path", permission.getPath());
+        menu.put("name", permission.getName());
+        JSONObject meta = new JSONObject();
+        meta.put("roles", rolePermissionService.listAvailableRoles(permission.getId()));
+        menu.put("meta", meta);
+        menus.add(menu);
+    }
+
+    /** 递归查找子节点 */
+    private Permission listChildPermissions(Permission root, List<Permission> nodes) {
+        root.setChildren(new ArrayList<>());
+
+        for (Permission node : nodes) {
+            if (root.getId().equals(node.getPid())) {
+                node.setLevel(root.getLevel() + 1);
+                root.getChildren().add(listChildPermissions(node, nodes));
+            }
+        }
+        return root;
     }
 }
