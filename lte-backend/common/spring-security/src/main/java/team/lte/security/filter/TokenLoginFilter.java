@@ -2,14 +2,11 @@ package team.lte.security.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,7 +16,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import team.lte.commonutils.IPUtils;
 import team.lte.commonutils.jwt.JwtUtils;
 import team.lte.commonutils.result.R;
 import team.lte.commonutils.result.ResponseUtils;
@@ -34,12 +30,9 @@ import team.lte.security.entity.User;
 public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final RedisTemplate<String, List<String>> redisTemplate;
 
-    public TokenLoginFilter(AuthenticationManager authenticationManager,
-        RedisTemplate<String, List<String>> redisTemplate) {
+    public TokenLoginFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        this.redisTemplate = redisTemplate;
         this.setPostOnly(false);
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/acl/login", "POST"));
     }
@@ -64,8 +57,6 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         Authentication auth) {
         SecurityUser user = (SecurityUser)auth.getPrincipal();
         String token = JwtUtils.getJwtToken(user.getCurrentUserInfo().getName());
-        redisTemplate.opsForValue().set(user.getCurrentUserInfo().getName() + IPUtils.getIpAddr(req),
-            user.getPermissionValueList(), 7, TimeUnit.DAYS);
 
         ResponseUtils.out(res, R.ok().data("token", token));
     }

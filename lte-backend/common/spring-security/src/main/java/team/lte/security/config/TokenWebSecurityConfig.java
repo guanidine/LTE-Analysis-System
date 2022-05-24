@@ -1,10 +1,7 @@
 package team.lte.security.config;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,14 +27,11 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final DefaultPasswordEncoder defaultPasswordEncoder;
-    private final RedisTemplate<String, List<String>> redisTemplate;
 
     @Autowired
-    public TokenWebSecurityConfig(UserDetailsService userDetailsService, DefaultPasswordEncoder defaultPasswordEncoder,
-        RedisTemplate redisTemplate) {
+    public TokenWebSecurityConfig(UserDetailsService userDetailsService, DefaultPasswordEncoder defaultPasswordEncoder) {
         this.userDetailsService = userDetailsService;
         this.defaultPasswordEncoder = defaultPasswordEncoder;
-        this.redisTemplate = redisTemplate;
     }
 
     /** 配置设置 */
@@ -47,9 +41,9 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/druid/**", "/favicon.ico", "/acl/index/register/**")
             .permitAll().anyRequest().authenticated().and().logout().logoutUrl("/acl/index/logout")
-            .addLogoutHandler(new TokenLogoutHandler(redisTemplate)).and()
-            .addFilter(new TokenLoginFilter(authenticationManager(), redisTemplate))
-            .addFilter(new TokenAuthenticationFilter(authenticationManager(), redisTemplate)).httpBasic();
+            .addLogoutHandler(new TokenLogoutHandler()).and()
+            .addFilter(new TokenLoginFilter(authenticationManager()))
+            .addFilter(new TokenAuthenticationFilter(authenticationManager())).httpBasic();
     }
 
     /** 密码处理 */
