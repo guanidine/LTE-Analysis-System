@@ -433,7 +433,7 @@ comment on column acl_permission.path is '访问路径';
 comment on column acl_permission.component is '组件路径';
 comment on column acl_permission.icon is '图标';
 comment on column acl_permission.is_disabled is '状态(1: 禁止访问, 0: 正常访问)';
-comment on column acl_permission.is_deleted is '逻辑删除(1: 已删除, 0: 未删除)';
+comment on column acl_permission.is_deleted is '逻辑删除(null: 已删除, 0: 未删除)';
 comment on column acl_permission.gmt_create is '创建时间';
 comment on column acl_permission.gmt_modified is '更新时间';
 
@@ -485,7 +485,7 @@ comment on table acl_role is '职务表';
 comment on column acl_role.id is '职务id';
 comment on column acl_role.name is '职务名称';
 comment on column acl_role.remark is '备注';
-comment on column acl_role.is_deleted is '逻辑删除(1: 已删除, 0: 未删除)';
+comment on column acl_role.is_deleted is '逻辑删除(null: 已删除, 0: 未删除)';
 comment on column acl_role.gmt_create is '创建时间';
 comment on column acl_role.gmt_modified is '更新时间';
 
@@ -511,7 +511,7 @@ comment on column acl_user.password is '密码';
 comment on column acl_user.name is '用户名';
 comment on column acl_user.avatar is '用户头像';
 comment on column acl_user.is_disabled is '状态(1: 已禁用, 0: 正常使用)';
-comment on column acl_user.is_deleted is '逻辑删除(1: 已删除, 0: 未删除)';
+comment on column acl_user.is_deleted is '逻辑删除(null: 已删除, 0: 未删除)';
 comment on column acl_user.gmt_create is '创建时间';
 comment on column acl_user.gmt_modified is '更新时间';
 
@@ -535,7 +535,7 @@ comment on table acl_role_permission is '职务权限关系表';
 comment on column acl_role_permission.id is '主键id';
 comment on column acl_role_permission.role_id is '职务id';
 comment on column acl_role_permission.permission_id is '权限id';
-comment on column acl_role_permission.is_deleted is '逻辑删除(1: 已删除, 0: 未删除)';
+comment on column acl_role_permission.is_deleted is '逻辑删除(null: 已删除, 0: 未删除)';
 comment on column acl_role_permission.gmt_create is '创建时间';
 comment on column acl_role_permission.gmt_modified is '更新时间';
 
@@ -588,7 +588,7 @@ comment on table acl_user_role is '用户职务关系表';
 comment on column acl_user_role.id is '主键id';
 comment on column acl_user_role.role_id is '职务id';
 comment on column acl_user_role.user_id is '用户id';
-comment on column acl_user_role.is_deleted is '逻辑删除(1: 已删除, 0: 未删除)';
+comment on column acl_user_role.is_deleted is '逻辑删除(null: 已删除, 0: 未删除)';
 comment on column acl_user_role.gmt_create is '创建时间';
 comment on column acl_user_role.gmt_modified is '更新时间';
 

@@ -2,51 +2,62 @@
   <div v-if="hasPerm('permission.list')" class="app-container">
     <el-table
       :data="menuList"
+      height="85vh"
       style="width: 100%;margin-bottom: 20px;"
       row-key="id"
       border
       default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="name" label="名称" sortable width="250"/>
-      <el-table-column prop="path" label="访问路径" sortable width="200"/>
-      <el-table-column prop="component" label="组件路径" sortable width="200"/>
+      <el-table-column prop="name" label="名称"/>
+      <el-table-column prop="path" label="访问路径"/>
+      <el-table-column prop="component" label="组件路径"/>
       <el-table-column prop="permissionValue" label="权限值"/>
       <!-- 所以只能为二级菜单 -->
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
             v-if="(scope.row.level === 1 || scope.row.level === 2) && hasPerm('permission.add')"
-            type="text"
+            type="warning"
             size="mini"
-            @click="() => {dialogFormVisible = true, menu.pid = scope.row.id}"
+            icon="el-icon-plus"
+            plain
+            @click="() => {dialogFormVisible = true; menu.pid = scope.row.id}"
           >添加菜单
           </el-button>
           <el-button
             v-if="scope.row.level === 3 && hasPerm('permission.add')"
-            type="text"
+            type="warning"
             size="mini"
-            @click="() => {dialogPermissionVisible = true, permission.pid = scope.row.id}"
+            icon="el-icon-plus"
+            plain
+            @click="() => {dialogPermissionVisible = true; permission.pid = scope.row.id}"
           >添加功能
           </el-button>
           <el-button
             v-if="scope.row.level === 4 && hasPerm('permission.update')"
-            type="text"
+            type="primary"
             size="mini"
+            icon="el-icon-edit"
+            plain
             @click="() => updateFunction(scope.row)"
           >修改功能
           </el-button>
           <el-button
             v-if="scope.row.level !== 4 && hasPerm('permission.update')"
-            type="text"
+            type="primary"
             size="mini"
+            icon="el-icon-edit"
+            plain
             @click="() => getById(scope.row)"
           >修改
           </el-button>
           <el-button
             v-if="hasPerm('permission.remove')"
-            type="text"
+            type="danger"
             size="mini"
+            icon="el-icon-delete"
+            plain
             @click="() => remove(scope.row)"
           >删除
           </el-button>
@@ -122,7 +133,6 @@ export default {
 
   data() {
     return {
-      filterText: '',
       menuList: [],
       defaultProps: {
         children: 'children',

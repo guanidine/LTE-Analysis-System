@@ -1,9 +1,11 @@
 <template>
   <div v-if="hasPerm('user.list')" class="app-container">
     <div>
-      <el-button v-if="hasPerm('user.add')" type="danger" size="mini" @click="addUser()">添加</el-button>
-      <el-button v-if="hasPerm('user.remove')" type="danger" size="mini" @click="removeRows()">批量删除</el-button>
+      <el-button v-if="hasPerm('user.add')" type="primary" size="medium" plain @click="addUser()">添加</el-button>
+      <el-button v-if="hasPerm('user.remove')" type="danger" size="medium" plain @click="removeRows()">批量删除</el-button>
     </div>
+
+    <div style="margin: 15px 0;"/>
 
     <el-table v-loading="listLoading" :data="list" stripe style="width: 100%" @selection-change="handleSelectionChange">
 
@@ -19,23 +21,41 @@
 
       <el-table-column prop="password" label="用户密码"/>
 
-      <el-table-column prop="gmtCreate" label="创建时间" width="180"/>
+      <el-table-column prop="gmtCreate" label="创建时间" :formatter="timeFormatter" width="180"/>
 
       <el-table-column label="操作" width="230" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/acl/user/role/'+scope.row.id">
-            <el-button v-if="hasPerm('user.assign')" type="info" size="mini" icon="el-icon-info"/>
-          </router-link>
-          <router-link :to="'/acl/user/update/'+scope.row.id">
-            <el-button v-if="hasPerm('user.update')" type="primary" size="mini" icon="el-icon-edit"/>
-          </router-link>
-          <el-button
-            v-if="hasPerm('user.remove')"
-            type="danger"
-            size="mini"
-            icon="el-icon-delete"
-            @click="removeDataById(scope.row.id)"
-          />
+          <el-row>
+            <el-button
+              v-if="hasPerm('user.assign')"
+              type="warning"
+              size="small"
+              icon="el-icon-s-operation"
+              circle
+              plain
+              @click="assignById(scope.row.id)"
+            >
+            </el-button>
+            <el-button
+              v-if="hasPerm('user.update')"
+              type="primary"
+              size="small"
+              icon="el-icon-edit"
+              circle
+              plain
+              @click="updateById(scope.row.id)"
+            >
+            </el-button>
+            <el-button
+              v-if="hasPerm('user.remove')"
+              type="danger"
+              size="small"
+              icon="el-icon-delete"
+              circle
+              plain
+              @click="removeDataById(scope.row.id)"
+            />
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -56,6 +76,7 @@
 <script>
 import user from '@/api/acl/user'
 import Vue from 'vue'
+import { parseTime } from '@/utils'
 
 export default {
   data() {
@@ -95,6 +116,14 @@ export default {
           }
         )
       }
+    },
+
+    assignById(id) {
+      this.$router.push(`/acl/user/role/${id}`)
+    },
+
+    updateById(id) {
+      this.$router.push(`/acl/user/update/${id}`)
     },
 
     removeDataById(id) {
@@ -157,6 +186,10 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+
+    timeFormatter(data) {
+      return parseTime(new Date(data.gmtCreate))
     }
   }
 }

@@ -1,10 +1,13 @@
 <template>
   <div class="app-container">
     <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
-    <div style="margin: 15px 0;"></div>
-    <el-checkbox-group v-model="checkedRoles" @change="handleCheckedCitiesChange">
-      <el-checkbox v-for="city in roles" :key="city.id" :label="city.id">{{ city.name }}</el-checkbox>
+    <div style="margin: 15px 0;"/>
+    <el-checkbox-group v-model="checkedRoles" @change="handleCheckedRolesChange">
+      <el-checkbox v-for="role in roles" :key="role.id" :label="role.id" size="medium" border="border">
+        {{ role.name }}
+      </el-checkbox>
     </el-checkbox-group>
+    <div style="margin: 15px 0;"/>
     <el-button :disabled="saveBtnDisabled" type="primary" @click="update">保存</el-button>
   </div>
 </template>
@@ -52,10 +55,10 @@ export default {
       return strText
     },
     handleCheckAllChange(val) {
-      this.checkedRoles = val ? this.roles : []
+      this.checkedRoles = val ? this.getJsonToList(this.roles, 'id') : []
       this.isIndeterminate = false
     },
-    handleCheckedCitiesChange(value) {
+    handleCheckedRolesChange(value) {
       const checkedCount = value.length
       this.checkAll = checkedCount === this.roles.length
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.roles.length

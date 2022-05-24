@@ -1,7 +1,5 @@
 <template>
   <div v-if="hasPerm('kpi.list')" class="app-container">
-    KPI指标信息查询
-
     <!--表单-->
     <el-form :inline="true" class="demo-form-inline">
 

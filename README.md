@@ -209,16 +209,19 @@ tbCell，并存入数据库表 tbCell；
 ### 服务器
 
 * 项目已部署至服务器120.48.19.4，远程连接用户名 `root`，密码 `Q6^pw0*lb$@Ezv#7`（服务器密码居然不能包含 `&` 字符）。1核2G垃圾服务器，项目跑起来后剩不下多少内存了，折腾的时候得悠着点 :thinking: 。
-
-* 前端通过 `80` 端口转发，可以直接通过 [http://120.48.19.4](http://120.48.19.4) 访问。
-
-* Swagger依旧通过 `8001` 端口访问： [http://120.48.19.4:8001/swagger-ui/index.html](http://120.48.19.4:8001/swagger-ui/index.html) 。
-
-* 数据库使用 `120.48.19.4` 的 `3306` 端口，远程连接用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`。本地不需要再配置数据库了（白嫖使人快乐 :stuck_out_tongue_winking_eye: 。
-
-* Jenkins使用 `120.48.19.4` 的 `8080` 端口，可以通过 [http://120.48.19.4:8080](http://120.48.19.4:8080) 访问，登录用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`。
-
+* 服务器各端口：
+  * 前端： [http://120.48.19.4](http://120.48.19.4) ，账号密码如下：
+    * admin - 111111
+    * OP1 - 123456
+    * PG1 - 123456
+  * Swagger：[http://120.48.19.4:8001/swagger-ui/index.html](http://120.48.19.4:8001/swagger-ui/index.html)  和 [http://120.48.19.4:8002/swagger-ui/index.html](http://120.48.19.4:8002/swagger-ui/index.html) ，其中 `8002` 端口的 `service-acl` 服务需要Authorize，配置X-Token的值为用户登录时的token
+  * Druid：[http://120.48.19.4:8001/druid/index.html](http://120.48.19.4:8001/druid/index.html)  和 [http://120.48.19.4:8002/druid/index.html](http://120.48.19.4:8002/druid/index.html) 
+  * Jenkins：[http://120.48.19.4:8080](http://120.48.19.4:8080) ，用户名 `root` ，密码 `Q6^pw0*lb$@Ezv#&`
+  * Nacos：[http://120.48.19.4:8848/nacos](http://120.48.19.4:8848/nacos) ，用户名 `nacos`，密码 `nacos`（这样仿佛有点安全问题呢。。。）
+* 数据库：
+  * PostgreSQL：端口 `5432`，用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`
+  * Redis：端口 `6379`，密码 `Q6^pw0*lb$@Ezv#&`
 * 前后端代码分为两个环境：dev为本地调试环境，prod为线上环境。为了方便线上运行，项目默认使用prod环境，使用dev环境在本地运行需要加参数：
-  * 后端使用dev环境进行本地开发：[IntelliJ IDEA 配置SpringBoot项目 启动环境](https://blog.csdn.net/jx520/article/details/109711189) 。本地运行时依旧提供 [http://localhost:8001](http://localhost:8001) 的相关接口，如通过 [http://localhost:8001/swagger-ui/index.html](http://localhost:8001/swagger-ui/index.html) 访问dev环境的Swagger。
-  
+  * **后端使用dev环境进行本地开发**：[IntelliJ IDEA 配置SpringBoot项目 启动环境](https://blog.csdn.net/jx520/article/details/109711189) 。本地运行时依旧提供 [http://localhost:8001](http://localhost:8001) 的相关接口，如通过 [http://localhost:8001/swagger-ui/index.html](http://localhost:8001/swagger-ui/index.html) 访问dev环境的Swagger。**此外Maven现在设置了多种Profiles，本地应选dev**。
+
   * 前端不需要特别的设置， `npm run dev` 依旧使用dev环境，`npm run build:prod` 打包项目时使用prod环境（本地点开 `index.html` 似乎没啥反应）。本地运行端口依旧是9528，即访问 [http://localhost:9528](http://localhost:9528)。

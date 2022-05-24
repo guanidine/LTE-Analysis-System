@@ -37,6 +37,7 @@ spring:
         session-stat-enable: true
         profile-enable: true
       stat-view-servlet:
+        allow:
         enabled: true
         url-pattern: /druid/*
         reset-enable: false

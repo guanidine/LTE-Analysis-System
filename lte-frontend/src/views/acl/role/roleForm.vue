@@ -1,14 +1,19 @@
 <template>
   <div style="margin: 20px 20px">
+    <el-input v-model="filterText" placeholder="输入关键字进行过滤"/>
+    <div style="margin: 15px 0;"/>
     <el-tree
       ref="tree"
+      class="filter-tree"
       :data="data"
       show-checkbox
       default-expand-all
       node-key="id"
       highlight-current
       :props="defaultProps"
+      :filter-node-method="filterNode"
     />
+    <div style="margin: 15px 0;"/>
     <el-button :disabled="saveBtnDisabled" type="primary" @click="save">保存</el-button>
   </div>
 </template>
@@ -20,6 +25,7 @@ import Vue from 'vue'
 export default {
   data() {
     return {
+      filterText: '',
       saveBtnDisabled: true,
       data: [],
       defaultProps: {
@@ -33,6 +39,9 @@ export default {
   watch: {
     $route(to, from) {
       this.init()
+    },
+    filterText(val) {
+      this.$refs.tree.filter(val)
     }
   },
 
@@ -41,6 +50,11 @@ export default {
   },
 
   methods: {
+    filterNode(value, data) {
+      if (!value) return true
+      return data.name.indexOf(value) !== -1
+    },
+
     init() {
       if (this.$route.params && this.$route.params.id) {
         this.roleId = this.$route.params.id

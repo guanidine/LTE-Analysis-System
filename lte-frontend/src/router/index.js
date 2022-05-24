@@ -68,19 +68,19 @@ export const asyncRoutes = [
         path: 'cell',
         name: '小区配置信息',
         component: () => import('@/views/query/cell'),
-        meta: { title: '小区配置信息', icon: 'table', roles: [] }
+        meta: { title: '小区配置信息', icon: 'el-icon-s-grid', roles: [] }
       },
       {
         path: 'kpi',
         name: 'KPI指标信息查询',
         component: () => import('@/views/query/kpi'),
-        meta: { title: 'KPI指标信息查询', icon: 'dashboard', roles: [] }
+        meta: { title: 'KPI指标信息查询', icon: 'el-icon-s-data', roles: [] }
       },
       {
         path: 'prb',
         name: 'PRB干扰数据查询',
         component: () => import('@/views/query/prb'),
-        meta: { title: 'PRB干扰数据查询', icon: 'dashboard', roles: [] }
+        meta: { title: 'PRB干扰数据查询', icon: 'el-icon-s-marketing', roles: [] }
       }
     ]
   },
@@ -96,7 +96,7 @@ export const asyncRoutes = [
         path: 'data',
         name: '数据管理',
         component: () => import('@/views/manage/data'),
-        meta: { title: '数据管理', icon: 'table', roles: [] }
+        meta: { title: '数据管理', icon: 'excel', roles: [] }
       }
     ]
   },
@@ -106,13 +106,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/acl/user/list',
     name: '访问权限',
-    meta: { title: '访问权限', icon: 'el-icon-s-help', roles: [] },
+    meta: { title: '访问权限', icon: 'lock', roles: [] },
     children: [
       {
         path: 'user/list',
         name: '用户管理',
         component: () => import('@/views/acl/user/list'),
-        meta: { title: '用户管理', icon: 'table', roles: [] }
+        meta: { title: '用户管理', icon: 'user', roles: [] }
       },
       {
         path: 'user/add',
@@ -166,7 +166,7 @@ export const asyncRoutes = [
         path: 'permission/list',
         name: '权限管理',
         component: () => import('@/views/acl/permission/list'),
-        meta: { title: '权限管理', icon: 'table', roles: [] }
+        meta: { title: '权限管理', icon: 'tree-table', roles: [] }
       }
     ]
   },

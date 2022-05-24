@@ -1,9 +1,11 @@
 <template>
   <div v-if="hasPerm('role.list')" class="app-container">
     <div>
-      <el-button v-if="hasPerm('role.add')" type="danger" size="mini" @click="addUser()">添加</el-button>
-      <el-button v-if="hasPerm('role.remove')" type="danger" size="mini" @click="removeRows()">批量删除</el-button>
+      <el-button v-if="hasPerm('role.add')" type="primary" size="medium" plain @click="addUser()">添加</el-button>
+      <el-button v-if="hasPerm('role.remove')" type="danger" size="medium" plain @click="removeRows()">批量删除</el-button>
     </div>
+
+    <div style="margin: 15px 0;"/>
 
     <el-table v-loading="listLoading" :data="list" stripe style="width: 100%" @selection-change="handleSelectionChange">
 
@@ -20,19 +22,37 @@
 
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/acl/role/distribution/'+scope.row.id">
-            <el-button v-if="hasPerm('role.acl')" type="info" size="mini" icon="el-icon-info"/>
-          </router-link>
-          <router-link :to="'/acl/role/update/'+scope.row.id">
-            <el-button v-if="hasPerm('role.update')" type="primary" size="mini" icon="el-icon-edit"/>
-          </router-link>
-          <el-button
-            v-if="hasPerm('role.remove')"
-            type="danger"
-            size="mini"
-            icon="el-icon-delete"
-            @click="removeDataById(scope.row.id)"
-          />
+          <el-row>
+            <el-button
+              v-if="hasPerm('role.acl')"
+              type="warning"
+              size="small"
+              icon="el-icon-s-operation"
+              circle
+              plain
+              @click="assignById(scope.row.id)"
+            >
+            </el-button>
+            <el-button
+              v-if="hasPerm('role.update')"
+              type="primary"
+              size="small"
+              icon="el-icon-edit"
+              circle
+              plain
+              @click="updateById(scope.row.id)"
+            >
+            </el-button>
+            <el-button
+              v-if="hasPerm('role.remove')"
+              type="danger"
+              size="small"
+              icon="el-icon-delete"
+              circle
+              plain
+              @click="removeDataById(scope.row.id)"
+            />
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -92,6 +112,14 @@ export default {
           }
         )
       }
+    },
+
+    assignById(id) {
+      this.$router.push(`/acl/role/distribution/${id}`)
+    },
+
+    updateById(id) {
+      this.$router.push(`/acl/role/update/${id}`)
     },
 
     removeDataById(id) {

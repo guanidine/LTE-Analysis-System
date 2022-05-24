@@ -1,7 +1,5 @@
 <template>
   <div v-if="hasPerm('prb.list')" class="app-container">
-    PRB干扰数据查询
-
     <!--表单-->
     <el-form :inline="true" class="demo-form-inline">
 

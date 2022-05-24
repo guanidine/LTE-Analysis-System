@@ -44,8 +44,9 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.exceptionHandling().authenticationEntryPoint(new UnauthorizedEntryPoint()).and().csrf().disable()
-            .authorizeRequests().antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/acl/index/register/**").permitAll()
-            .anyRequest().authenticated().and().logout().logoutUrl("/acl/index/logout")
+            .authorizeRequests()
+            .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/druid/**", "/favicon.ico", "/acl/index/register/**")
+            .permitAll().anyRequest().authenticated().and().logout().logoutUrl("/acl/index/logout")
             .addLogoutHandler(new TokenLogoutHandler(redisTemplate)).and()
             .addFilter(new TokenLoginFilter(authenticationManager(), redisTemplate))
             .addFilter(new TokenAuthenticationFilter(authenticationManager(), redisTemplate)).httpBasic();

@@ -1,7 +1,5 @@
 <template>
   <div v-if="hasPerm('cell.list')" class="app-container">
-    小区配置信息查询
-
     <!-- 查询表单 -->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>

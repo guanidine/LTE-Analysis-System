@@ -1,6 +1,8 @@
 <template>
   <div v-if="hasPerm('data.export')" class="app-container">
-    超简朴的数据导入：上传/下载请勿同时进行，OOM警告。。。
+    <span>超简朴的数据管理</span>
+
+    <el-divider content-position="left">数据导入</el-divider>
 
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
@@ -50,7 +52,7 @@
 
     <el-progress v-show="showProgress" :percentage="processLength" :stroke-width="2"/>
 
-    超简朴的数据导出
+    <el-divider content-position="left">数据导出</el-divider>
 
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" :disabled="downloadBtnDisabled" @click="downloadHttpRequest">

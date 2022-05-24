@@ -47,6 +47,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
         log.debug("================={}", req.getRequestURI());
 
         if (req.getRequestURI().contains("/swagger-ui") || req.getRequestURI().contains("/v3/api-docs")
+            || req.getRequestURI().contains("/druid") || req.getRequestURI().contains("/favicon.ico")
             || req.getRequestURI().contains("/acl/index/register")) {
             chain.doFilter(req, res);
             return;
