@@ -51,7 +51,7 @@
           </span>
         </el-form-item>
       </el-tooltip>
-
+      <el-row>
       <el-button
         :loading="loading"
         type="primary"
@@ -59,22 +59,30 @@
         @click.native.prevent="handleLogin"
       >登录
       </el-button>
+      </el-row>
+      <el-row>
+      <el-button
+        type="primary"
+        style="width:100%;margin-bottom: 10px"
+        @click="showDialog=true">
+        注册
+      </el-button>
+      </el-row>
+<!--      <div style="position:relative">-->
+<!--        <div class="tips" >-->
+<!--          <span>数据库课程设计</span>-->
+<!--        </div>-->
+<!--        <div class="tips">-->
+<!--          <span style="margin-right:18px;">小组成员：张乐天、彭笑凯、刘嘉伟</span>-->
+<!--        </div>-->
+<!--        <el-button class="register-button" type="primary" @click="showDialog=true">-->
+<!--          没有账号？点击这里注册-->
+<!--        </el-button>-->
+<!--      </div>-->
 
-      <div style="position:relative">
-        <div class="tips">
-          <span>用户名 : admin</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">密码 : 111111</span>
-        </div>
-        <el-button class="register-button" type="primary" @click="showDialog=true">
-          没有账号？点击这里注册
-        </el-button>
-      </div>
-
-      <el-dialog title="注册" :visible.sync="showDialog">
+      <el-dialog title="注册" :visible.sync="showDialog" center="true" width="25%">
         <!-- TODO: register-container设计 -->
-        <div class="register-container">
+        <div class="register-container" >
           <el-form ref="registerForm" :model="registerForm" :rules="registerRules">
 
             <el-form-item class="input-prepend restyle no-radius" prop="name">
@@ -97,11 +105,10 @@
               </span>
               <el-input v-model="registerForm.passwordValidator" type="password" placeholder="请再输一遍"/>
             </el-form-item>
-
-            <div class="btn">
-              <input type="button" class="sign-up-button" value="注册" @click="handleRegister()">
-            </div>
           </el-form>
+          <div class="btn" style="text-align: center">
+            <el-button type="primary" class="sign-up-button" @click="handleRegister()">注册</el-button>
+          </div>
         </div>
       </el-dialog>
 
