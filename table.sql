@@ -439,20 +439,20 @@ comment on column acl_permission.gmt_modified is '更新时间';
 
 
 insert into acl_permission values (1,0,'全部数据',0,'','','','',0,0,'2022-05-06 21:28:25.000000','2022-05-06 21:28:28.000000');
-insert into acl_permission values (2,1,'访问权限',1,'','/acl','Layout','',0,0,'2022-05-06 21:29:25.000000','2022-05-06 21:29:30.000000');
-insert into acl_permission values (3,2,'用户管理',1,'','user/list','/acl/user/list','',0,0,'2022-05-06 21:31:30.000000','2022-05-06 21:31:31.000000');
-insert into acl_permission values (4,2,'职务管理',1,'','role/list','/acl/role/list','',0,0,'2022-05-06 21:32:40.000000','2022-05-06 21:32:41.000000');
+insert into acl_permission values (2,1,'权限控制',1,'','/acl','Layout','',0,0,'2022-05-06 21:29:25.000000','2022-05-06 21:29:30.000000');
+insert into acl_permission values (3,2,'用户列表',1,'','user/list','/acl/user/list','',0,0,'2022-05-06 21:31:30.000000','2022-05-06 21:31:31.000000');
+insert into acl_permission values (4,2,'角色管理',1,'','role/list','/acl/role/list','',0,0,'2022-05-06 21:32:40.000000','2022-05-06 21:32:41.000000');
 insert into acl_permission values (5,2,'权限管理',1,'','permission/list','/acl/menu/list','',0,0,'2022-05-06 23:21:44.000000','2022-05-06 23:21:47.000000');
 insert into acl_permission values (6,3,'查看用户',2,'user.list','','','',0,0,'2022-05-06 21:38:38.000000','2022-05-06 22:38:39.000000');
 insert into acl_permission values (7,3,'添加用户',2,'user.add','user/add','/acl/user/form','',0,0,'2022-05-06 21:39:24.000000','2022-05-06 21:39:25.000000');
 insert into acl_permission values (8,3,'修改用户',2,'user.update','user/update/:id','/acl/user/form','',0,0,'2022-05-06 21:40:55.000000','2022-05-06 21:40:56.000000');
 insert into acl_permission values (9,3,'删除用户',2,'user.remove','','','',0,0,'2022-05-06 21:42:05.000000','2022-05-06 22:42:06.000000');
-insert into acl_permission values (10,3,'分配职务',2,'user.assign','user/role/:id','/acl/user/roleForm','',0,0,'2022-05-21 19:42:39.000000','2022-05-21 19:42:40.000000');
-insert into acl_permission values (11,4,'查看职务',2,'role.list','','','',0,0,'2022-05-06 21:43:25.000000','2022-05-06 21:43:30.000000');
-insert into acl_permission values (12,4,'添加职务',2,'role.add','role/add','/acl/role/form','',0,0,'2022-05-06 21:44:35.000000','2022-05-06 22:44:36.000000');
-insert into acl_permission values (13,4,'修改职务',2,'role.update','role/update/:id','/acl/role/form','',0,0,'2022-05-06 21:45:30.000000','2022-05-06 22:45:31.000000');
-insert into acl_permission values (14,4,'删除职务',2,'role.remove','','','',0,0,'2022-05-06 21:45:58.000000','2022-05-06 21:45:58.000000');
-insert into acl_permission values (15,4,'职务权限',2,'role.acl','role/distribution/:id','/acl/role/roleForm','',0,0,'2022-05-06 21:47:50.000000','2022-05-06 21:47:51.000000');
+insert into acl_permission values (10,3,'分配角色',2,'user.assign','user/role/:id','/acl/user/roleForm','',0,0,'2022-05-21 19:42:39.000000','2022-05-21 19:42:40.000000');
+insert into acl_permission values (11,4,'查看角色',2,'role.list','','','',0,0,'2022-05-06 21:43:25.000000','2022-05-06 21:43:30.000000');
+insert into acl_permission values (12,4,'添加角色',2,'role.add','role/add','/acl/role/form','',0,0,'2022-05-06 21:44:35.000000','2022-05-06 22:44:36.000000');
+insert into acl_permission values (13,4,'修改角色',2,'role.update','role/update/:id','/acl/role/form','',0,0,'2022-05-06 21:45:30.000000','2022-05-06 22:45:31.000000');
+insert into acl_permission values (14,4,'删除角色',2,'role.remove','','','',0,0,'2022-05-06 21:45:58.000000','2022-05-06 21:45:58.000000');
+insert into acl_permission values (15,4,'角色权限',2,'role.acl','role/distribution/:id','/acl/role/roleForm','',0,0,'2022-05-06 21:47:50.000000','2022-05-06 21:47:51.000000');
 insert into acl_permission values (16,5,'查看权限',2,'permission.list','','','',0,0,'2022-05-06 23:40:30.000000','2022-05-06 23:40:32.000000');
 insert into acl_permission values (17,5,'添加权限',2,'permission.add','','','',0,0,'2022-05-06 23:31:14.000000','2022-05-06 23:31:15.000000');
 insert into acl_permission values (18,5,'修改权限',2,'permission.update','','','',0,0,'2022-05-06 23:31:17.000000','2022-05-06 23:31:19.000000');
@@ -481,9 +481,9 @@ create table if not exists acl_role
 
 create unique index idx_role_name on acl_role (name, is_deleted);
 
-comment on table acl_role is '职务表';
-comment on column acl_role.id is '职务id';
-comment on column acl_role.name is '职务名称';
+comment on table acl_role is '角色表';
+comment on column acl_role.id is '角色id';
+comment on column acl_role.name is '角色名称';
 comment on column acl_role.remark is '备注';
 comment on column acl_role.is_deleted is '逻辑删除(null: 已删除, 0: 未删除)';
 comment on column acl_role.gmt_create is '创建时间';
@@ -531,9 +531,9 @@ create index idx_rp_role_id on acl_role_permission (role_id);
 create index idx_rp_permission_id on acl_role_permission (permission_id);
 create unique index idx_rp on acl_role_permission (role_id, permission_id, is_deleted);
 
-comment on table acl_role_permission is '职务权限关系表';
+comment on table acl_role_permission is '角色权限关系表';
 comment on column acl_role_permission.id is '主键id';
-comment on column acl_role_permission.role_id is '职务id';
+comment on column acl_role_permission.role_id is '角色id';
 comment on column acl_role_permission.permission_id is '权限id';
 comment on column acl_role_permission.is_deleted is '逻辑删除(null: 已删除, 0: 未删除)';
 comment on column acl_role_permission.gmt_create is '创建时间';
@@ -584,9 +584,9 @@ create index idx_ur_role_id on acl_user_role (role_id);
 create index idx_ur_user_id on acl_user_role (user_id);
 create unique index idx_ur on acl_user_role (role_id, user_id, is_deleted);
 
-comment on table acl_user_role is '用户职务关系表';
+comment on table acl_user_role is '用户角色关系表';
 comment on column acl_user_role.id is '主键id';
-comment on column acl_user_role.role_id is '职务id';
+comment on column acl_user_role.role_id is '角色id';
 comment on column acl_user_role.user_id is '用户id';
 comment on column acl_user_role.is_deleted is '逻辑删除(null: 已删除, 0: 未删除)';
 comment on column acl_user_role.gmt_create is '创建时间';

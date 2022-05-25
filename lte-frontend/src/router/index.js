@@ -105,14 +105,14 @@ export const asyncRoutes = [
     path: '/acl',
     component: Layout,
     redirect: '/acl/user/list',
-    name: '访问权限',
-    meta: { title: '访问权限', icon: 'lock', roles: [] },
+    name: '权限控制',
+    meta: { title: '权限控制', icon: 'lock', roles: [] },
     children: [
       {
         path: 'user/list',
-        name: '用户管理',
+        name: '用户列表',
         component: () => import('@/views/acl/user/list'),
-        meta: { title: '用户管理', icon: 'user', roles: [] }
+        meta: { title: '用户列表', icon: 'user', roles: [] }
       },
       {
         path: 'user/add',
@@ -130,36 +130,36 @@ export const asyncRoutes = [
       },
       {
         path: 'user/role/:id',
-        name: '分配职务',
+        name: '分配角色',
         component: () => import('@/views/acl/user/roleForm'),
-        meta: { title: '分配职务', roles: [] },
+        meta: { title: '分配角色', roles: [] },
         hidden: true
       },
       {
         path: 'role/list',
-        name: '职务管理',
+        name: '角色管理',
         component: () => import('@/views/acl/role/list'),
-        meta: { title: '职务管理', icon: 'table', roles: [] }
+        meta: { title: '角色管理', icon: 'table', roles: [] }
       },
       {
         path: 'role/add',
-        name: '添加职务',
+        name: '添加角色',
         component: () => import('@/views/acl/role/form'),
-        meta: { title: '添加职务', roles: [] },
+        meta: { title: '添加角色', roles: [] },
         hidden: true
       },
       {
         path: 'role/update/:id',
-        name: '修改职务',
+        name: '修改角色',
         component: () => import('@/views/acl/role/form'),
-        meta: { title: '修改职务', roles: [] },
+        meta: { title: '修改角色', roles: [] },
         hidden: true
       },
       {
         path: 'role/distribution/:id',
-        name: '职务权限',
+        name: '角色权限',
         component: () => import('@/views/acl/role/roleForm'),
-        meta: { title: '职务权限', roles: [] },
+        meta: { title: '角色权限', roles: [] },
         hidden: true
       },
       {
