@@ -91,7 +91,8 @@ export default {
 
     save() {
       this.saveBtnDisabled = true
-      const ids = this.$refs.tree.getCheckedKeys()
+      // 权限树中，半选的父权限也应包含在角色权限内，否则会出现整个路由无权访问的情况
+      const ids = this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys())
       permissionApi.assignPermissionsById(this.roleId, ids).then(response => {
         if (response.success) {
           this.$message({
