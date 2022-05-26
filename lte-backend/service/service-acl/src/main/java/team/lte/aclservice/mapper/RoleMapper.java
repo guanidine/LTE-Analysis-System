@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- * 职务表 Mapper 接口
+ * 角色表 Mapper 接口
  * </p>
  *
  * @author lte

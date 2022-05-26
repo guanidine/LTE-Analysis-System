@@ -221,7 +221,3 @@ tbCell，并存入数据库表 tbCell；
 * 数据库：
   * PostgreSQL：端口 `5432`，用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`
   * Redis：端口 `6379`，密码 `Q6^pw0*lb$@Ezv#&` （Redis已弃用。。大雾）
-* 前后端代码分为两个环境：dev为本地调试环境，prod为线上环境。为了方便线上运行，项目默认使用prod环境，使用dev环境在本地运行需要加参数：
-  * **后端使用dev环境进行本地开发**：[IntelliJ IDEA 配置SpringBoot项目 启动环境](https://blog.csdn.net/jx520/article/details/109711189) 。本地运行时依旧提供 [http://localhost:8001](http://localhost:8001) 的相关接口，如通过 [http://localhost:8001/swagger-ui/index.html](http://localhost:8001/swagger-ui/index.html) 访问dev环境的Swagger。**此外Maven现在设置了多种Profiles，本地应选dev**。
-
-  * 前端不需要特别的设置， `npm run dev` 依旧使用dev环境，`npm run build:prod` 打包项目时使用prod环境（本地点开 `index.html` 似乎没啥反应）。本地运行端口依旧是9528，即访问 [http://localhost:9528](http://localhost:9528)。

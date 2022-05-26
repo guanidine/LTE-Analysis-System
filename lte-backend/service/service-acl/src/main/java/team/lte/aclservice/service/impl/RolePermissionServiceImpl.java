@@ -12,7 +12,7 @@ import team.lte.aclservice.service.RolePermissionService;
 
 /**
  * <p>
- * 职务权限关系表 服务实现类
+ * 角色权限关系表 服务实现类
  * </p>
  *
  * @author lte

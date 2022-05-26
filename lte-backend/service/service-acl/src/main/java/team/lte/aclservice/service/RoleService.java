@@ -9,7 +9,7 @@ import team.lte.aclservice.entity.po.Role;
 
 /**
  * <p>
- * 职务表 服务类
+ * 角色表 服务类
  * </p>
  *
  * @author lte

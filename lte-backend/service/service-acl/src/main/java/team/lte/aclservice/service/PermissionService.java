@@ -19,10 +19,10 @@ public interface PermissionService extends IService<Permission> {
     /** 获取所有权限 */
     List<Permission> listPermissions();
 
-    /** 获取某个职务的所有权限 */
+    /** 获取某个角色的所有权限 */
     List<Permission> listPermissionsByRoleId(Long roleId);
 
-    /** 为某个职务分配权限 */
+    /** 为某个角色分配权限 */
     boolean assignPermissionsByRoleId(Long roleId, List<Long> permissionIds);
 
     /** 删除权限及其子权限 */

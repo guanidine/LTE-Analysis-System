@@ -18,20 +18,20 @@ import team.lte.commonutils.result.R;
 
 /**
  * <p>
- * 职务表 前端控制器
+ * 角色表 前端控制器
  * </p>
  *
  * @author lte
  * @since 2022-04-28
  */
-@Tag(name = "职务管理")
+@Tag(name = "角色管理")
 @RestController
 @RequestMapping("/acl/role")
 public class RoleController {
     @Resource
     private RoleService roleService;
 
-    @Operation(summary = "获取职务分页列表")
+    @Operation(summary = "获取角色分页列表")
     @GetMapping("{page}/{limit}")
     public R listRoles(@Parameter(name = "page", description = "当前页码", required = true) @PathVariable Long page,
         @Parameter(name = "limit", description = "每页记录数", required = true) @PathVariable Long limit) {
@@ -41,14 +41,14 @@ public class RoleController {
         return R.ok().data("list", pageParam.getRecords()).data("total", pageParam.getTotal());
     }
 
-    @Operation(summary = "获取职务")
+    @Operation(summary = "获取角色")
     @GetMapping("get/{id}")
-    public R getRoleById(@Parameter(name = "id", description = "职位ID", required = true) @PathVariable Long id) {
+    public R getRoleById(@Parameter(name = "id", description = "角色ID", required = true) @PathVariable Long id) {
         Role role = roleService.getById(id);
         return R.ok().data("item", role);
     }
 
-    @Operation(summary = "新增职务")
+    @Operation(summary = "新增角色")
     @PostMapping("save")
     public R saveRole(@RequestBody Role role) {
         try {
@@ -59,7 +59,7 @@ public class RoleController {
         }
     }
 
-    @Operation(summary = "修改职务")
+    @Operation(summary = "修改角色")
     @PutMapping("update")
     public R updateRole(@RequestBody Role role) {
         try {
@@ -70,9 +70,9 @@ public class RoleController {
         }
     }
 
-    @Operation(summary = "删除职务")
+    @Operation(summary = "删除角色")
     @DeleteMapping("remove/{id}")
-    public R removeRoleById(@Parameter(name = "id", description = "职位ID", required = true) @PathVariable Long id) {
+    public R removeRoleById(@Parameter(name = "id", description = "角色ID", required = true) @PathVariable Long id) {
         try {
             roleService.removeById(id);
             return R.ok();
@@ -81,7 +81,7 @@ public class RoleController {
         }
     }
 
-    @Operation(summary = "批量删除职务")
+    @Operation(summary = "批量删除角色")
     @DeleteMapping("batch-remove")
     public R removeRoleBatchById(@RequestBody List<Long> idList) {
         try {

@@ -38,18 +38,18 @@ public class PermissionController {
         return R.ok().data("list", list);
     }
 
-    @Operation(summary = "获取某一职位的权限")
+    @Operation(summary = "获取某一角色的权限")
     @GetMapping("{roleId}")
     public R listPermissionsById(
-        @Parameter(name = "roleId", description = "职位ID", required = true) @PathVariable Long roleId) {
+        @Parameter(name = "roleId", description = "角色ID", required = true) @PathVariable Long roleId) {
         List<Permission> list = permissionService.listPermissionsByRoleId(roleId);
         return R.ok().data("list", list);
     }
 
-    @Operation(summary = "给某一职务分配权限")
+    @Operation(summary = "给某一角色分配权限")
     @PostMapping("assign/{roleId}")
     public R assignPermissionsById(
-        @Parameter(name = "roleId", description = "职位ID", required = true) @PathVariable Long roleId,
+        @Parameter(name = "roleId", description = "角色ID", required = true) @PathVariable Long roleId,
         @RequestBody List<Long> permissionIds) {
         if (permissionService.assignPermissionsByRoleId(roleId, permissionIds)) {
             return R.ok();
@@ -81,7 +81,7 @@ public class PermissionController {
     @Operation(summary = "递归删除权限")
     @DeleteMapping("remove/{id}")
     public R removePermissionsById(
-        @Parameter(name = "roleId", description = "职位ID", required = true) @PathVariable Long id) {
+        @Parameter(name = "roleId", description = "角色ID", required = true) @PathVariable Long id) {
         if (permissionService.removePermissionsById(id)) {
             return R.ok();
         } else {

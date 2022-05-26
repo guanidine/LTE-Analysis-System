@@ -26,7 +26,7 @@ import java.util.Map;
  * @author lte
  * @since 2022-04-28
  */
-@Tag(name = "用户管理")
+@Tag(name = "用户列表")
 @RestController
 @RequestMapping("/acl/user")
 public class UserController {
@@ -102,24 +102,24 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "获取某个用户的职务数据")
+    @Operation(summary = "获取某个用户的角色数据")
     @GetMapping("{userId}")
     public R
-        listRolesByUserId(@Parameter(name = "id", description = "用户ID", required = true) @PathVariable Long userId) {
+        listRolesByUserId(@Parameter(name = "userId", description = "用户ID", required = true) @PathVariable Long userId) {
         Map<String, Object> roleMap = roleService.findRolesByUserId(userId);
         return R.ok().data(roleMap);
     }
 
-    @Operation(summary = "为某个用户分配职务")
-    @PostMapping("/assign/{userId}")
+    @Operation(summary = "为某个用户分配角色")
+    @PostMapping("assign/{userId}")
     public R assignRolesByUserId(
-        @Parameter(name = "id", description = "用户ID", required = true) @PathVariable Long userId,
+        @Parameter(name = "userId", description = "用户ID", required = true) @PathVariable Long userId,
         @RequestBody List<Long> roleId) {
         try {
             roleService.assignRolesByUserId(userId, roleId);
             return R.ok();
         } catch (Exception e) {
-            return R.error().message("呐，分配职务的时候出错了");
+            return R.error().message("呐，分配角色的时候出错了");
         }
     }
 

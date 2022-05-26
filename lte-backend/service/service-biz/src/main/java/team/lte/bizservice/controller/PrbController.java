@@ -23,6 +23,7 @@ import team.lte.bizservice.mapper.PrbMapper;
 import team.lte.bizservice.service.PrbService;
 import team.lte.bizservice.util.QueryUtils;
 import team.lte.commonutils.easyexcel.ExcelServiceBuilder;
+import team.lte.commonutils.easyexcel.annotation.DbType;
 import team.lte.commonutils.result.R;
 
 /**
@@ -43,9 +44,6 @@ public class PrbController {
 
     @Resource
     private PrbMapper prbMapper;
-
-    @Value("${spring.profiles.active}")
-    private String env;
 
     @Operation(summary = "查询某项PRB干扰数据每15分钟的变化情况")
     @PostMapping("")
@@ -87,7 +85,7 @@ public class PrbController {
     @Operation(summary = "将PRB导出到Excel表")
     @GetMapping("download")
     public void downloadExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build(QueryUtils.getDbType(env)).exclude(ImmutableSet.<String>builder().add("id").build())
+        ExcelServiceBuilder.build(DbType.GAUSS).exclude(ImmutableSet.<String>builder().add("id").build())
             .downloadFile(response, PrbDTO.class, prbService);
     }
 
@@ -96,7 +94,7 @@ public class PrbController {
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build(QueryUtils.getDbType(env)).group(300).uploadFile(response, file, Prb.class,
+        ExcelServiceBuilder.build(DbType.GAUSS).group(300).uploadFile(response, file, Prb.class,
             PrbDTO.class, prbService, prbMapper);
     }
 }

@@ -82,8 +82,18 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             rolePermission.setPermissionId(permissionId);
             rolePermissionList.add(rolePermission);
         }
-        boolean flag = rolePermissionList.isEmpty() || rolePermissionService.saveBatch(rolePermissionList);
-        flag &= rolePermissionRemoveList.isEmpty() || rolePermissionService.removeBatchByIds(rolePermissionRemoveList);
+        // 垃圾国产之光，抄Postgres的时候，为什么人家可以的功能你不行
+        boolean flag = true;
+        if (rolePermissionList.size() == 1) {
+            flag = rolePermissionService.save(rolePermissionList.get(0));
+        } else if (rolePermissionList.size() > 1) {
+            flag = rolePermissionService.saveBatch(rolePermissionList);
+        }
+        if (rolePermissionRemoveList.size() == 1) {
+            flag = rolePermissionService.removeById(rolePermissionRemoveList.get(0));
+        } else if (rolePermissionRemoveList.size() > 1) {
+            flag = rolePermissionService.removeBatchByIds(rolePermissionRemoveList);
+        }
         return flag;
     }
 
@@ -105,7 +115,8 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         List<Permission> selectPermissionList;
         selectPermissionList = getBaseMapper().listPermissionsByUserId(userId);
 
-        List<Permission> permissionList = listPermissionsReverse(getBaseMapper().getRootPermission(), selectPermissionList);
+        List<Permission> permissionList =
+            listPermissionsReverse(getBaseMapper().getRootPermission(), selectPermissionList);
         return buildRouterPermissions(permissionList);
     }
 

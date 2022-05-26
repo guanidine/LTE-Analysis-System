@@ -16,6 +16,7 @@ import team.lte.bizservice.entity.vo.CellQuery;
 import team.lte.bizservice.mapper.CellMapper;
 import team.lte.bizservice.service.CellService;
 import team.lte.bizservice.util.QueryUtils;
+import team.lte.commonutils.easyexcel.annotation.DbType;
 import team.lte.commonutils.result.R;
 import team.lte.commonutils.easyexcel.ExcelServiceBuilder;
 
@@ -41,9 +42,6 @@ public class CellController {
 
     @Resource
     private CellMapper cellMapper;
-
-    @Value("${spring.profiles.active}")
-    private String env;
 
     @Operation(summary = "小区配置信息查询")
     @GetMapping("{page}/{limit}")
@@ -113,7 +111,7 @@ public class CellController {
     @Operation(summary = "将Cell导出到Excel表")
     @GetMapping("download")
     public void downloadExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build(QueryUtils.getDbType(env)).downloadFile(response, Cell.class, cellService);
+        ExcelServiceBuilder.build(DbType.GAUSS).downloadFile(response, Cell.class, cellService);
     }
 
     @Operation(summary = "将Excel表中数据导入到Cell")
@@ -121,7 +119,7 @@ public class CellController {
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build(QueryUtils.getDbType(env)).uploadFile(response, file, Cell.class, Cell.class,
+        ExcelServiceBuilder.build(DbType.GAUSS).uploadFile(response, file, Cell.class, Cell.class,
             cellService, cellMapper);
     }
 }

@@ -8,7 +8,7 @@ import team.lte.aclservice.entity.po.RolePermission;
 
 /**
  * <p>
- * 职务权限关系表 服务类
+ * 角色权限关系表 服务类
  * </p>
  *
  * @author lte

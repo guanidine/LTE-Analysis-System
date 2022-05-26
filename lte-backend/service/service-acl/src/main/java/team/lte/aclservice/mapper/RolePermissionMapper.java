@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * <p>
- * 职务权限关系表 Mapper 接口
+ * 角色权限关系表 Mapper 接口
  * </p>
  *
  * @author lte

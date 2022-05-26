@@ -12,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 职务表
+ * 角色表
  * </p>
  *
  * @author lte
@@ -21,17 +21,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("acl_role")
-@Schema(description = "职务表")
+@Schema(description = "角色表")
 public class Role implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "职务id")
+    @Schema(description = "角色id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @Schema(description = "职务名称")
+    @Schema(description = "角色名称")
     private String name;
 
     @Schema(description = "备注")
@@ -40,13 +40,5 @@ public class Role implements Serializable {
     @Schema(description = "逻辑删除(1: 已删除, 0: 未删除)")
     @TableLogic
     private Integer isDeleted;
-
-    @Schema(description = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
-
-    @Schema(description = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
 
 }
