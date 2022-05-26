@@ -404,11 +404,34 @@ comment on column tbprb.noise97 is '第97个PRB上检测到的干扰噪声的平
 comment on column tbprb.noise98 is '第98个PRB上检测到的干扰噪声的平均值 (毫瓦分贝)';
 comment on column tbprb.noise99 is '第99个PRB上检测到的干扰噪声的平均值 (毫瓦分贝)';
 
+create table if not exists tbmrodata
+(
+    id                 varchar(32) not null primary key,
+    time_stamp         varchar(30) not null,
+    serving_sector     varchar(50) not null,
+    interfering_sector varchar(50) not null,
+    lte_sc_rsrp        float       not null,
+    lte_nc_rsrp        float       not null,
+    lte_nc_earfcn      int         not null,
+    lte_nc_pci         smallint    not null,
+    constraint uk_tbmrodata_time_serv_inter unique (time_stamp, serving_sector, interfering_sector)
+);
+
+comment on table tbmrodata is 'MRO测量报告数据';
+comment on column tbmrodata.id is 'ID';
+comment on column tbmrodata.time_stamp is '测量时间点';
+comment on column tbmrodata.serving_sector is '服务小区/主小区ID';
+comment on column tbmrodata.interfering_sector is '干扰小区ID';
+comment on column tbmrodata.lte_sc_rsrp is '服务小区参考信号接收功率RSRP';
+comment on column tbmrodata.lte_nc_rsrp is '干扰小区参考信号接收功率RSRP';
+comment on column tbmrodata.lte_nc_earfcn is '干扰小区频点';
+comment on column tbmrodata.lte_nc_pci is '干扰小区PCI';
+
 create table if not exists acl_permission
 (
     id               bigserial primary key,
     pid              bigint      not null default 0,
-    name             varchar(20) not null default '',
+    name             varchar(30) not null default '',
     type             smallint    not null default 0,
     permission_value varchar(50)          default null,
     path             varchar(100)         default null,
