@@ -71,7 +71,7 @@ public class KpiController {
     @Operation(summary = "将Kpi导出到Excel表")
     @GetMapping("download")
     public void downloadExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build(DbType.GAUSS).exclude(ImmutableSet.<String>builder().add("id").build())
+        ExcelServiceBuilder.build(DbType.POSTGRE_SQL).exclude(ImmutableSet.<String>builder().add("id").build())
             .downloadFile(response, KpiDTO.class, kpiService);
     }
 
@@ -80,7 +80,7 @@ public class KpiController {
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build(DbType.GAUSS).uploadFile(response, file, Kpi.class, KpiDTO.class,
+        ExcelServiceBuilder.build(DbType.POSTGRE_SQL).uploadFile(response, file, Kpi.class, KpiDTO.class,
             kpiService, kpiMapper);
     }
 }

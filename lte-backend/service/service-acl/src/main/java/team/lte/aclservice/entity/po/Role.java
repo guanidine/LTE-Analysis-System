@@ -41,4 +41,12 @@ public class Role implements Serializable {
     @TableLogic
     private Integer isDeleted;
 
+    @Schema(description = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime gmtCreate;
+
+    @Schema(description = "更新时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime gmtModified;
+
 }

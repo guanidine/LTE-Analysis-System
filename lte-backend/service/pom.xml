@@ -124,9 +124,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.huaweicloud.dws</groupId>
-            <artifactId>huaweicloud-dws-jdbc</artifactId>
-            <version>8.1.0</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
 
         <dependency>

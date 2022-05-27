@@ -111,7 +111,7 @@ public class CellController {
     @Operation(summary = "将Cell导出到Excel表")
     @GetMapping("download")
     public void downloadExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build(DbType.GAUSS).downloadFile(response, Cell.class, cellService);
+        ExcelServiceBuilder.build(DbType.POSTGRE_SQL).downloadFile(response, Cell.class, cellService);
     }
 
     @Operation(summary = "将Excel表中数据导入到Cell")
@@ -119,7 +119,7 @@ public class CellController {
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build(DbType.GAUSS).uploadFile(response, file, Cell.class, Cell.class,
+        ExcelServiceBuilder.build(DbType.POSTGRE_SQL).uploadFile(response, file, Cell.class, Cell.class,
             cellService, cellMapper);
     }
 }

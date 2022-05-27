@@ -85,7 +85,7 @@ public class PrbController {
     @Operation(summary = "将PRB导出到Excel表")
     @GetMapping("download")
     public void downloadExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build(DbType.GAUSS).exclude(ImmutableSet.<String>builder().add("id").build())
+        ExcelServiceBuilder.build(DbType.POSTGRE_SQL).exclude(ImmutableSet.<String>builder().add("id").build())
             .downloadFile(response, PrbDTO.class, prbService);
     }
 
@@ -94,7 +94,7 @@ public class PrbController {
     @ResponseBody
     public void uploadExcel(HttpServletResponse response,
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
-        ExcelServiceBuilder.build(DbType.GAUSS).group(300).uploadFile(response, file, Prb.class,
+        ExcelServiceBuilder.build(DbType.POSTGRE_SQL).group(300).uploadFile(response, file, Prb.class,
             PrbDTO.class, prbService, prbMapper);
     }
 }

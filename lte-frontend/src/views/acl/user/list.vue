@@ -17,14 +17,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="name" label="用户名" width="150"/>
+      <el-table-column prop="name" label="用户名" width="200"/>
 
       <el-table-column prop="password" label="用户密码"/>
 
-      <!-- 由于民族之光数据库强大的兼容性，移除gmt_create字段 -->
-      <!-- <el-table-column prop="gmtCreate" label="创建时间" :formatter="timeFormatter" width="180"/> -->
+      <el-table-column prop="gmtCreate" label="创建时间" :formatter="timeFormatter"/>
 
-      <el-table-column label="操作" width="230" align="center">
+      <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
           <el-row>
             <el-button

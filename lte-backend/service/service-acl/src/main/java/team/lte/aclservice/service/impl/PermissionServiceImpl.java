@@ -82,18 +82,8 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             rolePermission.setPermissionId(permissionId);
             rolePermissionList.add(rolePermission);
         }
-        // 垃圾国产之光，抄Postgres的时候，为什么人家可以的功能你不行
-        boolean flag = true;
-        if (rolePermissionList.size() == 1) {
-            flag = rolePermissionService.save(rolePermissionList.get(0));
-        } else if (rolePermissionList.size() > 1) {
-            flag = rolePermissionService.saveBatch(rolePermissionList);
-        }
-        if (rolePermissionRemoveList.size() == 1) {
-            flag = rolePermissionService.removeById(rolePermissionRemoveList.get(0));
-        } else if (rolePermissionRemoveList.size() > 1) {
-            flag = rolePermissionService.removeBatchByIds(rolePermissionRemoveList);
-        }
+        boolean flag = rolePermissionList.isEmpty() || rolePermissionService.saveBatch(rolePermissionList);
+        flag &= rolePermissionRemoveList.isEmpty() || rolePermissionService.removeBatchByIds(rolePermissionRemoveList);
         return flag;
     }
 

@@ -13,6 +13,8 @@
         <result property="icon" column="icon"/>
         <result property="isDisabled" column="is_disabled"/>
         <result property="isDeleted" column="is_deleted"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
     </resultMap>
 
     <select id="listPermissionsByUserId" resultMap="permissionMap">
@@ -25,7 +27,9 @@
                p.component,
                p.icon,
                p.is_disabled,
-               p.is_deleted
+               p.is_deleted,
+               p.gmt_create,
+               p.gmt_modified
         from acl_user_role ur
                  inner join acl_role_permission rp on rp.role_id = ur.role_id
                  inner join acl_permission p on p.id = rp.permission_id

@@ -25,7 +25,7 @@ public class TableController {
     @Operation(summary = "获取所有数据表的表名")
     @GetMapping("")
     public R listTables() {
-        List<Map<String, String>> list = tableMapper.listTables("user11");
+        List<Map<String, String>> list = tableMapper.listTables("lte");
         return R.ok().data("list", list);
     }
 

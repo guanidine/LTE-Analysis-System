@@ -79,18 +79,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             userRole.setRoleId(roleId);
             userRoleList.add(userRole);
         }
-        // 垃圾国产之光，抄Postgres的时候，为什么人家可以的功能你不行
-        boolean flag = true;
-        if (userRoleList.size() == 1) {
-            flag = userRoleService.save(userRoleList.get(0));
-        } else if (userRoleList.size() > 1) {
-            flag = userRoleService.saveBatch(userRoleList);
-        }
-        if (userRoleRemoveList.size() == 1) {
-            flag = userRoleService.removeById(userRoleRemoveList.get(0));
-        } else if (userRoleRemoveList.size() > 1) {
-            flag = userRoleService.removeBatchByIds(userRoleRemoveList);
-        }
+        boolean flag = userRoleList.isEmpty() || userRoleService.saveBatch(userRoleList);
+        flag &= userRoleRemoveList.isEmpty() || userRoleService.removeBatchByIds(userRoleRemoveList);
         return flag;
     }
 
