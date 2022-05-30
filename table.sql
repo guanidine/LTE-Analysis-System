@@ -404,9 +404,38 @@ comment on column tbprb.noise97 is '第97个PRB上检测到的干扰噪声的平
 comment on column tbprb.noise98 is '第98个PRB上检测到的干扰噪声的平均值 (毫瓦分贝)';
 comment on column tbprb.noise99 is '第99个PRB上检测到的干扰噪声的平均值 (毫瓦分贝)';
 
-create table if not exists tbmrodata
+drop table if exists tbprbnew;
+create table tbprbnew as
+select hour_time, enodeb_name, sector_description, sector_name,
+       avg(noise0) noise0,avg(noise1) noise1,avg(noise2) noise2,avg(noise3) noise3,avg(noise4) noise4,
+       avg(noise5) noise5,avg(noise6) noise6,avg(noise7) noise7,avg(noise8) noise8,avg(noise9) noise9,
+       avg(noise10) noise10,avg(noise11) noise11,avg(noise12) noise12,avg(noise13) noise13,avg(noise14) noise14,
+       avg(noise15) noise15,avg(noise16) noise16,avg(noise17) noise17,avg(noise18) noise18,avg(noise19) noise19,
+       avg(noise20) noise20,avg(noise21) noise21,avg(noise22) noise22,avg(noise23) noise23,avg(noise24) noise24,
+       avg(noise25) noise25,avg(noise26) noise26,avg(noise27) noise27,avg(noise28) noise28,avg(noise29) noise29,
+       avg(noise30) noise30,avg(noise31) noise31,avg(noise32) noise32,avg(noise33) noise33,avg(noise34) noise34,
+       avg(noise35) noise35,avg(noise36) noise36,avg(noise37) noise37,avg(noise38) noise38,avg(noise39) noise39,
+       avg(noise40) noise40,avg(noise41) noise41,avg(noise42) noise42,avg(noise43) noise43,avg(noise44) noise44,
+       avg(noise45) noise45,avg(noise46) noise46,avg(noise47) noise47,avg(noise48) noise48,avg(noise49) noise49,
+       avg(noise50) noise50,avg(noise51) noise51,avg(noise52) noise52,avg(noise53) noise53,avg(noise54) noise54,
+       avg(noise55) noise55,avg(noise56) noise56,avg(noise57) noise57,avg(noise58) noise58,avg(noise59) noise59,
+       avg(noise60) noise60,avg(noise61) noise61,avg(noise62) noise62,avg(noise63) noise63,avg(noise64) noise64,
+       avg(noise65) noise65,avg(noise66) noise66,avg(noise67) noise67,avg(noise68) noise68,avg(noise69) noise69,
+       avg(noise70) noise70,avg(noise71) noise71,avg(noise72) noise72,avg(noise73) noise73,avg(noise74) noise74,
+       avg(noise75) noise75,avg(noise76) noise76,avg(noise77) noise77,avg(noise78) noise78,avg(noise79) noise79,
+       avg(noise80) noise80,avg(noise81) noise81,avg(noise82) noise82,avg(noise83) noise83,avg(noise84) noise84,
+       avg(noise85) noise85,avg(noise86) noise86,avg(noise87) noise87,avg(noise88) noise88,avg(noise89) noise89,
+       avg(noise90) noise90,avg(noise91) noise91,avg(noise92) noise92,avg(noise93) noise93,avg(noise94) noise94,
+       avg(noise95) noise95,avg(noise96) noise96,avg(noise97) noise97,avg(noise98) noise98,avg(noise99) noise99
+from (select date_trunc('hour', start_time) hour_time, tbprb.* from tbprb) as tbprb_hour
+group by hour_time, enodeb_name, sector_description, sector_name;
+
+drop table if exists tbmrodata;
+drop sequence if exists tbmrodata_seq cascade;
+create sequence tbmrodata_seq start 1;
+
+create table if not exists tbmrodata_seq
 (
-    id                 varchar(32) not null primary key,
     time_stamp         varchar(30) not null,
     serving_sector     varchar(50) not null,
     interfering_sector varchar(50) not null,
@@ -414,18 +443,9 @@ create table if not exists tbmrodata
     lte_nc_rsrp        float       not null,
     lte_nc_earfcn      int         not null,
     lte_nc_pci         smallint    not null,
-    constraint uk_tbmrodata_time_serv_inter unique (time_stamp, serving_sector, interfering_sector)
+    id                 int8    primary key not null default nextval('tbmrodata_seq'::regclass)
 );
 
-comment on table tbmrodata is 'MRO测量报告数据';
-comment on column tbmrodata.id is 'ID';
-comment on column tbmrodata.time_stamp is '测量时间点';
-comment on column tbmrodata.serving_sector is '服务小区/主小区ID';
-comment on column tbmrodata.interfering_sector is '干扰小区ID';
-comment on column tbmrodata.lte_sc_rsrp is '服务小区参考信号接收功率RSRP';
-comment on column tbmrodata.lte_nc_rsrp is '干扰小区参考信号接收功率RSRP';
-comment on column tbmrodata.lte_nc_earfcn is '干扰小区频点';
-comment on column tbmrodata.lte_nc_pci is '干扰小区PCI';
 
 create table if not exists acl_permission
 (
