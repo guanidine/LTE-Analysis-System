@@ -6,3 +6,5 @@ spring:
         file-extension: yaml
   application:
     name: service-biz
+  profiles:
+    active: dev

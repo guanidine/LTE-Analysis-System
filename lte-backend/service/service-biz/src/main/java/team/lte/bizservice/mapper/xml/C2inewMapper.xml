@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.lte.bizservice.mapper.C2inewMapper">
+    <update id="dropAndCreate">
+        select create_tbc2i(#{x});
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        update tbc2inew
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="prb_c2i9 =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.prbC2i9!=null">
+                        when id=#{item.id}
+                        then #{item.prbC2i9}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="prb_abs6 =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.prbAbs6!=null">
+                        when id=#{item.id}
+                        then #{item.prbAbs6}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+</mapper>
