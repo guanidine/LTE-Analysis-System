@@ -4,7 +4,7 @@
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
         <!-- 小区ID -->
-        <el-input v-model="cellQuery.sectorId" placeholder="小区ID"/>
+        <el-input v-model="cellQuery.sectorId" placeholder="小区ID" />
       </el-form-item>
       <el-form-item>
         <!-- 小区名称 -->
@@ -84,25 +84,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="city" label="城市/地区名称" width="110"/>
-      <el-table-column prop="sectorId" label="小区ID" width="100"/>
-      <el-table-column prop="sectorName" label="小区名称" width="150"/>
-      <el-table-column prop="enodebid" label="小区所属基站标识" width="80"/>
-      <el-table-column prop="enodebName" label="基站名称" width="150"/>
-      <el-table-column prop="earfcn" label="小区配置的频点编号" width="100"/>
-      <el-table-column prop="pci" label="物理小区标识" width="80"/>
-      <el-table-column prop="pss" label="主同步信号标识" width="80"/>
-      <el-table-column prop="sss" label="辅同步信号标识" width="80"/>
-      <el-table-column prop="tac" label="跟踪区编码" width="80"/>
-      <el-table-column prop="vender" label="供应商" width="70"/>
-      <el-table-column prop="longitude" label="经度" width="80"/>
-      <el-table-column prop="latitude" label="纬度" width="80"/>
-      <el-table-column prop="style" label="基站类型" width="80"/>
-      <el-table-column prop="azimuth" label="小区天线方位角" width="80"/>
-      <el-table-column prop="height" label="小区天线高度" width="80"/>
-      <el-table-column prop="electtilt" label="小区天线电下倾角" width="80"/>
-      <el-table-column prop="mechtilt" label="小区天线机械下倾角" width="80"/>
-      <el-table-column prop="totletilt" label="总下倾角" width="80"/>
+      <el-table-column prop="city" label="城市/地区名称" width="110" />
+      <el-table-column prop="sectorId" label="小区ID" width="100" />
+      <el-table-column prop="sectorName" label="小区名称" width="150" />
+      <el-table-column prop="enodebid" label="小区所属基站标识" width="80" />
+      <el-table-column prop="enodebName" label="基站名称" width="150" />
+      <el-table-column prop="earfcn" label="小区配置的频点编号" width="100" />
+      <el-table-column prop="pci" label="物理小区标识" width="80" />
+      <el-table-column prop="pss" label="主同步信号标识" width="80" />
+      <el-table-column prop="sss" label="辅同步信号标识" width="80" />
+      <el-table-column prop="tac" label="跟踪区编码" width="80" />
+      <el-table-column prop="vender" label="供应商" width="70" />
+      <el-table-column prop="longitude" label="经度" width="80" />
+      <el-table-column prop="latitude" label="纬度" width="80" />
+      <el-table-column prop="style" label="基站类型" width="80" />
+      <el-table-column prop="azimuth" label="小区天线方位角" width="80" />
+      <el-table-column prop="height" label="小区天线高度" width="80" />
+      <el-table-column prop="electtilt" label="小区天线电下倾角" width="80" />
+      <el-table-column prop="mechtilt" label="小区天线机械下倾角" width="80" />
+      <el-table-column prop="totletilt" label="总下倾角" width="80" />
     </el-table>
 
     <!-- 分页 -->

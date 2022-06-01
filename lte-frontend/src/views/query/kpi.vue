@@ -28,43 +28,43 @@
           placeholder="查询指标"
           style="width: 400px"
         >
-          <el-option value="RRC连接建立完成次数 (无)"/>
-          <el-option value="RRC连接请求次数（包括重发） (无)"/>
-          <el-option value="RRC建立成功率qf (%)"/>
-          <el-option value="E-RAB建立成功总次数 (无)"/>
-          <el-option value="E-RAB建立尝试总次数 (无)"/>
-          <el-option value="E-RAB建立成功率2 (%)"/>
-          <el-option value="eNodeB触发的E-RAB异常释放总次数 (无)"/>
-          <el-option value="小区切换出E-RAB异常释放总次数 (无)"/>
-          <el-option value="E-RAB掉线率 (%)"/>
-          <el-option value="无线接通率ay (%)"/>
-          <el-option value="eNodeB发起的S1 RESET导致的UE Context释放次数 (无)"/>
-          <el-option value="UE Context异常释放次数 (无)"/>
-          <el-option value="UE Context建立成功总次数 (无)"/>
-          <el-option value="无线掉线率 (%)"/>
-          <el-option value="eNodeB内异频切换出成功次数 (无)"/>
-          <el-option value="eNodeB内异频切换出尝试次数 (无)"/>
-          <el-option value="eNodeB内同频切换出成功次数 (无)"/>
-          <el-option value="eNodeB内同频切换出尝试次数 (无)"/>
-          <el-option value="eNodeB间异频切换出成功次数 (无)"/>
-          <el-option value="eNodeB间异频切换出尝试次数 (无)"/>
-          <el-option value="eNodeB间同频切换出成功次数 (无)"/>
-          <el-option value="eNodeB间同频切换出尝试次数 (无)"/>
-          <el-option value="eNB内切换成功率 (%)"/>
-          <el-option value="eNB间切换成功率 (%)"/>
-          <el-option value="同频切换成功率zsp (%)"/>
-          <el-option value="异频切换成功率zsp (%)"/>
-          <el-option value="切换成功率 (%)"/>
-          <el-option value="小区PDCP层所接收到的上行数据的总吞吐量 (比特)"/>
-          <el-option value="小区PDCP层所发送的下行数据的总吞吐量 (比特)"/>
-          <el-option value="RRC重建请求次数 (无)"/>
-          <el-option value="RRC连接重建比率 (%)"/>
-          <el-option value="通过重建回源小区的eNodeB间同频切换出执行成功次数 (无)"/>
-          <el-option value="通过重建回源小区的eNodeB间异频切换出执行成功次数 (无)"/>
-          <el-option value="通过重建回源小区的eNodeB内同频切换出执行成功次数 (无)"/>
-          <el-option value="通过重建回源小区的eNodeB内异频切换出执行成功次数 (无)"/>
-          <el-option value="eNB内切换出成功次数 (次)"/>
-          <el-option value="eNB内切换出请求次数 (次)"/>
+          <el-option value="RRC连接建立完成次数 (无)" />
+          <el-option value="RRC连接请求次数（包括重发） (无)" />
+          <el-option value="RRC建立成功率qf (%)" />
+          <el-option value="E-RAB建立成功总次数 (无)" />
+          <el-option value="E-RAB建立尝试总次数 (无)" />
+          <el-option value="E-RAB建立成功率2 (%)" />
+          <el-option value="eNodeB触发的E-RAB异常释放总次数 (无)" />
+          <el-option value="小区切换出E-RAB异常释放总次数 (无)" />
+          <el-option value="E-RAB掉线率 (%)" />
+          <el-option value="无线接通率ay (%)" />
+          <el-option value="eNodeB发起的S1 RESET导致的UE Context释放次数 (无)" />
+          <el-option value="UE Context异常释放次数 (无)" />
+          <el-option value="UE Context建立成功总次数 (无)" />
+          <el-option value="无线掉线率 (%)" />
+          <el-option value="eNodeB内异频切换出成功次数 (无)" />
+          <el-option value="eNodeB内异频切换出尝试次数 (无)" />
+          <el-option value="eNodeB内同频切换出成功次数 (无)" />
+          <el-option value="eNodeB内同频切换出尝试次数 (无)" />
+          <el-option value="eNodeB间异频切换出成功次数 (无)" />
+          <el-option value="eNodeB间异频切换出尝试次数 (无)" />
+          <el-option value="eNodeB间同频切换出成功次数 (无)" />
+          <el-option value="eNodeB间同频切换出尝试次数 (无)" />
+          <el-option value="eNB内切换成功率 (%)" />
+          <el-option value="eNB间切换成功率 (%)" />
+          <el-option value="同频切换成功率zsp (%)" />
+          <el-option value="异频切换成功率zsp (%)" />
+          <el-option value="切换成功率 (%)" />
+          <el-option value="小区PDCP层所接收到的上行数据的总吞吐量 (比特)" />
+          <el-option value="小区PDCP层所发送的下行数据的总吞吐量 (比特)" />
+          <el-option value="RRC重建请求次数 (无)" />
+          <el-option value="RRC连接重建比率 (%)" />
+          <el-option value="通过重建回源小区的eNodeB间同频切换出执行成功次数 (无)" />
+          <el-option value="通过重建回源小区的eNodeB间异频切换出执行成功次数 (无)" />
+          <el-option value="通过重建回源小区的eNodeB内同频切换出执行成功次数 (无)" />
+          <el-option value="通过重建回源小区的eNodeB内异频切换出执行成功次数 (无)" />
+          <el-option value="eNB内切换出成功次数 (次)" />
+          <el-option value="eNB内切换出请求次数 (次)" />
         </el-select>
       </el-form-item>
 
@@ -88,7 +88,7 @@
     </el-form>
 
     <div class="chart-container">
-      <div id="chart" class="chart" style="height:500px;width:100%"/>
+      <div id="chart" class="chart" style="height:500px;width:100%" />
     </div>
   </div>
 </template>
