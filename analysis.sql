@@ -28,20 +28,27 @@ create or replace function create_tbc2i(x int) returns void as
 $$
 declare
 begin
-    delete from tbc2inew;
+    drop table if exists tbc2inew;
+    create table tbc2inew (
+                              scell varchar(50) not null,
+                              ncell varchar(50) not null,
+                              c2i_mean float null,
+                              std float null,
+                              prb_c2i9 float null default null,
+                              prb_abs6 float null default null,
+                              id    serial8     not null primary key
+    );
     insert into tbc2inew
     select serving_sector, interfering_sector, c2i_mean, std
     from (
-             select serving_sector,
-                    interfering_sector,
-                    avg(lte_sc_rsrp - lte_nc_rsrp)    c2i_mean,
-                    stddev(lte_sc_rsrp - lte_nc_rsrp) std
+             select serving_sector,interfering_sector, avg(lte_sc_rsrp-lte_nc_rsrp) c2i_mean, stddev(lte_sc_rsrp-lte_nc_rsrp) std
              from tbmrodata
-             group by serving_sector, interfering_sector
+             group by serving_sector,interfering_sector
              having count(*) > x
          ) tbc2i;
 end
 $$ language plpgsql;
+
 -- 从三个字符串中获取中间大小的字符串
 create or replace function get_mid_tuple(a varchar(50), b varchar(50), c varchar(50)) returns varchar(50)
 as
@@ -132,5 +139,17 @@ begin
                       from candidate r
                       where (r.scell = q.ncell and r.ncell = p.scell) or (r.scell = p.scell and r.ncell = q.ncell)
                   );
+end;
+$$ language plpgsql;
+
+-- 创建tbc2i3表
+create or replace function create_tbc2i3(x float) returns void
+as $$
+declare
+begin
+    drop table if exists tbc2i3;
+    create table tbc2i3 as
+    select *
+    from get_tuples(x);
 end;
 $$ language plpgsql;

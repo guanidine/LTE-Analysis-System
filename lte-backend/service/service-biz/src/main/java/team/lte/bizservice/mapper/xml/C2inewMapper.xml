@@ -30,4 +30,5 @@
             #{item.id}
         </foreach>
     </update>
+    
 </mapper>

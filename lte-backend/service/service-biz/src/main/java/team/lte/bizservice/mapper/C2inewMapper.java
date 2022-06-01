@@ -19,4 +19,5 @@ public interface C2inewMapper extends BaseMapper<C2inew> {
     void dropAndCreate(@Param(value = "x") int x);
 
     void updateBatch(@Param(value= "list") List<C2inew> list);
+
 }

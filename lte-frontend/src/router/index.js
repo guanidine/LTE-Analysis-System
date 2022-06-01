@@ -53,6 +53,37 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
+  },
+
+  {
+    path: '/analysis',
+    component: Layout,
+    redirect: '/analysis/c2inew',
+    name: '业务分析',
+    meta: {
+      title: '业务分析',
+      icon: 'el-icon-s-marketing'
+    },
+    children: [
+      {
+        path: 'c2inew',
+        component: () => import('@/views/analysis/c2inew'),
+        name: '主邻小区C2I干扰分析',
+        meta: {
+          title: '主邻小区C2I干扰分析',
+          icon: 'el-icon-set-up'
+        }
+      },
+      {
+        path: 'c2i3',
+        component: () => import('@/views/analysis/c2i3'),
+        name: '干扰小区三元组分析',
+        meta: {
+          title: '干扰小区三元组分析',
+          icon: 'el-icon-bangzhu'
+        }
+      }
+    ]
   }
 ]
 
