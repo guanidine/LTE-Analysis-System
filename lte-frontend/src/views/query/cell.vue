@@ -63,6 +63,7 @@
       </el-form-item>
       <el-button type="primary" icon="el-icon-search" @click="listCells()">查询</el-button>
       <el-button type="default" @click="resetData()">清空</el-button>
+      <Download :names="[ '查询结果下载' ]" :data="[list]" />
     </el-form>
 
     <!-- 表格 -->
@@ -94,7 +95,7 @@
       <el-table-column prop="pss" label="主同步信号标识" width="80" />
       <el-table-column prop="sss" label="辅同步信号标识" width="80" />
       <el-table-column prop="tac" label="跟踪区编码" width="80" />
-      <el-table-column prop="vender" label="供应商" width="70" />
+      <el-table-column prop="vendor" label="供应商" width="70" />
       <el-table-column prop="longitude" label="经度" width="80" />
       <el-table-column prop="latitude" label="纬度" width="80" />
       <el-table-column prop="style" label="基站类型" width="80" />
@@ -145,8 +146,12 @@
 
 import cellApi from '@/api/query/cell'
 import Vue from 'vue'
+import Download from '@/components/Download'
 
 export default {
+  components: {
+    Download
+  },
   data() {
     return {
       list: [],

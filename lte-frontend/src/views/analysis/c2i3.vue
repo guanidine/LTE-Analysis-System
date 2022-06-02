@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" :model="headform" :rules="rules" class="demo-form-inline">
-      <el-form-item label="重叠覆盖干扰小区三元组分析">
+      <el-form-item label="重叠覆盖干扰小区三元组分析" prop="num">
         <el-input v-model="headform.num" placeholder="请输入x" clearable>
           <template slot="append">%</template>
         </el-input>
@@ -99,6 +99,11 @@ export default {
       this.setTable()
     },
     initAnalyze: function() {
+      if (!this.rules.num[1].pattern.test(this.headform.num)) {
+        this.$message({ target: 'warning', message: '非法输入' })
+        this.headform.num = ''
+        return
+      }
       this.isLoading = true
       analyzeTbC2i3(this.headform.num / 100).then(() => {
         getTotal().then((res) => { this.total = res.data.total })

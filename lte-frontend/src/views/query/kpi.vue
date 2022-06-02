@@ -87,6 +87,8 @@
       </el-button>
     </el-form>
 
+    <Download :names="['查询结果','图表']" :data="[ data, chartUrl ]" />
+
     <div class="chart-container">
       <div id="chart" class="chart" style="height:500px;width:100%" />
     </div>
@@ -97,8 +99,12 @@
 import echarts from 'echarts'
 import kpiApi from '@/api/query/kpi'
 import Vue from 'vue'
+import Download from '@/components/Download'
 
 export default {
+  components: {
+    Download
+  },
   data() {
     return {
       kpiQuery: {
@@ -110,7 +116,20 @@ export default {
       chart: null,
       xData: [],
       yData: [],
-      sectorList: []
+      sectorList: [],
+      data: []
+    }
+  },
+  computed: {
+    chartUrl() {
+      if (!this.chart) {
+        return ''
+      }
+      return this.chart.getDataURL({
+        type: 'png',
+        pixelRatio: 1.5,
+        backgroundColor: 'white'
+      })
     }
   },
   created() {
@@ -127,6 +146,10 @@ export default {
       kpiApi.listData(this.kpiQuery).then(response => {
         this.yData = response.data.list
         this.xData = response.data.date.map((str) => { return str.match(/\d{4}-\d{2}-\d{2}/)[0] })
+        this.data = []
+        for (let i = 0; i < this.xData.length; i++) {
+          this.data.push({ date: this.xData[i], data: this.yData[i], dataField: this.kpiQuery.field })
+        }
         this.setChart()
       })
     },

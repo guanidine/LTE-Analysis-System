@@ -63,9 +63,10 @@
       >按小时查询
       </el-button>
     </el-form>
+    <Download :names="['查询结果','图表']" :data="[ list, chartUrl ]" />
 
     <div class="chart-container">
-      <div id="chart" class="chart" style="height:500px;width:100%"/>
+      <div id="chart" class="chart" style="height:500px;width:100%" />
     </div>
   </div>
 </template>
@@ -74,8 +75,12 @@
 import echarts from 'echarts'
 import prbApi from '@/api/query/prb'
 import Vue from 'vue'
+import Download from '@/components/Download'
 
 export default {
+  components: {
+    Download
+  },
   data() {
     return {
       prbQuery: {
@@ -87,7 +92,20 @@ export default {
       chart: null,
       xData: [],
       yData: [],
-      enodebList: []
+      enodebList: [],
+      list: []
+    }
+  },
+  computed: {
+    chartUrl() {
+      if (!this.chart) {
+        return ''
+      }
+      return this.chart.getDataURL({
+        type: 'png',
+        pixelRatio: 1.5,
+        backgroundColor: 'white'
+      })
     }
   },
   created() {
@@ -109,6 +127,10 @@ export default {
         this.yData = response.data.list
         this.xData = response.data.date
         this.setChart()
+        this.list = []
+        for (let i = 0; i < this.xData.length; i++) {
+          this.list.push({ date: this.xData[i], data: this.yData[i], dataField: this.prbQuery.field })
+        }
       })
     },
     initChartHourData() {
@@ -116,6 +138,10 @@ export default {
         this.yData = response.data.list
         this.xData = response.data.date
         this.setChart()
+        this.list = []
+        for (let i = 0; i < this.xData.length; i++) {
+          this.list.push({ date: this.xData[i], data: this.yData[i], dataField: this.prbQuery.field })
+        }
       })
     },
 

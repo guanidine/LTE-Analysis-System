@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" :model="headform" :rules="rules" class="demo-form-inline">
-      <el-form-item label="主邻小区间最少干扰测量数据条数">
+      <el-form-item label="主邻小区间最少干扰测量数据条数" prop="num">
         <el-input v-model="headform.num" placeholder="请输入最少数据条数" clearable />
       </el-form-item>
       <el-form-item>
@@ -111,6 +111,11 @@ export default {
       this.setTable()
     },
     initAnalyze: function() {
+      if (!this.rules.num[1].pattern.test(this.headform.num)) {
+        this.$message({ target: 'warning', message: '非法输入' })
+        this.headform.num = ''
+        return
+      }
       this.isLoading = true
       analyzeTbC2i(this.headform.num).then(() => {
         getTotal().then((res) => { this.total = res.data.total })
