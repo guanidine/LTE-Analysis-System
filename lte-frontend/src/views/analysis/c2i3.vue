@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" :model="headform" class="demo-form-inline">
+    <el-form :inline="true" :model="headform" :rules="rules" class="demo-form-inline">
       <el-form-item label="重叠覆盖干扰小区三元组分析">
         <el-input v-model="headform.num" placeholder="请输入x" clearable>
           <template slot="append">%</template>
@@ -71,7 +71,17 @@ export default {
       // 是否正在加载
       isLoading: false,
       // 表格数据
-      tableData: []
+      tableData: [],
+      // 验证规则
+      rules: {
+        num: [
+          { required: true, message: '请输入你的内容', trigger: 'blur' },
+          {
+            pattern: /^(100|[1-9]?\d(\.\d*)?)$/,
+            message: '只能输入百分数'
+          }
+        ]
+      }
     }
   },
   methods: {

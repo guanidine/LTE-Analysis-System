@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" :model="headform" class="demo-form-inline">
+    <el-form :inline="true" :model="headform" :rules="rules" class="demo-form-inline">
       <el-form-item label="主邻小区间最少干扰测量数据条数">
         <el-input v-model="headform.num" placeholder="请输入最少数据条数" clearable />
       </el-form-item>
@@ -83,7 +83,17 @@ export default {
       // 是否正在加载
       isLoading: false,
       // 表格数据
-      tableData: []
+      tableData: [],
+      // 验证规则
+      rules: {
+        num: [
+          { required: true, message: '请输入你的内容', trigger: 'blur' },
+          {
+            pattern: /^[1-9]\d*$/,
+            message: '只能输入正整数'
+          }
+        ]
+      }
     }
   },
   methods: {
