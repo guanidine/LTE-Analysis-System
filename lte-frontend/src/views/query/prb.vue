@@ -42,6 +42,7 @@
           type="datetimerange"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
+          value-format="yyyy-MM-dd HH:mm:ss"
           :default-time="['00:00:00', '00:00:00']"
         />
       </el-form-item>
@@ -78,9 +79,9 @@ export default {
   data() {
     return {
       prbQuery: {
-        enodebName: '',
-        time: '',
-        field: ''
+        enodebName: 'B马东工地大剧院-HLHF',
+        time: ['2020-07-17 00:00:00', '2020-07-18 00:00:00'],
+        field: '第0个PRB上检测到的干扰噪声的平均值 (毫瓦分贝)'
       },
       btnDisabled: false,
       chart: null,
@@ -91,6 +92,7 @@ export default {
   },
   created() {
     this.listEnodebs()
+    this.initChartData()
   },
   methods: {
     showChart(type = 'minute') {

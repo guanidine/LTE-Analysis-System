@@ -71,7 +71,7 @@
       <el-form-item>
         <el-date-picker
           v-model="kpiQuery.time"
-          type="datetimerange"
+          type="daterange"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           :default-time="['00:00:00', '00:00:00']"
@@ -103,7 +103,7 @@ export default {
     return {
       kpiQuery: {
         sectorName: 'B马千秋路广告牌-HLHF-2',
-        time: ['2020-07-17T00:00:00.000Z', '2020-07-19T00:00:00.000Z'],
+        time: ['2020-07-17', '2020-07-19'],
         field: 'RRC连接建立完成次数 (无)'
       },
       btnDisabled: false,
@@ -126,7 +126,7 @@ export default {
     initChartData() {
       kpiApi.listData(this.kpiQuery).then(response => {
         this.yData = response.data.list
-        this.xData = response.data.date
+        this.xData = response.data.date.map((str) => { return str.match(/\d{4}-\d{2}-\d{2}/)[0] })
         this.setChart()
       })
     },

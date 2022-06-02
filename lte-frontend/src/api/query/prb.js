@@ -17,11 +17,11 @@ export default {
 
   listHourData(prbQuery) {
     return request({
-      url: '/biz/prb/hour',
+      url: 'biz/prb/hour',
       method: 'post',
       data: {
         'enodebName': prbQuery.enodebName,
-        'field': prbQuery.field,
+        'field': 'noise' + prbQuery.field.match(/[^\d]*(\d+)[^\d]*/)[1],
         'begin': prbQuery.time[0],
         'end': prbQuery.time[1]
       }
