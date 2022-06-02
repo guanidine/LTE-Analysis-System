@@ -102,9 +102,9 @@ export default {
   data() {
     return {
       kpiQuery: {
-        sectorName: '',
-        time: '',
-        field: ''
+        sectorName: 'B马千秋路广告牌-HLHF-2',
+        time: ['2020-07-17T00:00:00.000Z', '2020-07-19T00:00:00.000Z'],
+        field: 'RRC连接建立完成次数 (无)'
       },
       btnDisabled: false,
       chart: null,
@@ -115,6 +115,7 @@ export default {
   },
   created() {
     this.listSectors()
+    this.showChart()
   },
   methods: {
     showChart() {
