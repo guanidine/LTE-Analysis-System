@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,11 +16,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import team.lte.bizservice.entity.dto.PrbDTO;
+import team.lte.bizservice.entity.dto.PrbNewDTO;
 import team.lte.bizservice.entity.po.Prb;
 import team.lte.bizservice.entity.vo.PrbQuery;
 import team.lte.bizservice.mapper.PrbMapper;
 import team.lte.bizservice.service.PrbService;
-import team.lte.bizservice.util.QueryUtils;
+import team.lte.bizservice.service.PrbnewService;
 import team.lte.commonutils.easyexcel.ExcelServiceBuilder;
 import team.lte.commonutils.easyexcel.annotation.DbType;
 import team.lte.commonutils.result.R;
@@ -44,6 +44,9 @@ public class PrbController {
 
     @Resource
     private PrbMapper prbMapper;
+
+    @Resource
+    private PrbnewService prbnewService;
 
     @Operation(summary = "查询某项PRB干扰数据每15分钟的变化情况")
     @PostMapping("")
@@ -96,5 +99,19 @@ public class PrbController {
         @Parameter(description = "上传文件", required = true) @RequestPart("file") MultipartFile file) {
         ExcelServiceBuilder.build(DbType.POSTGRE_SQL).group(300).uploadFile(response, file, Prb.class,
             PrbDTO.class, prbService, prbMapper);
+    }
+
+    @Operation(summary = "将tbPRBnew导出到外部excel文件中")
+    @GetMapping("download/tbprbnew")
+    public void downloadNewExcel(HttpServletResponse response) {
+        ExcelServiceBuilder.build(DbType.POSTGRE_SQL)
+                .downloadFile(response, PrbNewDTO.class, prbnewService);
+    }
+
+    @Operation(summary = "创建tbPRBnew")
+    @PostMapping("create/tbprbnew")
+    public R createTbPrbNew() {
+        prbnewService.dropAndCreate();
+        return R.ok();
     }
 }

@@ -11,14 +11,11 @@
     </select>
 
     <select id="listHourData" resultType="team.lte.bizservice.entity.vo.TimeObject">
-        select a.hourtime as start_time, sum(a.${field}) as result
-        from (select date_trunc('hour', start_time) as hourtime,
-                     ${field}
-              from tbprb
-              where enodeb_name = #{enodebName}
-                and start_time between #{begin} and #{end}
-             ) a
-        group by a.hourtime;
+        select t.hour_time as start_time, t.${field} as result
+        from tbprbnew t
+        where enodeb_name = #{enodebName}
+          and hour_time &gt;= #{begin}
+          and hour_time &lt;= #{end}
     </select>
 
     <select id="listEnodebs" resultType="java.lang.String">
