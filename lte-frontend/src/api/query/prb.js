@@ -33,6 +33,13 @@ export default {
       url: '/biz/prb/all-enodeb',
       method: 'get'
     })
+  },
+
+  createTbPrbNew() {
+    return request({
+      url: '/biz/prb/create/tbprbnew',
+      method: 'post'
+    })
   }
 
 }

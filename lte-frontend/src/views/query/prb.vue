@@ -3,7 +3,7 @@
     <!--表单-->
     <el-form :inline="true" class="demo-form-inline">
 
-      <el-form-item>
+      <el-form-item label="基站名称">
         <!-- 基站名称 -->
         <el-select
           v-model="prbQuery.enodebName"
@@ -21,7 +21,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item label="查询指标">
         <el-select
           v-model="prbQuery.field"
           clearable
@@ -36,7 +36,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item label="时间范围">
         <el-date-picker
           v-model="prbQuery.time"
           type="datetimerange"
@@ -46,24 +46,35 @@
           :default-time="['00:00:00', '00:00:00']"
         />
       </el-form-item>
-
-      <el-button
-        :disabled="btnDisabled"
-        type="primary"
-        icon="el-icon-search"
-        @click="showChart()"
-      >查询
-      </el-button>
-
-      <el-button
-        :disabled="btnDisabled"
-        type="primary"
-        icon="el-icon-search"
-        @click="showChart('hour')"
-      >按小时查询
-      </el-button>
     </el-form>
-    <Download :names="['查询结果','图表']" :data="[ list, chartUrl ]" />
+
+    <el-row style="width:100%; text-align: center;" justify="center">
+      <el-col>
+        <el-button
+          :disabled="btnDisabled"
+          type="success"
+          icon="el-icon-document"
+          @click="creare()"
+        >生成tbPRBnew
+        </el-button>
+        <el-button
+          :disabled="btnDisabled"
+          type="primary"
+          icon="el-icon-search"
+          @click="showChart()"
+        >查询
+        </el-button>
+        <el-button
+          :disabled="btnDisabled"
+          type="primary"
+          icon="el-icon-search"
+          @click="showChart('hour')"
+        >按小时查询
+        </el-button>
+      </el-col>
+    </el-row>
+
+    <Download :names="['查询结果','图表']" :data="[ list, chartUrl ]" style="margin-top: 20px; margin-bottom:20px" />
 
     <div class="chart-container">
       <div id="chart" class="chart" style="height:500px;width:100%" />
@@ -360,6 +371,13 @@ export default {
             this.enodebList = response.data.list
           })
       }
+    },
+    create() {
+      prbApi.createTbPrbNew().then(
+        response => {
+          this.$message({ target: 'success', message: '创建成功' })
+        }
+      )
     }
 
     // TODO: 四个selector未全部选择的时候查询按钮应为disabled，懒着做了

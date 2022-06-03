@@ -3,7 +3,7 @@
     <!--表单-->
     <el-form :inline="true" class="demo-form-inline">
 
-      <el-form-item>
+      <el-form-item label="小区名称">
         <!-- 小区名称 -->
         <el-select
           v-model="kpiQuery.sectorName"
@@ -21,7 +21,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item label="查询指标">
         <el-select
           v-model="kpiQuery.field"
           clearable
@@ -68,7 +68,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item label="日期范围">
         <el-date-picker
           v-model="kpiQuery.time"
           type="daterange"
@@ -87,7 +87,7 @@
       </el-button>
     </el-form>
 
-    <Download :names="['查询结果','图表']" :data="[ data, chartUrl ]" />
+    <Download :names="['查询结果','图表']" :data="[ data, chartUrl ]" style="margin-bottom:20px" />
 
     <div class="chart-container">
       <div id="chart" class="chart" style="height:500px;width:100%" />
