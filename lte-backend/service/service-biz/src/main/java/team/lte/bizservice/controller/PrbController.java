@@ -101,13 +101,6 @@ public class PrbController {
             PrbDTO.class, prbService, prbMapper);
     }
 
-    @Operation(summary = "将tbPRBnew导出到外部excel文件中")
-    @GetMapping("download/tbprbnew")
-    public void downloadNewExcel(HttpServletResponse response) {
-        ExcelServiceBuilder.build(DbType.POSTGRE_SQL)
-                .downloadFile(response, PrbNewDTO.class, prbnewService);
-    }
-
     @Operation(summary = "创建tbPRBnew")
     @PostMapping("create/tbprbnew")
     public R createTbPrbNew() {

@@ -15,7 +15,7 @@ public class PrbNewDTO {
     @ExcelProperty(value = "起始时间", index = 0)
     @ColumnWidth(20)
     @NotNull
-    private String startTime;
+    private String hourTime;
 
     @ExcelProperty(value = "网元/基站名称", index = 1)
     @ColumnWidth(20)

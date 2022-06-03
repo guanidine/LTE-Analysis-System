@@ -1,11 +1,11 @@
 <template>
   <div v-if="hasPerm('data.export')" class="app-container">
-    <span>超简朴的数据管理</span>
+    <span style="font-size:Extra large">数据管理</span>
 
     <el-divider content-position="left">数据导入</el-divider>
 
     <el-form :inline="true" class="demo-form-inline">
-      <el-form-item>
+      <el-form-item label="数据表">
         <!-- 操作的数据表 -->
         <el-select
           v-model="tableName"
@@ -32,7 +32,7 @@
       :on-remove="()=>changeFileStatus(false)"
       type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     >
-      <i class="el-icon-upload"/>
+      <i class="el-icon-upload" />
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <div slot="tip" class="el-upload__tip">只能上传xlsx格式文件</div>
     </el-upload>
@@ -40,23 +40,23 @@
     <div slot="footer" class="dialog-footer">
       <el-link :href="tableName+'模板.xlsx'" :disabled="downloadBtnDisabled">
         <el-button :disabled="downloadBtnDisabled">
-          <i class="el-icon-download"/>
+          <i class="el-icon-download" />
           点击下载模版
         </el-button>
       </el-link>
       <el-button type="primary" :disabled="uploadBtnDisabled" @click="submitUpload">
-        <i class="el-icon-upload el-icon--right"></i>
+        <i class="el-icon-upload el-icon--right" />
         {{ fileUploadBtnText }}
       </el-button>
     </div>
 
-    <el-progress v-show="showProgress" :percentage="processLength" :stroke-width="2"/>
+    <el-progress v-show="showProgress" :percentage="processLength" :stroke-width="2" />
 
     <el-divider content-position="left">数据导出</el-divider>
 
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" :disabled="downloadBtnDisabled" @click="downloadHttpRequest">
-        <i class="el-icon-download el-icon--right"></i>
+      <el-button type="primary" :disabled="downloadBtnDisabled" :loading="downloadLoading" @click="downloadHttpRequest">
+        <i class="el-icon-download el-icon--right" />
         导出
       </el-button>
     </div>
@@ -84,7 +84,11 @@ export default {
         tablename: ''
       },
       tableName: '',
-      downloadBtnDisabled: true
+      downloadBtnDisabled: true,
+      downloadLoading: false,
+
+      downloadList: ['tbcell', 'tbprb', 'tbkpi', 'tbprbnew'],
+      uploadList: ['tbcell', 'tbprb', 'tbkpi']
     }
   },
   created() {
@@ -168,12 +172,18 @@ export default {
     },
     // ============================================= 下载 =============================================
     downloadHttpRequest() {
+      if (this.downloadList.indexOf(this.tableName) === -1) {
+        this.$message({ target: 'error', message: '该数据表不开放下载！' })
+        return
+      }
       const table = this.tableName.substring(2).toLowerCase()
       const url = `${this.BASE_API}/biz/${table}/download`
+      this.downloadLoading = true
       axios.get(url, {
         responseType: 'arraybuffer'
       }).then(response => {
         dataApi.download(response, `${this.tableName}`)
+        this.downloadLoading = false
       })
     },
     // ============================================= 选择操作数据表 =============================================

@@ -3,6 +3,8 @@ package team.lte.bizservice.entity.po;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,7 +27,7 @@ import javax.validation.constraints.NotNull;
 @TableName("tbprbnew")
 @Schema( description = "PRB干扰数据（小时级）")
 public class Prbnew implements Serializable {
-
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema( description = "起始时间")
