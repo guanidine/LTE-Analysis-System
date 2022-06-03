@@ -52,9 +52,10 @@
       <el-col>
         <el-button
           :disabled="btnDisabled"
+          :loading="createLoading"
           type="success"
           icon="el-icon-document"
-          @click="creare()"
+          @click="create()"
         >生成tbPRBnew
         </el-button>
         <el-button
@@ -104,7 +105,8 @@ export default {
       xData: [],
       yData: [],
       enodebList: [],
-      list: []
+      list: [],
+      createLoading: false
     }
   },
   computed: {
@@ -373,8 +375,10 @@ export default {
       }
     },
     create() {
+      this.createLoading = true
       prbApi.createTbPrbNew().then(
         response => {
+          this.createLoading = false
           this.$message({ target: 'success', message: '创建成功' })
         }
       )
