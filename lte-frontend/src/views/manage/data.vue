@@ -1,17 +1,19 @@
 <template>
+
   <div v-if="hasPerm('data.export')" class="app-container">
     <span style="font-size:Extra large">数据管理</span>
 
     <el-divider content-position="left">数据导入</el-divider>
 
     <el-form :inline="true" class="demo-form-inline">
-      <el-form-item label="数据表">
+      <el-form-item label="数据表" style="margin-left: 400px">
         <!-- 操作的数据表 -->
         <el-select
           v-model="tableName"
           filterable
           placeholder="请选择要操作的数据表"
           @change="onChange"
+          style="width: 500px"
         >
           <el-option
             v-for="item in tableList"
@@ -22,22 +24,24 @@
       </el-form-item>
     </el-form>
 
-    <el-upload
-      ref="upload"
-      :auto-upload="false"
-      action="#"
-      drag
-      :http-request="uploadHttpRequest"
-      :on-change="onFileChange"
-      :on-remove="()=>changeFileStatus(false)"
-      type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    >
-      <i class="el-icon-upload" />
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div slot="tip" class="el-upload__tip">只能上传xlsx格式文件</div>
-    </el-upload>
+    <div style="margin-left: 230px">
+      <el-upload
+        ref="upload"
+        :auto-upload="false"
+        action="#"
+        drag
+        :http-request="uploadHttpRequest"
+        :on-change="onFileChange"
+        :on-remove="()=>changeFileStatus(false)"
+        type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      >
+        <i class="el-icon-upload"  />
+        <div class="el-upload__text" style="margin-top: 150px">将文件拖到此处，或<em>点击上传</em></div>
+        <div slot="tip" class="el-upload__tip" style="color: red;margin-left: 420px">只能上传xlsx格式文件</div>
+      </el-upload>
+    </div>
 
-    <div slot="footer" class="dialog-footer">
+    <div slot="footer" class="dialog-footer" style="margin-top: 70px;margin-left: 560px">
       <el-link :href="tableName+'模板.xlsx'" :disabled="downloadBtnDisabled">
         <el-button :disabled="downloadBtnDisabled">
           <i class="el-icon-download" />
@@ -54,8 +58,8 @@
 
     <el-divider content-position="left">数据导出</el-divider>
 
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" :disabled="downloadBtnDisabled" :loading="downloadLoading" @click="downloadHttpRequest">
+    <div slot="footer" class="dialog-footer" style="margin-left: 560px">
+      <el-button type="primary" :disabled="downloadBtnDisabled" :loading="downloadLoading" @click="downloadHttpRequest" style="width: 295px">
         <i class="el-icon-download el-icon--right" />
         导出
       </el-button>
@@ -208,3 +212,10 @@ export default {
   }
 }
 </script>
+
+<style>
+  .el-upload-dragger{
+    width: 950px;
+    height: 400px;
+  }
+</style>
