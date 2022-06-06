@@ -53,6 +53,36 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
+  }
+]
+
+export const asyncRoutes = [
+  {
+    path: '/query',
+    component: Layout,
+    redirect: '/query/dashboard',
+    name: '业务查询',
+    meta: { title: '业务查询', icon: 'el-icon-s-help', roles: [] },
+    children: [
+      {
+        path: 'cell',
+        name: '小区配置信息',
+        component: () => import('@/views/query/cell'),
+        meta: { title: '小区配置信息', icon: 'el-icon-s-grid', roles: [] }
+      },
+      {
+        path: 'kpi',
+        name: 'KPI指标信息查询',
+        component: () => import('@/views/query/kpi'),
+        meta: { title: 'KPI指标信息查询', icon: 'el-icon-s-data', roles: [] }
+      },
+      {
+        path: 'prb',
+        name: 'PRB干扰数据查询',
+        component: () => import('@/views/query/prb'),
+        meta: { title: 'PRB干扰数据查询', icon: 'el-icon-s-marketing', roles: [] }
+      }
+    ]
   },
 
   {
@@ -82,36 +112,6 @@ export const constantRoutes = [
           title: '干扰小区三元组分析',
           icon: 'el-icon-bangzhu'
         }
-      }
-    ]
-  }
-]
-
-export const asyncRoutes = [
-  {
-    path: '/query',
-    component: Layout,
-    redirect: '/query/dashboard',
-    name: '业务查询',
-    meta: { title: '业务查询', icon: 'el-icon-s-help', roles: [] },
-    children: [
-      {
-        path: 'cell',
-        name: '小区配置信息',
-        component: () => import('@/views/query/cell'),
-        meta: { title: '小区配置信息', icon: 'el-icon-s-grid', roles: [] }
-      },
-      {
-        path: 'kpi',
-        name: 'KPI指标信息查询',
-        component: () => import('@/views/query/kpi'),
-        meta: { title: 'KPI指标信息查询', icon: 'el-icon-s-data', roles: [] }
-      },
-      {
-        path: 'prb',
-        name: 'PRB干扰数据查询',
-        component: () => import('@/views/query/prb'),
-        meta: { title: 'PRB干扰数据查询', icon: 'el-icon-s-marketing', roles: [] }
       }
     ]
   },

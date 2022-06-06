@@ -96,8 +96,8 @@
       <el-table-column prop="sss" label="辅同步信号标识" width="80" />
       <el-table-column prop="tac" label="跟踪区编码" width="80" />
       <el-table-column prop="vendor" label="供应商" width="70" />
-      <el-table-column prop="longitude" label="经度" width="80" />
-      <el-table-column prop="latitude" label="纬度" width="80" />
+      <el-table-column prop="longitude" label="经度" width="90" />
+      <el-table-column prop="latitude" label="纬度" width="90" />
       <el-table-column prop="style" label="基站类型" width="80" />
       <el-table-column prop="azimuth" label="小区天线方位角" width="80" />
       <el-table-column prop="height" label="小区天线高度" width="80" />

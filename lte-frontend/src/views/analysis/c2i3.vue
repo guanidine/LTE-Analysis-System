@@ -13,7 +13,7 @@
     <div class="block">
       <div v-if="isLoad === true" class="table">
         <el-table
-          max-height="580"
+          max-height="550"
           style="width: 100%;"
           :data="tableData"
           stripe

@@ -10,7 +10,7 @@
           filterable
           clearable
           placeholder="小区名称"
-          style="width: 280px"
+          style="width: 250px"
           :popper-append-to-body="false"
         >
           <el-option
@@ -26,7 +26,7 @@
           v-model="kpiQuery.field"
           clearable
           placeholder="查询指标"
-          style="width: 400px"
+          style="width: 300px"
         >
           <el-option value="RRC连接建立完成次数 (无)" />
           <el-option value="RRC连接请求次数（包括重发） (无)" />

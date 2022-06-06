@@ -10,7 +10,7 @@
           filterable
           clearable
           placeholder="基站名称"
-          style="width: 280px"
+          style="width: 250px"
           :popper-append-to-body="false"
         >
           <el-option
