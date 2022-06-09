@@ -201,7 +201,24 @@ export const asyncRoutes = [
       }
     ]
   },
-
+  {
+    path: '/database',
+    component: Layout,
+    name: '数据库配置面板',
+    meta: { title: '数据库配置面板', icon: 'el-icon-s-help' },
+    children: [
+      // 页面放在children里面，Layout那个只作为一级路由用
+      {
+        path: 'databaseDetail',
+        component: () => import('@/views/database/databaseDetail'),
+        name: '数据库配置',
+        meta: {
+          'title': '数据库配置',
+          icon: 'el-icon-s-marketing'
+        }
+      }
+    ]
+  },
   {
     path: 'external-link',
     component: Layout,
