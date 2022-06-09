@@ -22,4 +22,13 @@
           and a.attnum > 0
     </select>
 
+    <select id="listTableFile" resultType="java.lang.String">
+        select *
+        from pg_relation_filepath(#{tableName});
+    </select>
+
+    <select id="listTableSize" resultType="java.lang.String">
+        select pg_size_pretty(pg_relation_size(#{tableName}));
+    </select>
+
 </mapper>

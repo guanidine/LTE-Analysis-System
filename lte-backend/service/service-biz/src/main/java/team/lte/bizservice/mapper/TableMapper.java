@@ -17,4 +17,7 @@ public interface TableMapper {
 
     List<Map<String, String>> listTableColumns(String tableName);
 
+    String listTableFile(String tableName);
+
+    String listTableSize(String tableName);
 }

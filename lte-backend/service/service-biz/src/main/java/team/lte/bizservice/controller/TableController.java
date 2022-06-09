@@ -36,4 +36,20 @@ public class TableController {
         List<Map<String, String>> list = tableMapper.listTableColumns(table);
         return R.ok().data("list", list);
     }
+
+    @Operation(summary = "获取目标数据表的物理文件路径")
+    @GetMapping("{table}/file")
+    public R listTableFile(@Parameter(description = "待查数据表名", required = true) @PathVariable String table) {
+
+        String file = tableMapper.listTableFile(table);
+        return R.ok().data("file", file);
+    }
+
+    @Operation(summary = "获取目标数据表的物理大小")
+    @GetMapping("{table}/size")
+    public R listTableSize(@Parameter(description = "待查数据表大小", required = true) @PathVariable String table) {
+
+        String size = tableMapper.listTableSize(table);
+        return R.ok().data("size", size);
+    }
 }
