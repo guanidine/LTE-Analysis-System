@@ -67,7 +67,7 @@
         <el-input v-model="headform.maxActice" placeholder="请输入初始化连接数" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="updateDB()">更新</el-button>
+        <el-button type="primary" @click="updateDB()" disabled="true">更新</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="showDB()">查看</el-button>
@@ -110,7 +110,7 @@ export default {
         minIdle: 1,
         maxActice: 5
       },
-      tableList: [{ tablename: 'tbc2i3' }, { tablename: 'tbc2inew' }, { tablename: 'tbcell' }, {tablename: 'tbkpi' }, { tablename: 'tbmrodata' }, { tablename: 'tbprb' }, { tablename: 'tbprbnew' }]
+      tableList: [{ tablename: 'tbc2i3' }, { tablename: 'tbc2inew' }, { tablename: 'tbcell' }, { tablename: 'tbkpi' }, { tablename: 'tbmrodata' }, { tablename: 'tbprb' }, { tablename: 'tbprbnew' }]
     }
   },
   methods: {
