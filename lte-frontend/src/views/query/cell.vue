@@ -188,6 +188,7 @@ export default {
         cellApi.listCells(this.page, this.limit, this.cellQuery)
           .then(response => {
             this.list = response.data.list
+            console.log(response)
             this.total = response.data.total
           })
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" :model="headform" :rules="rules" class="demo-form-inline">
+    <el-form :inline="true" :model="headform" :rules="rules" class="demo-form-inline" >
       <el-form-item label="重叠覆盖干扰小区三元组分析" prop="num">
         <el-input v-model="headform.num" placeholder="请输入x" clearable>
           <template slot="append">%</template>
