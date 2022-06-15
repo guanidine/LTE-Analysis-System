@@ -17,3 +17,4 @@ public interface PrbnewMapper extends BaseMapper<Prbnew> {
     @Update("select createTbprbnew()")
     void dropAndCreate();
 }
+

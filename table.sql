@@ -4,7 +4,34 @@ create schema if not exists lte;
 set search_path to lte;
 
 
-create table if not exists tbcell (city varchar(255) null, sector_id varchar(50) not null primary key, sector_name varchar(255) not null, enodebid int not null, enodeb_name varchar(255) not null, earfcn int not null, pci int null, pss int null, sss int null, tac int null, vendor varchar(255) null, longitude float not null, latitude float not null, style varchar(255) null, azimuth float not null, height float null, electtilt float null, mechtilt float null, totletilt float not null);
+create table if not exists tbcell
+(
+    city        varchar(255) null,
+    sector_id   varchar(50)  not null primary key,
+    sector_name varchar(255) not null,
+    enodebid    int          not null,
+    enodeb_name varchar(255) not null,
+    earfcn      int          not null,
+    pci         int          null,
+    pss         int          null,
+    sss         int          null,
+    tac         int          null,
+    vendor      varchar(255) null,
+    longitude   float        not null,
+    latitude    float        not null,
+    style       varchar(255) null,
+    azimuth     float        not null,
+    height      float        null,
+    electtilt   float        null,
+    mechtilt    float        null,
+    totletilt   float        not null,
+    unique (sector_name),
+    check (earfcn in ('37900','38098','38400','38950','39148')),
+    check(pci between 0 and 503),
+    check(pci = 3*sss+pss),
+    check(pss BETWEEN 0 AND 2),
+    check(sss BETWEEN 0 AND 167)
+);
 
 comment on table tbcell is '小区配置信息';
 
@@ -65,7 +92,9 @@ drop function if exists tbcell_pci_fun;
 drop function if exists tbcell_totletilt_fun;
 
 
-create function tbcell_pci_fun() returns trigger language plpgsql as $$
+create function tbcell_pci_fun() returns trigger
+    language plpgsql as
+$$
 begin
     new.pss = mod(new.pci, 3);
     new.sss = div(new.pci, 3);
@@ -75,18 +104,25 @@ $$;
 
 
 create trigger tbcell_pci_insert
-before
-insert on tbcell
-for each row execute procedure tbcell_pci_fun();
+    before
+        insert
+    on tbcell
+    for each row
+execute procedure tbcell_pci_fun();
 
 
 create trigger tbcell_pci_update
-before
-update on tbcell
-for each row when (new.pci <> old.pci) execute procedure tbcell_pci_fun();
+    before
+        update
+    on tbcell
+    for each row
+    when (new.pci <> old.pci)
+execute procedure tbcell_pci_fun();
 
 
-create function tbcell_totletilt_fun() returns trigger language plpgsql as $$
+create function tbcell_totletilt_fun() returns trigger
+    language plpgsql as
+$$
 begin
     new.totletilt = new.electtilt + new.mechtilt;
     return new;
@@ -95,19 +131,68 @@ $$;
 
 
 create trigger tbcell_totletilt_insert
-before
-insert on tbcell
-for each row execute procedure tbcell_totletilt_fun();
+    before
+        insert
+    on tbcell
+    for each row
+execute procedure tbcell_totletilt_fun();
 
 
 create trigger tbcell_totletilt_update
-before
-update on tbcell
-for each row when (new.electtilt <> old.electtilt
-                   or new.mechtilt <> old.electtilt) execute procedure tbcell_totletilt_fun();
+    before
+        update
+    on tbcell
+    for each row
+    when (new.electtilt <> old.electtilt
+        or new.mechtilt <> old.electtilt)
+execute procedure tbcell_totletilt_fun();
 
 
-create table if not exists tbkpi (id varchar(32) not null primary key, start_time timestamp not null, enodeb_name varchar(255) not null, sector_description varchar(255) not null, sector_name varchar(255) not null, rrc_success int not null, rrc_tries int not null, rrc_success_rate float null, erab_success int not null, erab_tries int not null, erab_success_rate float null, enodeb_erab_release int not null, sector_erab_release int not null, erab_drop_rate float null, wireless_connection_rate float null, enodeb_ue_release int not null, ue_release int not null, ue_success int not null, wireless_drop_rate float null, intra_inter_success int not null, intra_inter_tries int not null, intra_intra_success int not null, intra_intra_tries int not null, inter_inter_success int not null, inter_inter_tries int not null, inter_intra_success int not null, inter_intra_tries int not null, intra_enodeb_success_rate float null, inter_enodeb_success_rate float null, intra_frequency_success_rate float null, inter_frequency_success_rate float null, handover_success_rate float null, upstream_capacity bigint not null, downstream_capacity bigint not null, rrc_retries int not null, rrc_retries_rate float null, back_inter_intra_success int not null, back_inter_inter_success int not null, back_intra_intra_success int not null, back_intra_inter_success int not null, intra_enodeb_success int not null, inter_enodeb_success int not null);
+create table if not exists tbkpi
+(
+    id                           varchar(32)  not null primary key,
+    start_time                   timestamp    not null,
+    enodeb_name                  varchar(255) not null,
+    sector_description           varchar(255) not null,
+    sector_name                  varchar(255) not null,
+    rrc_success                  int          not null,
+    rrc_tries                    int          not null,
+    rrc_success_rate             float        null,
+    erab_success                 int          not null,
+    erab_tries                   int          not null,
+    erab_success_rate            float        null,
+    enodeb_erab_release          int          not null,
+    sector_erab_release          int          not null,
+    erab_drop_rate               float        null,
+    wireless_connection_rate     float        null,
+    enodeb_ue_release            int          not null,
+    ue_release                   int          not null,
+    ue_success                   int          not null,
+    wireless_drop_rate           float        null,
+    intra_inter_success          int          not null,
+    intra_inter_tries            int          not null,
+    intra_intra_success          int          not null,
+    intra_intra_tries            int          not null,
+    inter_inter_success          int          not null,
+    inter_inter_tries            int          not null,
+    inter_intra_success          int          not null,
+    inter_intra_tries            int          not null,
+    intra_enodeb_success_rate    float        null,
+    inter_enodeb_success_rate    float        null,
+    intra_frequency_success_rate float        null,
+    inter_frequency_success_rate float        null,
+    handover_success_rate        float        null,
+    upstream_capacity            bigint       not null,
+    downstream_capacity          bigint       not null,
+    rrc_retries                  int          not null,
+    rrc_retries_rate             float        null,
+    back_inter_intra_success     int          not null,
+    back_inter_inter_success     int          not null,
+    back_intra_intra_success     int          not null,
+    back_intra_inter_success     int          not null,
+    intra_enodeb_success         int          not null,
+    inter_enodeb_success         int          not null
+);
 
 comment on table tbkpi is 'KPI指标统计数据';
 
@@ -196,7 +281,114 @@ comment on column tbkpi.intra_enodeb_success is 'eNB内切换出成功次数 (�
 comment on column tbkpi.inter_enodeb_success is 'eNB内切换出请求次数 (次)';
 
 
-create table if not exists tbprb (id varchar(32) not null primary key, start_time timestamp not null, enodeb_name varchar(255) not null, sector_description varchar(255) not null, sector_name varchar(255) not null, noise0 int not null, noise1 int not null, noise2 int not null, noise3 int not null, noise4 int not null, noise5 int not null, noise6 int not null, noise7 int not null, noise8 int not null, noise9 int not null, noise10 int not null, noise11 int not null, noise12 int not null, noise13 int not null, noise14 int not null, noise15 int not null, noise16 int not null, noise17 int not null, noise18 int not null, noise19 int not null, noise20 int not null, noise21 int not null, noise22 int not null, noise23 int not null, noise24 int not null, noise25 int not null, noise26 int not null, noise27 int not null, noise28 int not null, noise29 int not null, noise30 int not null, noise31 int not null, noise32 int not null, noise33 int not null, noise34 int not null, noise35 int not null, noise36 int not null, noise37 int not null, noise38 int not null, noise39 int not null, noise40 int not null, noise41 int not null, noise42 int not null, noise43 int not null, noise44 int not null, noise45 int not null, noise46 int not null, noise47 int not null, noise48 int not null, noise49 int not null, noise50 int not null, noise51 int not null, noise52 int not null, noise53 int not null, noise54 int not null, noise55 int not null, noise56 int not null, noise57 int not null, noise58 int not null, noise59 int not null, noise60 int not null, noise61 int not null, noise62 int not null, noise63 int not null, noise64 int not null, noise65 int not null, noise66 int not null, noise67 int not null, noise68 int not null, noise69 int not null, noise70 int not null, noise71 int not null, noise72 int not null, noise73 int not null, noise74 int not null, noise75 int not null, noise76 int not null, noise77 int not null, noise78 int not null, noise79 int not null, noise80 int not null, noise81 int not null, noise82 int not null, noise83 int not null, noise84 int not null, noise85 int not null, noise86 int not null, noise87 int not null, noise88 int not null, noise89 int not null, noise90 int not null, noise91 int not null, noise92 int not null, noise93 int not null, noise94 int not null, noise95 int not null, noise96 int not null, noise97 int not null, noise98 int not null, noise99 int not null);
+create table if not exists tbprb
+(
+    id                 varchar(32)  not null primary key,
+    start_time         timestamp    not null,
+    enodeb_name        varchar(255) not null,
+    sector_description varchar(255) not null,
+    sector_name        varchar(255) not null,
+    noise0             int          not null,
+    noise1             int          not null,
+    noise2             int          not null,
+    noise3             int          not null,
+    noise4             int          not null,
+    noise5             int          not null,
+    noise6             int          not null,
+    noise7             int          not null,
+    noise8             int          not null,
+    noise9             int          not null,
+    noise10            int          not null,
+    noise11            int          not null,
+    noise12            int          not null,
+    noise13            int          not null,
+    noise14            int          not null,
+    noise15            int          not null,
+    noise16            int          not null,
+    noise17            int          not null,
+    noise18            int          not null,
+    noise19            int          not null,
+    noise20            int          not null,
+    noise21            int          not null,
+    noise22            int          not null,
+    noise23            int          not null,
+    noise24            int          not null,
+    noise25            int          not null,
+    noise26            int          not null,
+    noise27            int          not null,
+    noise28            int          not null,
+    noise29            int          not null,
+    noise30            int          not null,
+    noise31            int          not null,
+    noise32            int          not null,
+    noise33            int          not null,
+    noise34            int          not null,
+    noise35            int          not null,
+    noise36            int          not null,
+    noise37            int          not null,
+    noise38            int          not null,
+    noise39            int          not null,
+    noise40            int          not null,
+    noise41            int          not null,
+    noise42            int          not null,
+    noise43            int          not null,
+    noise44            int          not null,
+    noise45            int          not null,
+    noise46            int          not null,
+    noise47            int          not null,
+    noise48            int          not null,
+    noise49            int          not null,
+    noise50            int          not null,
+    noise51            int          not null,
+    noise52            int          not null,
+    noise53            int          not null,
+    noise54            int          not null,
+    noise55            int          not null,
+    noise56            int          not null,
+    noise57            int          not null,
+    noise58            int          not null,
+    noise59            int          not null,
+    noise60            int          not null,
+    noise61            int          not null,
+    noise62            int          not null,
+    noise63            int          not null,
+    noise64            int          not null,
+    noise65            int          not null,
+    noise66            int          not null,
+    noise67            int          not null,
+    noise68            int          not null,
+    noise69            int          not null,
+    noise70            int          not null,
+    noise71            int          not null,
+    noise72            int          not null,
+    noise73            int          not null,
+    noise74            int          not null,
+    noise75            int          not null,
+    noise76            int          not null,
+    noise77            int          not null,
+    noise78            int          not null,
+    noise79            int          not null,
+    noise80            int          not null,
+    noise81            int          not null,
+    noise82            int          not null,
+    noise83            int          not null,
+    noise84            int          not null,
+    noise85            int          not null,
+    noise86            int          not null,
+    noise87            int          not null,
+    noise88            int          not null,
+    noise89            int          not null,
+    noise90            int          not null,
+    noise91            int          not null,
+    noise92            int          not null,
+    noise93            int          not null,
+    noise94            int          not null,
+    noise95            int          not null,
+    noise96            int          not null,
+    noise97            int          not null,
+    noise98            int          not null,
+    noise99            int          not null
+);
 
 comment on table tbprb is 'PRB干扰数据';
 
@@ -414,32 +606,116 @@ comment on column tbprb.noise99 is '第99个PRB上检测到的干扰噪声的平
 drop function if exists createTbprbnew;
 
 
-create or replace function createTbprbnew() returns void as $$
+create or replace function createTbprbnew() returns void as
+$$
 DECLARE
 BEGIN
     drop table if exists tbprbnew;
     create table tbprbnew as
-    select hour_time, enodeb_name, sector_description, sector_name,
-        avg(noise0) noise0,avg(noise1) noise1,avg(noise2) noise2,avg(noise3) noise3,avg(noise4) noise4,
-        avg(noise5) noise5,avg(noise6) noise6,avg(noise7) noise7,avg(noise8) noise8,avg(noise9) noise9,
-        avg(noise10) noise10,avg(noise11) noise11,avg(noise12) noise12,avg(noise13) noise13,avg(noise14) noise14,
-        avg(noise15) noise15,avg(noise16) noise16,avg(noise17) noise17,avg(noise18) noise18,avg(noise19) noise19,
-        avg(noise20) noise20,avg(noise21) noise21,avg(noise22) noise22,avg(noise23) noise23,avg(noise24) noise24,
-        avg(noise25) noise25,avg(noise26) noise26,avg(noise27) noise27,avg(noise28) noise28,avg(noise29) noise29,
-        avg(noise30) noise30,avg(noise31) noise31,avg(noise32) noise32,avg(noise33) noise33,avg(noise34) noise34,
-        avg(noise35) noise35,avg(noise36) noise36,avg(noise37) noise37,avg(noise38) noise38,avg(noise39) noise39,
-        avg(noise40) noise40,avg(noise41) noise41,avg(noise42) noise42,avg(noise43) noise43,avg(noise44) noise44,
-        avg(noise45) noise45,avg(noise46) noise46,avg(noise47) noise47,avg(noise48) noise48,avg(noise49) noise49,
-        avg(noise50) noise50,avg(noise51) noise51,avg(noise52) noise52,avg(noise53) noise53,avg(noise54) noise54,
-        avg(noise55) noise55,avg(noise56) noise56,avg(noise57) noise57,avg(noise58) noise58,avg(noise59) noise59,
-        avg(noise60) noise60,avg(noise61) noise61,avg(noise62) noise62,avg(noise63) noise63,avg(noise64) noise64,
-        avg(noise65) noise65,avg(noise66) noise66,avg(noise67) noise67,avg(noise68) noise68,avg(noise69) noise69,
-        avg(noise70) noise70,avg(noise71) noise71,avg(noise72) noise72,avg(noise73) noise73,avg(noise74) noise74,
-        avg(noise75) noise75,avg(noise76) noise76,avg(noise77) noise77,avg(noise78) noise78,avg(noise79) noise79,
-        avg(noise80) noise80,avg(noise81) noise81,avg(noise82) noise82,avg(noise83) noise83,avg(noise84) noise84,
-        avg(noise85) noise85,avg(noise86) noise86,avg(noise87) noise87,avg(noise88) noise88,avg(noise89) noise89,
-        avg(noise90) noise90,avg(noise91) noise91,avg(noise92) noise92,avg(noise93) noise93,avg(noise94) noise94,
-        avg(noise95) noise95,avg(noise96) noise96,avg(noise97) noise97,avg(noise98) noise98,avg(noise99) noise99
+    select hour_time,
+           enodeb_name,
+           sector_description,
+           sector_name,
+           avg(noise0)  noise0,
+           avg(noise1)  noise1,
+           avg(noise2)  noise2,
+           avg(noise3)  noise3,
+           avg(noise4)  noise4,
+           avg(noise5)  noise5,
+           avg(noise6)  noise6,
+           avg(noise7)  noise7,
+           avg(noise8)  noise8,
+           avg(noise9)  noise9,
+           avg(noise10) noise10,
+           avg(noise11) noise11,
+           avg(noise12) noise12,
+           avg(noise13) noise13,
+           avg(noise14) noise14,
+           avg(noise15) noise15,
+           avg(noise16) noise16,
+           avg(noise17) noise17,
+           avg(noise18) noise18,
+           avg(noise19) noise19,
+           avg(noise20) noise20,
+           avg(noise21) noise21,
+           avg(noise22) noise22,
+           avg(noise23) noise23,
+           avg(noise24) noise24,
+           avg(noise25) noise25,
+           avg(noise26) noise26,
+           avg(noise27) noise27,
+           avg(noise28) noise28,
+           avg(noise29) noise29,
+           avg(noise30) noise30,
+           avg(noise31) noise31,
+           avg(noise32) noise32,
+           avg(noise33) noise33,
+           avg(noise34) noise34,
+           avg(noise35) noise35,
+           avg(noise36) noise36,
+           avg(noise37) noise37,
+           avg(noise38) noise38,
+           avg(noise39) noise39,
+           avg(noise40) noise40,
+           avg(noise41) noise41,
+           avg(noise42) noise42,
+           avg(noise43) noise43,
+           avg(noise44) noise44,
+           avg(noise45) noise45,
+           avg(noise46) noise46,
+           avg(noise47) noise47,
+           avg(noise48) noise48,
+           avg(noise49) noise49,
+           avg(noise50) noise50,
+           avg(noise51) noise51,
+           avg(noise52) noise52,
+           avg(noise53) noise53,
+           avg(noise54) noise54,
+           avg(noise55) noise55,
+           avg(noise56) noise56,
+           avg(noise57) noise57,
+           avg(noise58) noise58,
+           avg(noise59) noise59,
+           avg(noise60) noise60,
+           avg(noise61) noise61,
+           avg(noise62) noise62,
+           avg(noise63) noise63,
+           avg(noise64) noise64,
+           avg(noise65) noise65,
+           avg(noise66) noise66,
+           avg(noise67) noise67,
+           avg(noise68) noise68,
+           avg(noise69) noise69,
+           avg(noise70) noise70,
+           avg(noise71) noise71,
+           avg(noise72) noise72,
+           avg(noise73) noise73,
+           avg(noise74) noise74,
+           avg(noise75) noise75,
+           avg(noise76) noise76,
+           avg(noise77) noise77,
+           avg(noise78) noise78,
+           avg(noise79) noise79,
+           avg(noise80) noise80,
+           avg(noise81) noise81,
+           avg(noise82) noise82,
+           avg(noise83) noise83,
+           avg(noise84) noise84,
+           avg(noise85) noise85,
+           avg(noise86) noise86,
+           avg(noise87) noise87,
+           avg(noise88) noise88,
+           avg(noise89) noise89,
+           avg(noise90) noise90,
+           avg(noise91) noise91,
+           avg(noise92) noise92,
+           avg(noise93) noise93,
+           avg(noise94) noise94,
+           avg(noise95) noise95,
+           avg(noise96) noise96,
+           avg(noise97) noise97,
+           avg(noise98) noise98,
+           avg(noise99) noise99
     from (select date_trunc('hour', start_time) hour_time, tbprb.* from tbprb) as tbprb_hour
     group by hour_time, enodeb_name, sector_description, sector_name;
 END
@@ -453,13 +729,37 @@ drop sequence if exists tbmrodata_seq cascade;
 
 
 create sequence tbmrodata_seq
-start 1;
+    start 1;
 
 
-create table if not exists tbmrodata_seq (time_stamp varchar(30) not null, serving_sector varchar(50) not null, interfering_sector varchar(50) not null, lte_sc_rsrp float not null, lte_nc_rsrp float not null, lte_nc_earfcn int not null, lte_nc_pci smallint not null, id int8 primary key not null default nextval('tbmrodata_seq'::regclass));
+create table if not exists tbmrodata_seq
+(
+    time_stamp         varchar(30)      not null,
+    serving_sector     varchar(50)      not null,
+    interfering_sector varchar(50)      not null,
+    lte_sc_rsrp        float            not null,
+    lte_nc_rsrp        float            not null,
+    lte_nc_earfcn      int              not null,
+    lte_nc_pci         smallint         not null,
+    id                 int8 primary key not null default nextval('tbmrodata_seq'::regclass)
+);
 
 
-create table if not exists acl_permission (id bigserial primary key, pid bigint not null default 0, name varchar(30) not null default '', type smallint not null default 0, permission_value varchar(50) default null, path varchar(100) default null, component varchar(100) default null, icon varchar(50) default null, is_disabled smallint not null default 0, is_deleted smallint default 0, gmt_create timestamp default null, gmt_modified timestamp default null);
+create table if not exists acl_permission
+(
+    id               bigserial primary key,
+    pid              bigint      not null default 0,
+    name             varchar(30) not null default '',
+    type             smallint    not null default 0,
+    permission_value varchar(50)          default null,
+    path             varchar(100)         default null,
+    component        varchar(100)         default null,
+    icon             varchar(50)          default null,
+    is_disabled      smallint    not null default 0,
+    is_deleted       smallint             default 0,
+    gmt_create       timestamp            default null,
+    gmt_modified     timestamp            default null
+);
 
 
 create index idx_pid on acl_permission (pid);
@@ -944,7 +1244,15 @@ values (30,
         '2022-05-21 21:34:35.481737');
 
 
-create table if not exists acl_role (id bigserial primary key, name varchar(20) not null default '', remark varchar(255) default null, is_deleted smallint default 0, gmt_create timestamp not null, gmt_modified timestamp not null);
+create table if not exists acl_role
+(
+    id           bigserial primary key,
+    name         varchar(20) not null default '',
+    remark       varchar(255)         default null,
+    is_deleted   smallint             default 0,
+    gmt_create   timestamp   not null,
+    gmt_modified timestamp   not null
+);
 
 
 create unique index idx_role_name on acl_role (name, is_deleted);
@@ -973,7 +1281,17 @@ values (1,
         '2022-05-21 22:56:59.000000');
 
 
-create table if not exists acl_user (id bigserial primary key, password varchar(32) not null default '', name varchar(50) not null default '', avatar varchar(255) default null, is_disabled smallint not null default 0, is_deleted smallint default 0, gmt_create timestamp not null, gmt_modified timestamp not null);
+create table if not exists acl_user
+(
+    id           bigserial primary key,
+    password     varchar(32) not null default '',
+    name         varchar(50) not null default '',
+    avatar       varchar(255)         default null,
+    is_disabled  smallint    not null default 0,
+    is_deleted   smallint             default 0,
+    gmt_create   timestamp   not null,
+    gmt_modified timestamp   not null
+);
 
 
 create unique index idx_user_name on acl_user (name, is_deleted);
@@ -1008,7 +1326,15 @@ values (1,
         '2022-05-06 20:11:14.000000');
 
 
-create table if not exists acl_role_permission (id bigserial primary key, role_id bigint not null default 0, permission_id bigint not null default 0, is_deleted smallint default 0, gmt_create timestamp not null, gmt_modified timestamp not null);
+create table if not exists acl_role_permission
+(
+    id            bigserial primary key,
+    role_id       bigint    not null default 0,
+    permission_id bigint    not null default 0,
+    is_deleted    smallint           default 0,
+    gmt_create    timestamp not null,
+    gmt_modified  timestamp not null,
+);
 
 
 create index idx_rp_role_id on acl_role_permission (role_id);
@@ -1304,7 +1630,17 @@ values (30,
         '2022-05-21 22:48:34.542395');
 
 
-create table acl_user_role (id bigserial primary key, role_id bigint not null default 0, user_id bigint not null default 0, is_deleted smallint default 0, gmt_create timestamp not null, gmt_modified timestamp not null);
+create table acl_user_role
+(
+    id           bigserial primary key,
+    role_id      bigint    not null default 0,
+    user_id      bigint    not null default 0,
+    is_deleted   smallint           default 0,
+    gmt_create   timestamp not null,
+    gmt_modified timestamp not null,
+    foreign key (role_id) references acl_role.id,
+    foreign key (user_id) references acl_user.id
+);
 
 
 create index idx_ur_role_id on acl_user_role (role_id);

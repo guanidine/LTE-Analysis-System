@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasPerm('data.export')" class="app-container">
-    <span style="font-size:Extra large">数据库管理</span>
+    <span style="font-size:Extra large">系统管理</span>
 
     <el-divider content-position="left">数据表信息查询</el-divider>
 
@@ -34,7 +34,7 @@
       fit
       highlight-current-row
     >
-<!--      <el-table-column prop="notnull" label="非空" width="380" />-->
+      <!--      <el-table-column prop="notnull" label="非空" width="380" />-->
       <el-table-column prop="name" label="字段名" width="480" />
       <el-table-column prop="comment" label="注释" width="480" />
       <el-table-column prop="type" label="类型" width="480" />
@@ -56,7 +56,7 @@
       <el-table-column prop="file" label="数据表文件路径" width="1520" />
     </el-table>
     <el-divider content-position="left">数据库信息查询</el-divider>
-    <el-form :inline="true" :model="headform"  class="demo-form-inline">
+    <el-form :inline="true" :model="headform" class="demo-form-inline">
       <el-form-item label="初始化连接数大小" prop="num">
         <el-input v-model="headform.initialSize" placeholder="请输入初始化连接数" clearable />
       </el-form-item>
@@ -67,7 +67,7 @@
         <el-input v-model="headform.maxActice" placeholder="请输入初始化连接数" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="updateDB()" disabled="true">更新</el-button>
+        <el-button type="primary" disabled="true" @click="updateDB()">更新</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="showDB()">查看</el-button>
