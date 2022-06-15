@@ -201,24 +201,22 @@ export const asyncRoutes = [
       }
     ]
   },
+
   {
     path: '/database',
     component: Layout,
     name: '系统管理',
-    meta: { title: '系统管理', icon: 'el-icon-s-help' },
+    meta: { title: '系统管理', icon: 'el-icon-s-help', roles: [] },
     children: [
-      // 页面放在children里面，Layout那个只作为一级路由用
       {
         path: 'databaseDetail',
         component: () => import('@/views/database/databaseDetail'),
         name: '系统管理',
-        meta: {
-          'title': '系统管理',
-          icon: 'el-icon-s-marketing'
-        }
+        meta: { title: '系统管理', icon: 'el-icon-s-marketing', roles: [] }
       }
     ]
   },
+
   {
     path: 'external-link',
     component: Layout,
