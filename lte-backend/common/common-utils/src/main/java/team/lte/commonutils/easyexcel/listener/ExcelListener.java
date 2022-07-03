@@ -1,5 +1,14 @@
 package team.lte.commonutils.easyexcel.listener;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -7,18 +16,14 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelAnalysisException;
 import com.alibaba.excel.write.metadata.WriteSheet;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import team.lte.commonutils.easyexcel.annotation.DbType;
 import team.lte.commonutils.easyexcel.entity.ErrorDTO;
 import team.lte.commonutils.easyexcel.mapper.BaseBatchMapper;
 import team.lte.commonutils.easyexcel.service.BaseCheckService;
 import team.lte.commonutils.easyexcel.service.PropertyCheckService;
-
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * EasyExcel数据导入监听器。
@@ -66,6 +71,7 @@ public class ExcelListener<P, D> extends AnalysisEventListener<D> {
         this.excelWriter = excelWriter;
         writeSheet = EasyExcelFactory.writerSheet().build();
         this.insertConsumer = switch (dbType) {
+            // 实现了触发器后则应写成：case POSTGRE_SQL -> baseBatchMapper::insertBatch;
             case POSTGRE_SQL -> baseBatchMapper::insertOrUpdateBatchPostgres;
             case GAUSS -> baseBatchMapper::insertOrUpdateBatchGauss;
             case OTHER -> baseBatchMapper::insertBatch;

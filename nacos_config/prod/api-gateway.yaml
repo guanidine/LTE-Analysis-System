@@ -1,0 +1,25 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.4:8848
+        namespace: ns_prod
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: service-acl
+          uri: lb://service-acl
+          predicates:
+            - Path=/acl/**
+        - id: service-biz
+          uri: lb://service-biz
+          predicates:
+            - Path=/biz/**
