@@ -13,6 +13,11 @@
       - [数据导出](#数据导出)
     - [业务查询](#业务查询)
     - [业务分析](#业务分析)
+  - [项目运行](#项目运行)
+    - [后端](#后端)
+    - [前端](#前端)
+    - [服务器](#服务器)
+  
 ## 介绍
 整体采用B/S架构，前端采用Vue来搭建网页，后端采用Java的SpringBoot架构进行数据处理和分析，数据层采用MySQL数据库进行数据管理，最终完成一个具有系统管理、用户管理、数据管理、数据查询、LTE业务分析功能的网页。
 ## 参考项目
@@ -148,3 +153,71 @@ tbCell，并存入数据库表 tbCell；
   - 点击分析后，根据使用说明书给出的公式和分析，根据当前的数据库数据给出当前的新表tbC2Inew，并于前端展示数据。
 - **重叠覆盖干扰小区三元组分析**
   - 根据表 tbC2Inew，找出所有的小区三元组\<a, b, c\>，其中 a、b、c 互为邻小区，并生成新表 tbC2I3，该表有三个属性，分别是三个小区的小区标识 ID，具体如实验说明书。
+
+
+
+## 项目运行
+
+### 后端
+
+`lte-backend`，SpringBoot项目，IntelliJ IDEA可用正常打开并识别出Maven，其他IDE不清楚。
+
+* 安装依赖（推荐是让IDE自己做，手动怎么装这么多 `pom.xml` 我也不造）
+
+* 启动服务
+  
+  1. 启动服务主程序[`QueryApplication.java`](lte-backend/service/business-query/src/main/java/team/lte/businessquery/QueryApplication.java)
+
+  ![image-20220311145713230](images/run/back1.png)
+  
+* 接口测试
+
+  项目整合了Swagger3.0用于测试Springboot中的各个接口，接口返回全部统一使用自定义类型 [`R`](lte-backend/common/common-utils/src/main/java/team/lte/commonutils/result/R.java)。
+
+  ![image-20220311151032576](images/run/back2.png)
+
+
+### 前端
+
+`lte-frontend`，Vue项目，可用VSCode，WebStorm等打开。
+
+* 安装依赖
+
+  ```shell
+  npm install
+  ```
+
+* 启动服务
+
+  ```shell
+  npm run dev
+  ```
+
+  ![image-20220311145345685](images/run/front1.png)
+
+* 网页访问
+
+  ```shell
+  http://localhost:9528
+  登录用户名：admin
+  登录密码：111111
+  目前登录完了并不能注销，想看登录界面可用开无痕浏览或清理缓存。
+  ```
+  
+  ![image-20220311151233793](images/run/front2.png)
+
+### 服务器
+
+* 项目已部署至服务器120.48.19.4，远程连接用户名 `root`，密码 `Q6^pw0*lb$@Ezv#7`（服务器密码居然不能包含 `&` 字符）。1核2G垃圾服务器，项目跑起来后剩不下多少内存了，折腾的时候得悠着点 :thinking: 。
+* 服务器各端口：
+  * 前端： [http://120.48.19.4](http://120.48.19.4) ，账号密码如下：
+    * admin - 111111
+    * OP1 - 123456
+    * PG1 - 123456
+  * Swagger：[http://120.48.19.4:8001/swagger-ui/index.html](http://120.48.19.4:8001/swagger-ui/index.html)  和 [http://120.48.19.4:8002/swagger-ui/index.html](http://120.48.19.4:8002/swagger-ui/index.html) ，其中 `8002` 端口的 `service-acl` 服务需要Authorize，配置X-Token的值为用户登录时的token
+  * Druid：[http://120.48.19.4:8001/druid/index.html](http://120.48.19.4:8001/druid/index.html)  和 [http://120.48.19.4:8002/druid/index.html](http://120.48.19.4:8002/druid/index.html) 
+  * Jenkins：[http://120.48.19.4:8080](http://120.48.19.4:8080) ，用户名 `root` ，密码 `Q6^pw0*lb$@Ezv#&`
+  * Nacos：[http://120.48.19.4:8848/nacos](http://120.48.19.4:8848/nacos) ，用户名 `nacos`，密码 `nacos`（这样仿佛有点安全问题呢。。。）
+* 数据库：
+  * PostgreSQL：端口 `5432`，用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`
+  * Redis：端口 `6379`，密码 `Q6^pw0*lb$@Ezv#&` （Redis已弃用。。大雾）

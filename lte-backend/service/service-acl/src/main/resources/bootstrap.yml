@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 120.48.19.4:8848
+        file-extension: yaml
+  application:
+    name: service-acl
