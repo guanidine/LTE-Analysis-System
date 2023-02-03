@@ -719,7 +719,7 @@ BEGIN
     from (select date_trunc('hour', start_time) hour_time, tbprb.* from tbprb) as tbprb_hour
     group by hour_time, enodeb_name, sector_description, sector_name;
 END
-$$ langugae plpgsql;
+$$ language plpgsql;
 
 
 drop table if exists tbmrodata;
@@ -1333,7 +1333,7 @@ create table if not exists acl_role_permission
     permission_id bigint    not null default 0,
     is_deleted    smallint           default 0,
     gmt_create    timestamp not null,
-    gmt_modified  timestamp not null,
+    gmt_modified  timestamp not null
 );
 
 
@@ -1637,9 +1637,7 @@ create table acl_user_role
     user_id      bigint    not null default 0,
     is_deleted   smallint           default 0,
     gmt_create   timestamp not null,
-    gmt_modified timestamp not null,
-    foreign key (role_id) references acl_role.id,
-    foreign key (user_id) references acl_user.id
+    gmt_modified timestamp not null
 );
 
 

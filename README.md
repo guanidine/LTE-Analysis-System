@@ -166,7 +166,7 @@ tbCell，并存入数据库表 tbCell；
 
 * 启动服务
   
-  1. 启动服务主程序[`QueryApplication.java`](lte-backend/service/business-query/src/main/java/team/lte/businessquery/QueryApplication.java)
+  1. 启动服务主程序[`QueryApplication.java`](lte-backend/service/service-biz/src/main/java/team/lte/bizservice/ServiceBizApplication.java)
 
   ![image-20220311145713230](images/run/back1.png)
   
@@ -221,3 +221,20 @@ tbCell，并存入数据库表 tbCell；
 * 数据库：
   * PostgreSQL：端口 `5432`，用户名 `root`，密码 `Q6^pw0*lb$@Ezv#&`
   * Redis：端口 `6379`，密码 `Q6^pw0*lb$@Ezv#&` （Redis已弃用。。大雾）
+
+## 本地运行
+
+* JDK：15
+* Node.js：v16
+* Nacos：v1系列（v1.4）与v2系列（v2.2）均可
+  * Windows下使用 `startup.cmd -m standalone` 启动Nacos，登录用户名密码均为nacos。运行最新的版本不需要创建新的namespace，只需要在public命名空间下创建三个配置文件api-gateway、service-acl和service-biz，默认DEFAULT_GROUP，配置格式为yaml，配置内容位于 [naces_config/public](nacos_config/public) 文件夹内
+* PostgreSQL：似乎版本没要求，pull一个latest的版本就可以
+  * Docker中创建容器使用 `docker run -d --name postgresql -e POSTGRES_PASSWORD=123456 -p 5432:5432 postgres ` 命令，在5432端口使用用户名postgres，密码123456登录，如果使用其他用户名密码需要相应地修改Nacos中的配置
+  * [table.sql](table.sql) 写有建表语句，创建了一个名为lte的schema
+* 后端依次启动ApiGatewayApplication（`-Xmx200m`）、ServiceBizApplication（`-Xmx500m`，端口8001）、ServiceAclApplication（`-Xmx200m`，端口8002），8001和8002端口的Swagger应可以正常使用
+  * 报错可以检查：Nacos是否启动、数据库有没有连接上、api-gateway是否在后两个服务前启动完成
+* 前端 `npm run dev` 启动网页。后端服务启动完成后，前端各功能应可以正常使用（虽然没有数据）
+
+贴一个VisualVM监测数据表导入导出PRB表（共九万多条数据，33MB）的图，导入2.8min，导出40s
+
+![visualvm](images/run/visualvm.png)

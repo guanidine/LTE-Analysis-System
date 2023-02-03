@@ -10,14 +10,14 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.0.4:8848
+        server-addr: 127.0.0.1:8848
         namespace: ns_prod
 
   datasource:
     # 数据库连接
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.0.4:5432/postgres?currentSchema=lte&stringtype=unspecified&TimeZone=Asia/Shanghai&reWriteBatchedInserts=true
+    url: jdbc:postgresql://127.0.0.1:5432/postgres?currentSchema=lte&stringtype=unspecified&TimeZone=Asia/Shanghai&reWriteBatchedInserts=true
     username: root
     password: Q6^pw0*lb$@Ezv#&
     druid:

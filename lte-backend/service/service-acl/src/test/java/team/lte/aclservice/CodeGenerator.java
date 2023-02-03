@@ -12,7 +12,7 @@ public class CodeGenerator {
 
     // 数据源配置
     private static final DataSourceConfig.Builder DATA_SOURCE_CONFIG =
-        new DataSourceConfig.Builder("jdbc:postgresql://120.48.19.4:5432/postgres", "root", "Q6^pw0*lb$@Ezv#&")
+        new DataSourceConfig.Builder("jdbc:postgresql://127.0.0.1:5432/postgres", "postgres", "123456")
             .schema("lte").typeConvert(new PostgreSqlTypeConvert());
 
     @Test
